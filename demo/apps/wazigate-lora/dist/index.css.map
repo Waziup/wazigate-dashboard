@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./src/styles/index.scss"],"names":[],"mappings":"AAAA,OAAO,gBAAgB,iBAAiB,kBAAkB,eAAe,MAAM,kBAAkB,OAAO,iBAAiB,yBAAyB,EAAE","file":"index.css","sourcesContent":[".inset{max-width:900px;margin-left:auto;margin-right:auto;padding:0 20px}label{margin-right:10px}.input{background:white;border:1px solid #b9b9b9}p{margin:10px}\n"],"sourceRoot":""}

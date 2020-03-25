@@ -1,0 +1,5 @@
+[
+	{ "id": "waziup.wazi-on-sensors", "image": "waziup/wazi-on-sensors:dev"},
+	{ "id": "waziup.wazigate-lora", "image": "waziup/wazigate-lora:latest"},
+	{ "id": "mojiz.passban-ids", "image": "mojiz/passban-ids:latest"}
+]

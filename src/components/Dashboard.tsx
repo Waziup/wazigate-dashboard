@@ -29,7 +29,7 @@ interface State {
   };
 }
 
-const appsRegExp = /^#\/apps\/([a-zA-Z0-9_-]+)\/(.+)/;
+const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
 
 var menu = (item: MenuItem) => {
   return (

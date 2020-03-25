@@ -14,10 +14,7 @@ import {
   MDBModalBody,
   MDBModalHeader,
   MDBModalFooter,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem
+  MDBCol
 } from "mdbreact";
 
 declare var gateway: waziup.Waziup;
@@ -33,25 +30,21 @@ export declare type WaziApp = {
   package: any;
 };
 
-export declare type AppConfig = {
-  action?: "start" | "stop" | "uninstal";
-  restart?: "always" | "on-failure" | "unless-stopped" | "no";
-};
-
 export interface Props {
   id: string;
+  appInfo: any;
 }
 
 export interface State {
   data: WaziApp;
   loading: boolean;
+
   modalHP: boolean;
   modalMsg: string;
-  setStartLoading: boolean;
-  setStopLoading: boolean;
-  setRestartLoading: boolean;
-  setRemoveLoading: boolean;
-  redirect: boolean;
+  error: boolean;
+
+  installLoading: boolean;
+  installStatus: any;
 }
 
 export class AppItem extends React.Component<Props, State> {
@@ -61,13 +54,13 @@ export class AppItem extends React.Component<Props, State> {
     this.state = {
       data: null,
       loading: true,
+
       modalHP: false,
       modalMsg: "",
-      setStartLoading: false,
-      setStopLoading: false,
-      setRestartLoading: false,
-      setRemoveLoading: false,
-      redirect: false
+      error: false,
+
+      installLoading: false,
+      installStatus: null
     };
   }
 
@@ -98,74 +91,69 @@ export class AppItem extends React.Component<Props, State> {
       }
     );
 
-    if (this.state.modalHP) {
-      setTimeout(() => {
-        this.load();
-      }, 5000);
-    }
+    // if (this.state.modalHP) {
+    //   setTimeout(() => {
+    //     this.load();
+    //   }, 5000);
+    // }
   }
 
   /*---------------*/
 
-  postAppAction(action: string) {
-    this.setState({
-      setStartLoading: action == "start",
-      setStopLoading: action == "stop",
-      setRemoveLoading: action == "uninstall"
-    });
-    gateway.setAppConfig(this.props.id, { action: action } as AppConfig).then(
+  //In future we will move this to the waziup package
+  async getAppiLogs(id: string): Promise<any> {
+    return gateway.get<any>("apps/" + id + "?install_logs");
+  }
+
+  /*---------------*/
+
+  iStatusLoop() {
+    if (
+      !this._isMounted ||
+      (this.state.installStatus && this.state.installStatus.done)
+    )
+      return;
+
+    this.getAppiLogs(this.props.id).then(
       res => {
         this.setState({
-          setStartLoading: false,
-          setStopLoading: false,
-          setRemoveLoading: false,
-          modalMsg: res as any
+          installStatus: res
         });
-
-        if (action == "uninstall") {
-          setTimeout(() => {
-            this.setState({ redirect: true });
-          }, 2000);
-          return;
-        }
-
-        this.load();
-
         setTimeout(() => {
-          this.setState({ modalMsg: "" });
-        }, 5000);
+          this.iStatusLoop();
+        }, 1000); // Check every second
       },
       error => {
-        this.setState({
-          setStartLoading: false,
-          setStopLoading: false,
-          setRemoveLoading: false,
-          modalMsg: error as any
-        });
-        this.load();
+        // Notify(error);
       }
     );
   }
 
   /*---------------*/
 
-  restartPolicyClick = (e: any) => {
-    if (this.state.setRestartLoading) return; // Already on progress
-    this.setState({ setRestartLoading: true });
+  installApp = () => {
+    if (!this._isMounted) return;
+    this.setState({ installLoading: true, installStatus: { log: "" } });
 
-    var newPolicy = e.target.innerHTML;
-    gateway
-      .setAppConfig(this.props.id, { restart: newPolicy } as AppConfig)
-      .then(
-        res => {
-          this.setState({ setRestartLoading: false });
-          this.load();
-        },
-        error => {
-          this.setState({ setRestartLoading: false });
-          this.load();
-        }
-      );
+    this.iStatusLoop();
+
+    gateway.installApp(this.props.appInfo.image).then(
+      res => {
+        this.setState({
+          installLoading: false,
+          modalMsg: res as any,
+          error: false
+        });
+        this.load();
+      },
+      error => {
+        this.setState({
+          installLoading: false,
+          modalMsg: error as any,
+          error: true
+        });
+      }
+    );
   };
 
   /*---------------*/
@@ -179,11 +167,11 @@ export class AppItem extends React.Component<Props, State> {
   /*---------------*/
 
   render() {
-    if (this.state.redirect) {
-      window.location.reload(); // Not a good tactic, but we will fix it later
-      return <div></div>;
-      // return <Redirect to="/apps" />;
-    }
+    // if (this.state.redirect) {
+    //   window.location.reload(); // Not a good tactic, but we will fix it later
+    //   return <div></div>;
+    //   // return <Redirect to="/apps" />;
+    // }
 
     if (!this.state.modalHP && this.state.loading) {
       return (
@@ -195,64 +183,38 @@ export class AppItem extends React.Component<Props, State> {
 
     /*-------*/
 
-    if (!this.state.data) {
-      return (
-        <MDBAlert color="warning" className="m-3">
-          <b>{this.props.id}</b> <br />
-          <MDBIcon icon="exclamation-triangle" />
-          <span className=""> Could not load the App Info.</span>
-        </MDBAlert>
-      );
-    }
-
-    // /*-------*/
-
-    // console.log(this.state.apps);
-    var isRunning =
-      this.state.data.state && this.state.data.state.Running == true;
-
     return (
-      <React.Fragment>
+      <MDBCol sm="4">
         <MDBCard style={{ width: "22rem" }} className="mt-3">
           <MDBCardBody>
-            <MDBCardTitle title={"App ID: " + this.state.data.id}>
-              {isRunning ? (
-                <MDBIcon
-                  icon="play"
-                  className="text-secondary"
-                  title="Running"
-                />
-              ) : (
-                <MDBIcon
-                  icon="exclamation-triangle"
-                  className="text-warning"
-                  title="Stopped"
-                />
-              )}{" "}
-              {this.state.data.name}
+            <MDBCardTitle title={"App ID: " + this.props.appInfo.id}>
+              {this.state.data && this.state.data.name
+                ? this.state.data.name
+                : this.props.appInfo.id}
             </MDBCardTitle>
-
-            {this.state.data.description}
-
-            <MDBAlert color={isRunning ? "info" : "warning"}>
-              Status:{" "}
-              {this.state.data.state
-                ? this.state.data.state.Status
-                : "Disabled"}
-            </MDBAlert>
-            {/* <MDBAlert color="info">Id: {this.state.data.Id}</MDBAlert> */}
-            <a
-              href={this.state.data.homepage}
-              target="_blank"
-              style={{ display: this.state.data.homepage ? "" : "none" }}
-            >
-              <MDBIcon icon="external-link-square-alt" /> Home page
-            </a>
-            <br />
-
-            <MDBBtn onClick={this.toggleModalHP}>
-              <MDBIcon icon="cogs" /> Setting
-            </MDBBtn>
+            {this.state.data &&
+            Object.getOwnPropertyNames(this.state.data).length != 0 ? (
+              <MDBAlert
+                color={
+                  this.state.data.state && this.state.data.state.Running
+                    ? "info"
+                    : "warning"
+                }
+              >
+                Status:{" "}
+                {this.state.data.state
+                  ? this.state.data.state.Status
+                  : "Disabled"}
+              </MDBAlert>
+            ) : (
+              <MDBBtn onClick={this.toggleModalHP}>
+                <MDBIcon
+                  icon={this.state.installLoading ? "cog" : "puzzle-piece"}
+                  spin={this.state.installLoading}
+                />
+                Install
+              </MDBBtn>
+            )}
           </MDBCardBody>
         </MDBCard>
         <MDBModal
@@ -262,96 +224,52 @@ export class AppItem extends React.Component<Props, State> {
           size="lg"
         >
           <MDBModalHeader toggle={this.toggleModalHP}>
-            {this.state.data.name}
-            {" " + this.state.data.version}
+            Install {this.props.id}
           </MDBModalHeader>
 
           <MDBModalBody>
-            {this.state.data.author ? (
-              <MDBAlert color="info">
-                <MDBIcon icon="user-secret" /> Author:{" "}
-                <b className="text-capitalize">{this.state.data.author}</b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            {this.state.data.state && this.state.data.state.Health ? (
-              <MDBAlert color="success">
-                <MDBIcon icon="briefcase-medical" /> Health:{" "}
-                <b className="text-capitalize">
-                  {this.state.data.state.Health}
-                </b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            <MDBAlert color={isRunning ? "info" : "warning"}>
-              <MDBIcon icon="tachometer-alt" /> Status:{" "}
-              <b className="text-capitalize">
-                {this.state.data.state
-                  ? this.state.data.state.Status
-                  : "Disabled"}{" "}
-              </b>
-            </MDBAlert>
-
-            {isRunning &&
-            this.state.data.state &&
-            this.state.data.state.StartedAt ? (
-              <MDBAlert color="info">
-                <MDBIcon icon="stopwatch" /> Started:{" "}
-                <b>
-                  <TimeComp time={new Date(this.state.data.state.StartedAt)} />
-                </b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            {!isRunning &&
-            this.state.data.state &&
-            this.state.data.state.FinishedAt ? (
-              <MDBAlert color="info">
-                <MDBIcon icon="history" /> Finished:{" "}
-                <b>
-                  <TimeComp time={new Date(this.state.data.state.FinishedAt)} />
-                </b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            {this.state.data.state && this.state.data.state.Error ? (
-              <MDBAlert color="warning">
-                <MDBIcon icon="exclamation-triangle" /> Error:{" "}
-                <b>{this.state.data.state.Error}</b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            {this.state.data.state && this.state.data.state.RestartPolicy ? (
-              <MDBAlert color="info">
-                <MDBIcon icon="caret-square-right" /> Restart policy:{" "}
-                <b className="text-capitalize">
-                  {this.state.data.state.RestartPolicy}
-                </b>
-              </MDBAlert>
-            ) : (
-              ""
-            )}
-
-            <a
-              href={this.state.data.homepage}
-              target="_blank"
-              style={{ display: this.state.data.homepage ? "" : "none" }}
+            <MDBBtn
+              disabled={this.state.installLoading}
+              onClick={this.installApp}
+              color="orange"
             >
-              <MDBIcon icon="external-link-square-alt" /> Home page
-            </a>
+              <MDBIcon
+                icon={this.state.installLoading ? "cog" : "angle-double-down"}
+                spin={this.state.installLoading}
+              />
+              {"  "}
+              Download and Install
+            </MDBBtn>
+
+            <MDBBtn>
+              <a
+                href={
+                  this.props.appInfo.homepage
+                    ? this.props.appInfo.homepage
+                    : "https://hub.docker.com/r/" +
+                      this.props.id.replace(".", "/")
+                }
+                target="_blank"
+              >
+                <MDBIcon icon="external-link-square-alt" />
+                {"  "}Home page
+              </a>
+            </MDBBtn>
+
+            <textarea
+              rows={14}
+              className="bg-dark text-light form-control form-rounded"
+              // spellCheck={false}
+              // contentEditable={false}
+              readOnly={true}
+              value={
+                this.state.installStatus ? this.state.installStatus.log : "N/A"
+              }
+              hidden={this.state.installStatus == null}
+            ></textarea>
 
             {this.state.modalMsg != "" ? (
-              <MDBAlert color="warning" dismiss>
+              <MDBAlert color={this.state.error ? "warning" : "info"} dismiss>
                 {this.state.modalMsg}
               </MDBAlert>
             ) : (
@@ -359,89 +277,15 @@ export class AppItem extends React.Component<Props, State> {
             )}
           </MDBModalBody>
 
-          <MDBModalFooter>
-            {this.state.data.state && this.state.data.state.RestartPolicy ? (
-              <MDBDropdown>
-                <MDBDropdownToggle caret color="default">
-                  <MDBIcon
-                    icon="cog"
-                    spin
-                    style={{
-                      display: this.state.setRestartLoading ? "" : "none"
-                    }}
-                  />{" "}
-                  Restart Policy
-                </MDBDropdownToggle>
-                <MDBDropdownMenu basic>
-                  <MDBDropdownItem
-                    onClick={this.restartPolicyClick}
-                    className="text-capitalize"
-                  >
-                    always
-                  </MDBDropdownItem>
-                  <MDBDropdownItem
-                    onClick={this.restartPolicyClick}
-                    className="text-capitalize"
-                  >
-                    on-failure
-                  </MDBDropdownItem>
-                  <MDBDropdownItem
-                    onClick={this.restartPolicyClick}
-                    className="text-capitalize"
-                  >
-                    unless-stopped
-                  </MDBDropdownItem>
-                  <MDBDropdownItem
-                    onClick={this.restartPolicyClick}
-                    className="text-capitalize"
-                  >
-                    no
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            ) : (
-              ""
-            )}
-
-            <MDBBtn
-              title="Uninstall"
-              onClick={() => this.postAppAction("uninstall")}
-            >
-              <MDBIcon
-                icon={this.state.setRemoveLoading ? "cog" : "trash-alt"}
-                spin={this.state.setRemoveLoading}
-              />{" "}
-              Uninstall
-            </MDBBtn>
-
-            <MDBBtn
-              disabled={!isRunning}
-              title="Stop"
-              onClick={() => this.postAppAction("stop")}
-            >
-              <MDBIcon
-                icon={this.state.setStopLoading ? "cog" : "stop"}
-                spin={this.state.setStopLoading}
-              />
-            </MDBBtn>
-
-            <MDBBtn
-              disabled={isRunning}
-              title="Start"
-              onClick={() => this.postAppAction("start")}
-            >
-              <MDBIcon
-                icon={this.state.setStartLoading ? "cog" : "play"}
-                spin={this.state.setStartLoading}
-              />
-            </MDBBtn>
-
-            <MDBBtn color="secondary" onClick={this.toggleModalHP}>
+          <MDBModalFooter className="p-0">
+            {/* <MDBBtn color="secondary" onClick={this.toggleModalHP}>
               Close
-            </MDBBtn>
+            </MDBBtn> */}
           </MDBModalFooter>
         </MDBModal>
-      </React.Fragment>
+
+        {/* --------------------------- */}
+      </MDBCol>
     );
   }
 }

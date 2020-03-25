@@ -17,7 +17,8 @@ import {
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBCol
 } from "mdbreact";
 
 declare var gateway: waziup.Waziup;
@@ -48,6 +49,7 @@ export interface State {
 
   modalHP: boolean;
   modalMsg: string;
+  error: boolean;
 
   setStartLoading: boolean;
   setStopLoading: boolean;
@@ -71,6 +73,7 @@ export class AppItem extends React.Component<Props, State> {
 
       modalHP: false,
       modalMsg: "",
+      error: false,
 
       setStartLoading: false,
       setStopLoading: false,
@@ -146,7 +149,10 @@ export class AppItem extends React.Component<Props, State> {
     gateway.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then(
       res => {
         this.setState({
-          setRemoveLoading: false
+          setRemoveLoading: false,
+          // modalMsg: res as any,
+          modalMsg: "The App is uninstalled",
+          error: false
         });
 
         setTimeout(() => {
@@ -155,7 +161,9 @@ export class AppItem extends React.Component<Props, State> {
       },
       error => {
         this.setState({
-          setRemoveLoading: false
+          setRemoveLoading: false,
+          modalMsg: error as any,
+          error: true
         });
       }
     );
@@ -165,7 +173,7 @@ export class AppItem extends React.Component<Props, State> {
 
   postAppAction(action: string) {
     this.setState({
-      setStartLoading: action == "start",
+      setStartLoading: action == "up -d",
       setStopLoading: action == "stop"
     });
     gateway.setAppConfig(this.props.id, { action: action } as AppConfig).then(
@@ -173,16 +181,9 @@ export class AppItem extends React.Component<Props, State> {
         this.setState({
           setStartLoading: false,
           setStopLoading: false,
-          setRemoveLoading: false,
-          modalMsg: res as any
+          modalMsg: res as any,
+          error: false
         });
-
-        if (action == "uninstall") {
-          setTimeout(() => {
-            this.setState({ redirect: true });
-          }, 2000);
-          return;
-        }
 
         this.load();
 
@@ -194,8 +195,8 @@ export class AppItem extends React.Component<Props, State> {
         this.setState({
           setStartLoading: false,
           setStopLoading: false,
-          setRemoveLoading: false,
-          modalMsg: error as any
+          modalMsg: error as any,
+          error: true
         });
         this.load();
       }
@@ -207,7 +208,6 @@ export class AppItem extends React.Component<Props, State> {
   restartPolicyClick = (e: any) => {
     if (this.state.setRestartLoading) return; // Already on progress
     this.setState({ setRestartLoading: true });
-
     var newPolicy = e.target.innerHTML;
     gateway
       .setAppConfig(this.props.id, { restart: newPolicy } as AppConfig)
@@ -260,14 +260,21 @@ export class AppItem extends React.Component<Props, State> {
       );
     }
 
-    // /*-------*/
+    /*-------*/
+
+    //If the app is uninstalled but the config/data is still there
+    if (!this.state.data.package) {
+      return <span></span>;
+    }
+
+    /*-------*/
 
     // console.log(this.state.apps);
     var isRunning =
       this.state.data.state && this.state.data.state.Running == true;
 
     return (
-      <React.Fragment>
+      <MDBCol sm="4">
         <MDBCard style={{ width: "22rem" }} className="mt-3">
           <MDBCardBody>
             <MDBCardTitle title={"App ID: " + this.state.data.id}>
@@ -284,7 +291,7 @@ export class AppItem extends React.Component<Props, State> {
                   title="Stopped"
                 />
               )}{" "}
-              {this.state.data.name}
+              {this.state.data.name ? this.state.data.name : "unknown"}
             </MDBCardTitle>
 
             {this.state.data.description}
@@ -317,7 +324,7 @@ export class AppItem extends React.Component<Props, State> {
           size="lg"
         >
           <MDBModalHeader toggle={this.toggleModalHP}>
-            {this.state.data.name}
+            {this.state.data.name ? this.state.data.name : "unknown"}
             {" " + this.state.data.version}
           </MDBModalHeader>
 
@@ -386,7 +393,8 @@ export class AppItem extends React.Component<Props, State> {
               ""
             )}
 
-            {this.state.data.state && this.state.data.state.RestartPolicy ? (
+            {this.state.data.state &&
+            this.state.data.state.RestartPolicy !== null ? (
               <MDBAlert color="info">
                 <MDBIcon icon="caret-square-right" /> Restart policy:{" "}
                 <b className="text-capitalize">
@@ -406,7 +414,7 @@ export class AppItem extends React.Component<Props, State> {
             </a>
 
             {this.state.modalMsg != "" ? (
-              <MDBAlert color="warning" dismiss>
+              <MDBAlert color={this.state.error ? "warning" : "info"} dismiss>
                 {this.state.modalMsg}
               </MDBAlert>
             ) : (
@@ -415,7 +423,7 @@ export class AppItem extends React.Component<Props, State> {
           </MDBModalBody>
 
           <MDBModalFooter className="p-0">
-            {this.state.data.state && this.state.data.state.RestartPolicy ? (
+            {this.state.data.state ? (
               <MDBDropdown>
                 <MDBDropdownToggle
                   caret
@@ -468,8 +476,14 @@ export class AppItem extends React.Component<Props, State> {
               color="deep-orange"
             >
               <MDBIcon
-                icon={this.state.setRemoveLoading ? "cog" : "trash-alt"}
-                spin={this.state.setRemoveLoading}
+                icon={
+                  this.state.setRemoveLoading && this.state.uninstallKeepConfig
+                    ? "cog"
+                    : "trash-alt"
+                }
+                spin={
+                  this.state.setRemoveLoading && this.state.uninstallKeepConfig
+                }
               />{" "}
               Uninstall
             </MDBBtn>
@@ -480,8 +494,14 @@ export class AppItem extends React.Component<Props, State> {
               color="danger"
             >
               <MDBIcon
-                icon={this.state.setRemoveLoading ? "cog" : "minus-circle"}
-                spin={this.state.setRemoveLoading}
+                icon={
+                  this.state.setRemoveLoading && !this.state.uninstallKeepConfig
+                    ? "cog"
+                    : "minus-circle"
+                }
+                spin={
+                  this.state.setRemoveLoading && !this.state.uninstallKeepConfig
+                }
               />{" "}
               Remove completely
             </MDBBtn>
@@ -501,7 +521,7 @@ export class AppItem extends React.Component<Props, State> {
             <MDBBtn
               disabled={isRunning}
               title="Start"
-              onClick={() => this.postAppAction("start")}
+              onClick={() => this.postAppAction("up -d")}
               color="elegant"
             >
               <MDBIcon
@@ -532,7 +552,7 @@ export class AppItem extends React.Component<Props, State> {
             </MDBBtn>
           </MDBModalFooter>
         </MDBModal>
-      </React.Fragment>
+      </MDBCol>
     );
   }
 }
