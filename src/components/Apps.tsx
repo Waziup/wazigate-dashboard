@@ -73,33 +73,34 @@ export class AppsPageComp extends React.Component<Props, State> {
 
     /*-------*/
 
-    if (!this.state.apps) {
-      return (
-        <MDBAlert color="info" className="m-3">
-          <MDBIcon icon="exclamation-circle" />
-          <span className=""> There are no Apps installed.</span>
-        </MDBAlert>
-      );
+    var results;
+    if (this.state.apps) {
+      if (this.state.filter == "available") {
+        results = this.state.apps
+          ? this.state.apps.map((res, index) => (
+              <MDBCol key={index} sm="4">
+                <NewApp id={res.id} appInfo={res} />
+              </MDBCol>
+            ))
+          : "";
+      } else {
+        //Exclude the system app from the list, we may use internal(private) flag in future
+        let apps = this.state.apps.filter(
+          obj => obj.id != "waziup.wazigate-system"
+        );
+        results = apps
+          ? apps.map((res, index) => <App key={index} id={res.id} />)
+          : "";
+      }
     }
 
-    /*-------*/
-    var results;
-    if (this.state.filter == "available") {
-      results = this.state.apps
-        ? this.state.apps.map((res, index) => (
-            <MDBCol key={index} sm="4">
-              <NewApp id={res.id} appInfo={res} />
-            </MDBCol>
-          ))
-        : "";
-    } else {
-      //Exclude the system app from the list, we may use internal(private) flag in future
-      let apps = this.state.apps.filter(
-        obj => obj.id != "waziup.wazigate-system"
+    if (!results || results.length == 0) {
+      results = (
+        <MDBAlert color="info" className="m-3">
+          <MDBIcon icon="exclamation-circle" />
+          <span className=""> There are no Apps.</span>
+        </MDBAlert>
       );
-      results = apps
-        ? apps.map((res, index) => <App key={index} id={res.id} />)
-        : "";
     }
 
     return (
