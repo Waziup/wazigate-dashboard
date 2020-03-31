@@ -45,6 +45,9 @@ export interface State {
 
   installLoading: boolean;
   installStatus: any;
+
+  installSuccess: boolean;
+  setStartLoading: boolean;
 }
 
 export class AppItem extends React.Component<Props, State> {
@@ -60,7 +63,10 @@ export class AppItem extends React.Component<Props, State> {
       error: false,
 
       installLoading: false,
-      installStatus: null
+      installStatus: null,
+
+      setStartLoading: false,
+      installSuccess: false
     };
   }
 
@@ -131,6 +137,25 @@ export class AppItem extends React.Component<Props, State> {
 
   /*---------------*/
 
+  startApp = () => {
+    this.setState({ setStartLoading: true });
+    gateway.setAppConfig(this.props.id, { action: "first-start" } as any).then(
+      res => {
+        this.setState({ setStartLoading: false });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      },
+      error => {
+        this.setState({
+          setStartLoading: false
+        });
+      }
+    );
+  };
+
+  /*---------------*/
+
   installApp = () => {
     if (!this._isMounted) return;
     this.setState({ installLoading: true, installStatus: { log: "" } });
@@ -142,7 +167,8 @@ export class AppItem extends React.Component<Props, State> {
         this.setState({
           installLoading: false,
           modalMsg: res as any,
-          error: false
+          error: false,
+          installSuccess: true
         });
         this.load();
       },
@@ -240,7 +266,6 @@ export class AppItem extends React.Component<Props, State> {
               {"  "}
               Download and Install
             </MDBBtn>
-
             <MDBBtn>
               <a
                 href={
@@ -255,7 +280,6 @@ export class AppItem extends React.Component<Props, State> {
                 {"  "}Home page
               </a>
             </MDBBtn>
-
             <textarea
               rows={14}
               className="bg-dark text-light form-control form-rounded"
@@ -267,7 +291,6 @@ export class AppItem extends React.Component<Props, State> {
               }
               hidden={this.state.installStatus == null}
             ></textarea>
-
             {this.state.modalMsg != "" ? (
               <MDBAlert color={this.state.error ? "warning" : "info"} dismiss>
                 {this.state.modalMsg}
@@ -278,6 +301,19 @@ export class AppItem extends React.Component<Props, State> {
           </MDBModalBody>
 
           <MDBModalFooter className="p-0">
+            <MDBBtn
+              style={{ display: this.state.installSuccess ? "" : "none" }}
+              onClick={this.startApp}
+              color="primary"
+            >
+              <MDBIcon
+                icon={this.state.setStartLoading ? "cog" : "play"}
+                spin={this.state.setStartLoading}
+              />
+              {"  "}
+              Launch the App
+            </MDBBtn>
+
             {/* <MDBBtn color="secondary" onClick={this.toggleModalHP}>
               Close
             </MDBBtn> */}

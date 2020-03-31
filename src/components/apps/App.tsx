@@ -28,7 +28,7 @@ export declare type WaziApp = {
   name: string;
   version: string;
   description: string;
-  author: string;
+  author: any;
   homepage: string;
   state: any;
   package: any;
@@ -173,7 +173,7 @@ export class AppItem extends React.Component<Props, State> {
 
   postAppAction(action: string) {
     this.setState({
-      setStartLoading: action == "up -d",
+      setStartLoading: action == "start" || action == "first-start",
       setStopLoading: action == "stop"
     });
     gateway.setAppConfig(this.props.id, { action: action } as AppConfig).then(
@@ -329,10 +329,10 @@ export class AppItem extends React.Component<Props, State> {
           </MDBModalHeader>
 
           <MDBModalBody>
-            {this.state.data.author ? (
+            {this.state.data.author && this.state.data.author.name ? (
               <MDBAlert color="info">
                 <MDBIcon icon="user-secret" /> Author:{" "}
-                <b className="text-capitalize">{this.state.data.author}</b>
+                <b className="text-capitalize">{this.state.data.author.name}</b>
               </MDBAlert>
             ) : (
               ""
@@ -520,8 +520,18 @@ export class AppItem extends React.Component<Props, State> {
 
             <MDBBtn
               disabled={isRunning}
-              title="Start"
-              onClick={() => this.postAppAction("up -d")}
+              title={
+                this.state.data.state && this.state.data.state.StartedAt != ""
+                  ? "Start"
+                  : "First Launch"
+              }
+              onClick={() =>
+                this.postAppAction(
+                  this.state.data.state && this.state.data.state.StartedAt != ""
+                    ? "start"
+                    : "first-start"
+                )
+              }
               color="elegant"
             >
               <MDBIcon
