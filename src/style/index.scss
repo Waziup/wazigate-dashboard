@@ -43,21 +43,8 @@ body {
   }
 }
 
-#body {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-#dashboard, .dashboard {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
 #dashboard {
-  padding-left: 240px;
-  padding-bottom: 1.25em;
+  height: 100%;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -363,3 +350,13 @@ input, select {
   border: none;
 }
 
+.MuiFab-root.wazigate-fabAdd {
+  background: #f35e19;
+  outline: none;
+  position: fixed;
+  right: 12px;
+  bottom: 32px;
+  &:hover {
+    background: #f38c5c;
+  }
+}
