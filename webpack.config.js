@@ -34,13 +34,9 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".scss", ".css", ".js"]
 	},
 
-	entry: ["./src/index.tsx", "./src/style/index.scss"],
+	entry: ["./src/index.tsx"],
 
-	plugins: [
-		new MiniCssExtractPlugin({
-			filename: "main.css"
-		})
-	],
+	plugins: [],
 
 	module: {
 		rules: [
@@ -51,13 +47,8 @@ module.exports = {
 			},
 			{
 				test: /\.s[ac]ss$/i,
-				use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+				use: ["style-loader", "css-loader", "sass-loader"],
 				exclude: /node_modules/
-			},
-			{
-				test: /\.css$/,
-				use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-				// exclude: /node_modules/
 			},
 			{
 				test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -88,8 +79,11 @@ module.exports = {
 		path: path.resolve(__dirname, "dist")
 	},
 
-	externals: {
-		react: "React",
-		"react-dom": "ReactDOM"
-	}
+	externals: [
+		{
+			react: "React",
+			"react-dom": "ReactDOM",
+		},
+		// /@material-ui\/core\/.*/
+	]
 };

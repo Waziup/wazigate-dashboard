@@ -1,24 +1,24 @@
-type SensingDevice = {
+export type SensingDevice = {
     label: string;
     quantities: string[];
     icon: string;
 }
 
-type Qunatity = {
+export type Quantity = {
     label: string;
     units: string[];
 }
 
-type Unit = {
+export type Unit = {
     label: string;
 }
 
-type Ontologies = {
+export type Ontologies = {
     sensingDevices: {
         [id: string]: SensingDevice
     },
-    qunatities: {
-        [id: string]: Qunatity
+    quantities: {
+        [id: string]: Quantity
     },
     units: {
         [id: string]: Unit

@@ -1,0 +1,554 @@
+import React, { Fragment, useState, MouseEvent } from "react";
+import { Device, Waziup, Sensor, Actuator } from "waziup";
+import Fab from '@material-ui/core/Fab';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import SettingsIcon from '@material-ui/icons/Settings';
+import SyncIcon from '@material-ui/icons/Sync';
+import MenuIcon from '@material-ui/icons/Menu';
+import RemoveIcon from '@material-ui/icons/Remove';
+import AppsIcon from '@material-ui/icons/Apps';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Error from "../Error";
+import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
+import ontologies, { SensingDevice } from "../../ontologies.json";
+import ontologiesSprite from "../../img/ontologies.svg";
+import SVGSpriteIcon from "../SVGSpriteIcon";
+import {default as SensorComp} from "./device/Sensor";
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+import Menu from '@material-ui/core/Menu';
+import EditIcon from '@material-ui/icons/Edit';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SpeedDial from '@material-ui/lab/SpeedDial';
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import AddIcon from '@material-ui/icons/Add';
+import RouterIcon from '@material-ui/icons/Router';
+import BluetoothIcon from '@material-ui/icons/Bluetooth';
+import HookRegistry, { DeviceHook, DeviceHookProps, DeviceMenuHook, MenuHookProps } from "../../HookRegistry";
+import Paper from '@material-ui/core/Paper';
+import Grow from '@material-ui/core/Grow';
+
+declare const hooks: HookRegistry;
+
+declare const gateway: Waziup;
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+    page: {
+        marginTop: "64px",
+        paddingBottom: "64px",
+    },
+    deviceHead: {
+        margin: theme.spacing(3),
+        padding: theme.spacing(2),
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        background: "white",
+        borderRadius: "4px",
+    },
+    speedDial: {
+        position: "fixed",
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+        whiteSpace: "nowrap",
+    },
+    speedDialIcon: {
+        background: "#f35e19",
+        "&:hover": {
+            background: "#f38c5c",
+        },
+    },
+    appBar: {
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        background: "#f1f1f1",
+        color: "unset",
+        boxShadow: "0 0 2px #f1f1f1",
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(3),
+    },
+    name: {
+        flexGrow: 1,
+    },
+    appBarInner: {
+        padding: "0",
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
+    },
+    breadcrumbs: {
+        margin: theme.spacing(1),
+        marginLeft: theme.spacing(4),
+    },
+    icon: {
+        width: "24px",
+        height: "24px",
+        marginRight: "10px",
+    },
+    sensors: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    sensor: {
+        margin: theme.spacing(1),
+        textAlign: "left",
+        display: "inline-block",
+        verticalAlign: "top",
+        width: 340,
+        // columnCount: 1,
+        // [theme.breakpoints.up(990)]: {
+        //     columnCount: 2,
+        // },
+        [theme.breakpoints.down('sm')]: {
+            width: `calc(100% - ${theme.spacing(2)}px)`,
+        },
+
+    },
+    margin: {
+        margin: theme.spacing(1),
+    },
+    kind: {
+        [theme.breakpoints.up('sm')]: {
+            width: "340px",
+        },
+        width: "calc(100% - 18px)",
+        verticalAlign: "top",
+        display: "inline-block",
+        margin: theme.spacing(1),
+    },
+    kindInput: {
+        paddingTop: "6px !important",
+        paddingBottom: "6px !important",
+    },
+    quantity: {
+        verticalAlign: "top",
+        display: "inline-block",
+        margin: theme.spacing(1),
+    },
+    unit: {
+        verticalAlign: "top",
+        display: "inline-block",
+        margin: theme.spacing(1),
+    },
+    kindIcon: {
+        width: "1.5em",
+        height: "1.5em",
+        marginLeft: ".5em",
+    },
+    submitHead: {},
+    buttonProgress: {
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    submitHeadWrapper: {
+        margin: theme.spacing(1),
+        display: "inline-block",
+        verticalAlign: "bottom",
+        position: 'relative',
+    }
+}));
+
+hooks.addDeviceMenuHook((props: DeviceHookProps & MenuHookProps) => {
+    const {
+        device,
+        handleMenuClose,
+        setDevice
+    } = props;
+    const handleClick = () => {
+        handleMenuClose();
+        setDevice((device: Device) => ({
+            ...device,
+            meta: {
+                ...device.meta,
+                lorawan: {
+                    DevEUI: null,
+                }
+            }
+        }));
+        // gateway.setDeviceMeta(device.id, {
+        //     lorawan: {
+        //         DevEUI: null,
+        //     }
+        // })
+    }
+
+    if (device === null || device.meta.lorawan) {
+        return null;
+    }
+
+    return (
+        <MenuItem onClick={handleClick} key="waziup.wazigate-lora">
+            <ListItemIcon>
+                <RouterIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Make LoRaWAN" secondary="Declare as LoRaWAN device" />
+        </MenuItem>
+    );
+})
+
+hooks.addDeviceMenuHook(({device, handleMenuClose}: DeviceHookProps & MenuHookProps) => {
+
+    const handleClick = () => {
+        handleMenuClose();
+    }
+
+    return (
+        <MenuItem onClick={handleClick} key="waziup.wazigate-bluetooth">
+            <ListItemIcon>
+                <BluetoothIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Make Bluetooth" secondary="Declare as Bluetooth device" />
+        </MenuItem>
+    );
+})
+
+const useStylesLoRaWAN = makeStyles((theme) => ({
+    root: {
+        overflow: "auto",
+    },
+    scrollBox: {
+        padding: theme.spacing(2),
+        minWidth: "fit-content",
+    },
+    paper: {
+        background: "lightblue",
+        minWidth: "fit-content",
+    },
+    name: {
+        flexGrow: 1,
+    },
+    body: {
+        padding: theme.spacing(2),
+    },
+    shortInput: {
+        width: "200px",
+    },
+    longInput: {
+        width: 400,
+        maxWidth: "100%",
+    },
+}));
+
+hooks.addDeviceHook((props: DeviceHookProps) => {
+    const classes = useStylesLoRaWAN();
+    const {
+        device,
+        setDevice
+    } = props;
+
+    const [profile, setProfile] = useState("");
+
+    const lorawan = device?.meta["lorawan"];
+
+    const handleProfileChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setProfile(event.target.value as string);
+    };
+
+    const handleRemoveClick = () => {
+        if(confirm("Do you want to remove the LoRaWAN settings from this device?")) {
+            setDevice((device: Device) => ({
+                ...device,
+                meta: {
+                    ...device.meta,
+                    lorawan: undefined
+                }
+            }));
+        }
+    }
+
+    return (
+        <div className={classes.root}><div className={classes.scrollBox}>
+        <Grow in={!!lorawan} key="waziup.wazigate-lora">
+        <Paper variant="outlined" className={classes.paper}>
+            <Toolbar variant="dense">
+                <IconButton edge="start">
+                    <RouterIcon />
+                </IconButton>
+                <Typography variant="h6" noWrap className={classes.name}>
+                    LoRaWAN Settings
+                </Typography>
+                <IconButton onClick={handleRemoveClick}>
+                    <RemoveIcon />
+                </IconButton>
+            </Toolbar>
+            <div className={classes.body}>
+                <FormControl className={classes.shortInput}>
+                    <InputLabel id="lorawan-profile-label">LoRaWAN Profile</InputLabel>
+                    <Select
+                        labelId="lorawan-profile-label"
+                        id="lorawan-profile"
+                        value={profile}
+                        onChange={handleProfileChange}
+                    >
+                        <MenuItem value="WaziDev">WaziDev</MenuItem>
+                        <MenuItem value="">Other</MenuItem>
+                    </Select>
+                </FormControl><br />
+                { profile === "WaziDev" ? (
+                    <Fragment>
+                        <TextField id="lorawan-devaddr" label="DevAddr (Device Address)" className={classes.shortInput}/><br />
+                        <TextField id="lorawan-nwskey" label="NwkSKey (Network Session Key)" className={classes.longInput}/><br />
+                        <TextField id="lorawan-appkey" label="AppKey (App Key)" className={classes.longInput}/>
+                    </Fragment>
+                ): null }
+            </div>
+        </Paper>
+        </Grow>
+        </div></div>
+    );
+});
+
+type Props = {
+    handleDrawerToggle: () => void;
+    deviceID: string;
+};
+
+export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
+    const classes = useStyles();
+
+    const [device, setDevice] = useState<Device>(null);
+    const [error, setError] = useState<Error>(null);
+    if (error === null && device === null) {
+        gateway.getDevice(deviceID).then(setDevice, setError);
+    }
+
+    const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+    const handleMenuClick = (event: MouseEvent) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setMenuAnchorEl(event.currentTarget);
+    };
+    const handleMenuMouseDown = (event: MouseEvent) => {
+        event.stopPropagation();
+    };
+    const handleMenuClose = () => {
+        setMenuAnchorEl(null);
+    };
+    const handleRenameClick = () => {
+        const newDeviceName = prompt("New device name:", device.name);
+        if (newDeviceName) {
+            setDevice(device => ({
+                ...device,
+                name: newDeviceName
+            }));
+        }
+        handleMenuClose();
+    }
+
+    const [speedDialOpen, setSpeedDialOpen] = useState(false);
+    const handleSpeedDialOpen = () => {
+        setSpeedDialOpen(true);
+    };
+    const handleSpeedDialClose = () => {
+        setSpeedDialOpen(false);
+    };
+    const handleCreateSensorClick = () => {
+        handleSpeedDialClose();
+        var sensorName = prompt('Please insert a new sensor name:', '');
+        if (sensorName) {
+            var sensor: Sensor = {
+                name: sensorName,
+                id: "123456",
+                meta: {},
+                value: null,
+                time: null,
+                kind: null,
+                quantity: null,
+                unit: null,
+                modified: new Date(),
+                created: new Date(),
+            };
+            setDevice(device => {
+                device.sensors.push(sensor);
+                return {...device};
+            });
+        }
+    }
+
+    const handleCreateActuatorClick = () => {
+        handleSpeedDialClose();
+        var actuatorName = prompt('Please insert a new actuator name:', '');
+        if (actuatorName) {
+            var actuator: Actuator = {
+                name: actuatorName,
+                id: "123456",
+                meta: {},
+                value: null,
+                time: null,
+                kind: "Counter",
+                quantity: "Count",
+                unit: null,
+                modified: new Date(),
+                created: new Date(),
+            };
+            setDevice(device => {
+                device.actuators.push(actuator);
+                return {...device};
+            });
+        }
+    }
+
+
+    var body: React.ReactNode;
+    if(device === null && error === null) {
+        body = "Loading... please wait.";
+    } else if (error != null) {
+        body = <Error error={error} />
+    } else {
+        body = (
+            <div className={classes.sensors}>
+                { device.sensors.map(sensor => (
+                    <SensorComp
+                        key={sensor.id}
+                        className={classes.sensor}
+                        deviceID={deviceID}
+                        sensor={sensor}
+                    />
+                )) }
+            </div>
+        )
+    }
+
+
+    return (
+        <div className={classes.page}>
+            <AppBar position="fixed" className={classes.appBar}>
+                <Toolbar className={classes.appBarInner}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className={classes.menuButton}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap className={classes.name}>
+                        { error ? `Device ${deviceID}` : (device ? device.name : "...") }
+                    </Typography>
+                    <IconButton
+                        aria-label="settings"
+                        aria-controls="device-menu"
+                        aria-haspopup="true"
+                        onClick={handleMenuClick}
+                        onMouseDown={handleMenuMouseDown}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Menu
+                id="sensor-menu"
+                anchorEl={menuAnchorEl}
+                keepMounted
+                open={Boolean(menuAnchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={handleRenameClick}>
+                    <ListItemIcon>
+                        <EditIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Rename" />
+                </MenuItem>
+                <MenuItem onClick={handleMenuClose}>
+                    <ListItemIcon>
+                        <DeleteIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Delete" />
+                </MenuItem>
+
+                { hooks.get<DeviceMenuHook>("device.menu").map((Hook, i) =>
+                    <Hook
+                        key={i}
+                        device={device}
+                        handleMenuClose={handleMenuClose}
+                        setDevice={setDevice}
+                    />
+                ) }
+
+            </Menu>
+            <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
+                <Link color="inherit" href="#">Devices</Link>
+                <Link
+                    color="textPrimary"
+                    href={`#/devices/${deviceID}`}
+                    aria-current="page"
+                >
+                    {deviceID}
+                </Link>
+            </Breadcrumbs>
+            <SpeedDial
+                ariaLabel="Create Entity"
+                className={classes.speedDial}
+                FabProps={{className: classes.speedDialIcon}}
+                icon={<SpeedDialIcon />}
+                onClose={handleSpeedDialClose}
+                onOpen={handleSpeedDialOpen}
+                open={speedDialOpen}
+            >
+                <SpeedDialAction
+                    icon={<AddIcon />}
+                    tooltipTitle="Sensor"
+                    tooltipOpen
+                    onClick={handleCreateSensorClick}
+                />
+                <SpeedDialAction
+                    icon={<AddIcon />}
+                    tooltipTitle="Actuator"
+                    tooltipOpen
+                    onClick={handleCreateActuatorClick}
+                />
+            </SpeedDial>
+
+            { body }
+
+            { hooks.get<DeviceHook>("device").map((Hook, i) =>
+                <Hook
+                    key={i}
+                    device={device}
+                    setDevice={setDevice as (device: Device) => Device}
+                />
+            ) }
+        </div>
+    );
+}

@@ -4,7 +4,10 @@ import * as waziup from "waziup";
 
 import { version, branch } from "./version";
 
+import "./HookRegistry";
+
 import { DashboardComp } from "./components/Dashboard";
+
 
 console.log("Welcome to Wazigate! This is a %s build. %s", branch, version);
 

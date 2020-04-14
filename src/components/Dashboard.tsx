@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { DevicesPage } from "./DevicesPage";
-import { ErrorComp } from "./Error";
+import React, { useState, Fragment } from "react";
 import { AppsPageComp } from "./Apps";
+import SensorPage from "./pages/Sensor";
+import DevicePage from "./pages/Device";
+import DevicesPage from "./pages/Devices";
+import ErrorPage from "./pages/Error";
 import icons from "../img/icons.svg";
 import { IconComp } from "./Icon";
 import * as waziup from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
-import { MetaHandler, metaHandler } from "./devices/Entity";
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -20,27 +21,25 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SyncIcon from '@material-ui/icons/Sync';
-import MenuIcon from '@material-ui/icons/Menu';
+import WifiIcon from '@material-ui/icons/Wifi';
+import RouterIcon from '@material-ui/icons/Router';
 import AppsIcon from '@material-ui/icons/Apps';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import wazigateImage from "../img/wazigate.svg";
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "bootstrap-css-only/css/bootstrap.min.css";
-import "mdbreact/dist/css/mdb.css";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
+// import "bootstrap-css-only/css/bootstrap.min.css";
+// import "mdbreact/dist/css/mdb.css";
+import HookRegistry, { MenuHook } from "../HookRegistry";
 
 declare var gateway: waziup.Waziup;
 
-type MenuItem = {
-  icon: string;
-  label: string;
-  href: string;
-  items?: MenuItem[];
-  target?: string;
-};
 
 interface State {
   page: string;
@@ -50,6 +49,8 @@ interface State {
 }
 
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
+const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
+const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
 
 // var menu = (item: MenuItem) => {
 //   return (
@@ -76,7 +77,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      height: "100%",
+      minHeight: "100%",
+      background: "#f1f1f1",
     },
     drawer: {
       [theme.breakpoints.up('sm')]: {
@@ -118,11 +120,53 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      background: "#f1f1f1",
+      width: "100%",
       // padding: theme.spacing(3),
     },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
+    a: {
+      "&:hover": {
+        color: "unset !important",
+      }
+    }
   }),
 );
+
+declare const hooks: HookRegistry;
+
+hooks.setMenuHook("dashboard", {
+    primary: "Dashboard",
+    icon: <DashboardIcon />,
+    href: "#",
+    target: "",
+});
+hooks.setMenuHook("sync", {
+    primary: "Sync",
+    icon: <SyncIcon />,
+    href: "#/sync",
+});
+hooks.setMenuHook("settings", {
+    primary: "Settings",
+    icon: <SettingsIcon />,
+    href: "#/settings",
+});
+hooks.setMenuHook("settings.wifi", {
+    primary: "Wifi",
+    icon: <WifiIcon />,
+    href: "#/settings",
+});
+hooks.setMenuHook("apps", {
+    primary: "Apps",
+    icon: <AppsIcon />,
+    href: "#/apps",
+});
+hooks.setMenuHook("apps.lorawan", {
+    primary: "LoRaWAN",
+    icon: <RouterIcon />,
+    href: "#/apps/waziup.wazigate-lora/",
+});
 
 export const DashboardComp = () => {
   const classes = useStyles();
@@ -134,34 +178,87 @@ export const DashboardComp = () => {
   };
 
   const [page, setPage] = useState(location.hash);
+  window.addEventListener("hashchange", () => setPage(location.hash));
 
   const [apps, setApps] = useState(null);
   if(apps === null) gateway.getApps().then(setApps);
+
+  const [openMenues, setOpenMenues] = useState(new Set<string>());
+  const handleMenuItemClick = (id: string) => {
+    setOpenMenues((openMenues) => {
+      if (!openMenues.has(id)) {
+        openMenues.add(id);
+        return new Set(openMenues);
+      }
+      return openMenues;
+    });
+  }
+
+  const handleMenuOpenerClick = (id: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setOpenMenues((openMenues) => {
+      openMenues.add(id);
+      return new Set(openMenues);
+    });
+  }
+
+  const handleMenuCloserClick = (id: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setOpenMenues((openMenues) => {
+      openMenues.delete(id);
+      return new Set(openMenues);
+    });
+  }
+
+//   const inflateMenuItem(id: string) {
+
+//   }
+
+//   const menuItem = (id: string) => {
+//     const item = hooks.get(id)[0] as MenuItem;
+//     const subItems = menuItems(id);
+//   }
+
+
+  const menuItem = (id: string, item: MenuHook) => {
+        const open = openMenues.has(id);
+        const subItems = hooks.getAtPrio(id);
+        return (
+            <Fragment key={id}>
+                <ListItem
+                    component="a"
+                    button
+                    key={id}
+                    href={item.href}
+                    onClick={subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null}
+                    className={`${classes.a} ${depth(id)>=2?classes.nested:""}`}
+                >
+                    <ListItemIcon className={classes.drawerIcon}>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.primary} />
+                    { subItems.length !== 0 ? (open ?
+                        <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} /> :
+                        <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
+                    ): null }
+                </ListItem>
+                {subItems.length != 0 ?
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            { subItems.map(([id, item]) => menuItem(id, item)) }
+                        </List>
+                    </Collapse>
+                : null}
+            </Fragment>
+        );
+  }
 
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button key="dashboard" onClick={setPage.bind(null, "#")}>
-          <ListItemIcon className={classes.drawerIcon}><DashboardIcon /></ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem button key="sync" onClick={setPage.bind(null, "#/sync")}>
-          <ListItemIcon className={classes.drawerIcon}><SyncIcon /></ListItemIcon>
-          <ListItemText primary="Sync" />
-        </ListItem>
-        <ListItem button key="settings" onClick={setPage.bind(null, "#/settings")}>
-          <ListItemIcon className={classes.drawerIcon}><SettingsIcon /></ListItemIcon>
-          <ListItemText primary="Settings" />
-        </ListItem>
-        <ListItem button key="apps" onClick={setPage.bind(null, "#/apps")}>
-          <ListItemIcon className={classes.drawerIcon}><AppsIcon /></ListItemIcon>
-          <ListItemText primary="Apps" />
-        </ListItem>
+        { hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item)) }
       </List>
     </div>
   );
@@ -178,36 +275,23 @@ export const DashboardComp = () => {
       body = <AppsPageComp filter="installed" />;
     } else if (page === "#/apps/new") {
       body = <AppsPageComp filter="available" />;
+    } else if ((match = page.match(sensorRegExp))) {
+      body = <SensorPage deviceID={match[1]} sensorID={match[2]} handleDrawerToggle={handleDrawerToggle} />;
+    } else if ((match = page.match(deviceRegExp))) {
+      body = <DevicePage deviceID={match[1]} handleDrawerToggle={handleDrawerToggle} />;
     } else if ((match = page.match(appsRegExp))) {
       body = <AppsProxyComp app={match[1]} path={match[2]} />;
     } else {
-      body = (
-        <ErrorComp
-          error={`Page not found.\nThere is nothing at \"${page}\".`}
-        />
-      );
+      body = <ErrorPage
+        handleDrawerToggle={handleDrawerToggle}
+        error={`Page not found.\nThere is nothing at \"${page}\".`}
+      />;
     }
   }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      {/* <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
       <nav className={classes.drawer} aria-label="mailbox folders">
         <Hidden smUp implementation="css">
           <Drawer
@@ -404,3 +488,9 @@ export const DashboardComp = () => {
 //     document.head.appendChild(script);
 //   });
 // }
+
+
+function depth(id: string) {
+    for(var c=-1, i=-2; i!=-1; c++, i=id.indexOf(".",i+1));
+    return c;
+}

@@ -1,1 +1,120 @@
-[]
+[
+    {
+        "id": "90fba68589aa",
+        "name": "Gateway 00155d006423",
+        "created": "2020-04-02T06:33:49.600Z",
+        "modified": "2020-04-02T06:33:49.600Z",
+        "sensors": [
+            {
+                "id": "5d4c1bb84b9f6157e03ad6b8",
+                "name": "Step Counter",
+                "kind": "Counter",
+                "quantity": "Count",
+                "unit": "",
+                "value": 7,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }, {
+                "id": "5d4c1bb84b9f6157e03ad6b9",
+                "name": "Bridge 1",
+                "kind": "CurrentSensor",
+                "quantity": "ElectricCurrent",
+                "unit": "Ampere",
+                "value": "7",
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }, {
+                "id": "5db2c4ca4b9f6132503b55fa",
+                "name": "Room Temp Sens",
+                "kind": "Thermometer",
+                "quantity": "RoomTemperature",
+                "unit": "DegreeCelsius",
+                "value": 24,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }
+        ],
+        "actuators": [
+            {
+                "id": "40f034",
+                "name": "Actuator Delta",
+                "value": "7",
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }
+        ],
+        "meta": {}
+    }, {
+        "id": "90fba68589ab",
+        "name": "Outdoor Weather Station",
+        "created": "2020-04-02T06:33:49.600Z",
+        "modified": "2020-04-02T06:33:49.600Z",
+        "sensors": [
+            {
+                "id": "5db2c4ca4b9f6132503b55fa",
+                "name": "Temperature Sensor",
+                "kind": "AirThermometer",
+                "quantity": "AirTemperature",
+                "unit": "DegreeCelsius",
+                "value": 20,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }, {
+                "id": "5d4c1bb84b9f6157e03ad6b9",
+                "name": "Rain Sensor",
+                "kind": "RainFallSensor",
+                "quantity": "Rainfall",
+                "unit": "Millilitre",
+                "value": 20,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }, {
+                "id": "5d4c1bb84b9f6157e03ad6b2",
+                "name": "Wind Direction",
+                "kind": "WindDirectionSensor",
+                "quantity": "WindDirection",
+                "unit": "DegreeAngle",
+                "value": 120,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }, {
+                "id": "5d4c1bb84b9f6157e03ad6b1",
+                "name": "Wind Speed",
+                "kind": "WindSpeedSensor",
+                "quantity": "WindSpeed",
+                "unit": "MetrePerSecond",
+                "value": 1.22,
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }
+        ],
+        "actuators": [
+            {
+                "id": "40f034",
+                "name": "Actuator Delta",
+                "value": "7",
+                "time": "2020-04-02T06:33:49.600Z",
+                "created": "2020-04-02T06:33:49.600Z",
+                "modified": "2020-04-02T06:33:49.600Z",
+                "meta": {}
+            }
+        ],
+        "meta": {}
+    }
+]

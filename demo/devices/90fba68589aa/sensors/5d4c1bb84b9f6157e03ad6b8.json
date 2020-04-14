@@ -1,0 +1,12 @@
+{
+    "id": "5d4c1bb84b9f6157e03ad6b8",
+    "name": "Step Counter",
+    "kind": "Counter",
+    "quantity": "Count",
+    "unit": "",
+    "value": 7,
+    "time": "2020-04-02T06:33:49.600Z",
+    "created": "2020-04-02T06:33:49.600Z",
+    "modified": "2020-04-02T06:33:49.600Z",
+    "meta": {}
+}

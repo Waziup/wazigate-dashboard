@@ -1,19 +1,51 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import ErrorIcon from '@material-ui/icons/Error';
+
+const useStyles = makeStyles((theme) => ({
+    body: {
+        padding: theme.spacing(3),
+        backgroundColor: "#ffb294",
+        position: "relative",
+        zIndex: 1,
+    },
+    title: {
+        fontSize: "36px",
+    },
+    backgroundIcon: {
+        position: "absolute",
+        top: "22px",
+        right: "18px",
+        color: "#c7917c",
+        width: "90px",
+        height: "90px",
+        zIndex: -1,
+    },
+}));
 
 interface ErrorProps {
     error: any;
 }
 
-export const ErrorComp = (props: ErrorProps) => {
+export default function Error(props: ErrorProps) {
+    const classes = useStyles();
+
     var msg = `${props.error}`;
     var match = msg.match(/^.+?\n/);
-    var title = match[0];
-    var text = msg.slice(title.length);
+    if (match) {
+        var title = match[0];
+        var text = msg.slice(title.length);
+    } else {
+        var title = "Error";
+        var text = msg;
+    }
 
     return (
-        <div className="error">
-            <h2>{title}</h2>
-            <pre>{text}</pre>
+        <div className={classes.body}>
+            <Typography variant="h2" gutterBottom className={classes.title}>{ title }</Typography>
+            <Typography variant="body1" gutterBottom>{ text }</Typography>
+            <ErrorIcon className={classes.backgroundIcon} />
         </div>
     );
 }
