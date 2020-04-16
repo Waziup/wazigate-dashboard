@@ -4,42 +4,35 @@ import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
-import icons from "../img/icons.svg";
-import { IconComp } from "./Icon";
-import * as waziup from "waziup";
+import waziup, { MenuHook } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
 import SyncIcon from '@material-ui/icons/Sync';
 import WifiIcon from '@material-ui/icons/Wifi';
 import RouterIcon from '@material-ui/icons/Router';
 import AppsIcon from '@material-ui/icons/Apps';
+import SettingsIcon from '@material-ui/icons/Settings';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import wazigateImage from "../img/wazigate.svg";
-import Collapse from '@material-ui/core/Collapse';
+
+import {
+  Collapse,
+  ListItemText,
+  ListItem,
+  ListItemIcon,
+  CssBaseline,
+  Divider,
+  Drawer,
+  Hidden,
+  List,
+} from '@material-ui/core';
+
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap-css-only/css/bootstrap.min.css";
 // import "mdbreact/dist/css/mdb.css";
-import HookRegistry, { MenuHook } from "../HookRegistry";
-
-declare var gateway: waziup.Waziup;
-
 
 interface State {
   page: string;
@@ -134,8 +127,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-declare const hooks: HookRegistry;
-
 hooks.setMenuHook("dashboard", {
     primary: "Dashboard",
     icon: <DashboardIcon />,
@@ -162,11 +153,6 @@ hooks.setMenuHook("apps", {
     icon: <AppsIcon />,
     href: "#/apps",
 });
-hooks.setMenuHook("apps.lorawan", {
-    primary: "LoRaWAN",
-    icon: <RouterIcon />,
-    href: "#/apps/waziup.wazigate-lora/",
-});
 
 export const DashboardComp = () => {
   const classes = useStyles();
@@ -181,7 +167,15 @@ export const DashboardComp = () => {
   window.addEventListener("hashchange", () => setPage(location.hash));
 
   const [apps, setApps] = useState(null);
-  if(apps === null) gateway.getApps().then(setApps);
+  if(apps === null) {
+    wazigate.getApps().then((apps) => {
+      hooks.load(wazigate.toProxyURL("waziup.wazigate-lora", "dist/hook.js")).then(() => {
+        setApps(apps);
+      }, (error) => {
+        setApps(apps);
+      })
+    });
+  }
 
   const [openMenues, setOpenMenues] = useState(new Set<string>());
   const handleMenuItemClick = (id: string) => {
@@ -233,7 +227,7 @@ export const DashboardComp = () => {
                     key={id}
                     href={item.href}
                     onClick={subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null}
-                    className={`${classes.a} ${depth(id)>=2?classes.nested:""}`}
+                    className={`${classes.a} ${hooks.depth(id)>=2?classes.nested:""}`}
                 >
                     <ListItemIcon className={classes.drawerIcon}>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.primary} />
@@ -474,23 +468,3 @@ export const DashboardComp = () => {
 //     );
 //   }
 // }
-
-// function loadHook(app: string, hook: string) {
-//   return new Promise((resolve, reject) => {
-//     var script = document.createElement("script");
-//     // var rnd = `${Math.random()}`.slice(2);
-//     // hooks[rnd] = () => {
-//     //     delete hooks[rnd];
-//     //     resolve();
-//     // }
-//     // script.setAttribute("data-hook", rnd);
-//     script.src = gateway.toProxyURL(app, hook);
-//     document.head.appendChild(script);
-//   });
-// }
-
-
-function depth(id: string) {
-    for(var c=-1, i=-2; i!=-1; c++, i=id.indexOf(".",i+1));
-    return c;
-}

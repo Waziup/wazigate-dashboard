@@ -1,51 +1,9 @@
 import React, { Fragment, useState, MouseEvent } from "react";
 import { Device, Waziup, Sensor, Actuator } from "waziup";
-import Fab from '@material-ui/core/Fab';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SyncIcon from '@material-ui/icons/Sync';
 import MenuIcon from '@material-ui/icons/Menu';
 import RemoveIcon from '@material-ui/icons/Remove';
-import AppsIcon from '@material-ui/icons/Apps';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Error from "../Error";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
-import ontologies, { SensingDevice } from "../../ontologies.json";
-import ontologiesSprite from "../../img/ontologies.svg";
-import SVGSpriteIcon from "../SVGSpriteIcon";
 import {default as SensorComp} from "./device/Sensor";
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { green } from '@material-ui/core/colors';
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -56,12 +14,28 @@ import AddIcon from '@material-ui/icons/Add';
 import RouterIcon from '@material-ui/icons/Router';
 import BluetoothIcon from '@material-ui/icons/Bluetooth';
 import HookRegistry, { DeviceHook, DeviceHookProps, DeviceMenuHook, MenuHookProps } from "../../HookRegistry";
-import Paper from '@material-ui/core/Paper';
-import Grow from '@material-ui/core/Grow';
 
-declare const hooks: HookRegistry;
 
-declare const gateway: Waziup;
+import {
+    AppBar,
+    IconButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography,
+    makeStyles,
+    InputLabel,
+    FormControl,
+    TextField,
+    MenuItem,
+    Select,
+    Breadcrumbs,
+    Link,
+    Menu,
+    Paper,
+    Grow,
+    colors,
+} from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -173,7 +147,7 @@ const useStyles = makeStyles((theme) => ({
     },
     submitHead: {},
     buttonProgress: {
-        color: green[500],
+        color: colors.green[500],
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -188,155 +162,155 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-hooks.addDeviceMenuHook((props: DeviceHookProps & MenuHookProps) => {
-    const {
-        device,
-        handleMenuClose,
-        setDevice
-    } = props;
-    const handleClick = () => {
-        handleMenuClose();
-        setDevice((device: Device) => ({
-            ...device,
-            meta: {
-                ...device.meta,
-                lorawan: {
-                    DevEUI: null,
-                }
-            }
-        }));
-        // gateway.setDeviceMeta(device.id, {
-        //     lorawan: {
-        //         DevEUI: null,
-        //     }
-        // })
-    }
+// hooks.addDeviceMenuHook((props: DeviceHookProps & MenuHookProps) => {
+//     const {
+//         device,
+//         handleMenuClose,
+//         setDevice
+//     } = props;
+//     const handleClick = () => {
+//         handleMenuClose();
+//         setDevice((device: Device) => ({
+//             ...device,
+//             meta: {
+//                 ...device.meta,
+//                 lorawan: {
+//                     DevEUI: null,
+//                 }
+//             }
+//         }));
+//         // gateway.setDeviceMeta(device.id, {
+//         //     lorawan: {
+//         //         DevEUI: null,
+//         //     }
+//         // })
+//     }
 
-    if (device === null || device.meta.lorawan) {
-        return null;
-    }
+//     if (device === null || device.meta.lorawan) {
+//         return null;
+//     }
 
-    return (
-        <MenuItem onClick={handleClick} key="waziup.wazigate-lora">
-            <ListItemIcon>
-                <RouterIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Make LoRaWAN" secondary="Declare as LoRaWAN device" />
-        </MenuItem>
-    );
-})
+//     return (
+//         <MenuItem onClick={handleClick} key="waziup.wazigate-lora">
+//             <ListItemIcon>
+//                 <RouterIcon fontSize="small" />
+//             </ListItemIcon>
+//             <ListItemText primary="Make LoRaWAN" secondary="Declare as LoRaWAN device" />
+//         </MenuItem>
+//     );
+// })
 
-hooks.addDeviceMenuHook(({device, handleMenuClose}: DeviceHookProps & MenuHookProps) => {
+// hooks.addDeviceMenuHook(({device, handleMenuClose}: DeviceHookProps & MenuHookProps) => {
 
-    const handleClick = () => {
-        handleMenuClose();
-    }
+//     const handleClick = () => {
+//         handleMenuClose();
+//     }
 
-    return (
-        <MenuItem onClick={handleClick} key="waziup.wazigate-bluetooth">
-            <ListItemIcon>
-                <BluetoothIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Make Bluetooth" secondary="Declare as Bluetooth device" />
-        </MenuItem>
-    );
-})
+//     return (
+//         <MenuItem onClick={handleClick} key="waziup.wazigate-bluetooth">
+//             <ListItemIcon>
+//                 <BluetoothIcon fontSize="small" />
+//             </ListItemIcon>
+//             <ListItemText primary="Make Bluetooth" secondary="Declare as Bluetooth device" />
+//         </MenuItem>
+//     );
+// })
 
-const useStylesLoRaWAN = makeStyles((theme) => ({
-    root: {
-        overflow: "auto",
-    },
-    scrollBox: {
-        padding: theme.spacing(2),
-        minWidth: "fit-content",
-    },
-    paper: {
-        background: "lightblue",
-        minWidth: "fit-content",
-    },
-    name: {
-        flexGrow: 1,
-    },
-    body: {
-        padding: theme.spacing(2),
-    },
-    shortInput: {
-        width: "200px",
-    },
-    longInput: {
-        width: 400,
-        maxWidth: "100%",
-    },
-}));
+// const useStylesLoRaWAN = makeStyles((theme) => ({
+//     root: {
+//         overflow: "auto",
+//     },
+//     scrollBox: {
+//         padding: theme.spacing(2),
+//         minWidth: "fit-content",
+//     },
+//     paper: {
+//         background: "lightblue",
+//         minWidth: "fit-content",
+//     },
+//     name: {
+//         flexGrow: 1,
+//     },
+//     body: {
+//         padding: theme.spacing(2),
+//     },
+//     shortInput: {
+//         width: "200px",
+//     },
+//     longInput: {
+//         width: 400,
+//         maxWidth: "100%",
+//     },
+// }));
 
-hooks.addDeviceHook((props: DeviceHookProps) => {
-    const classes = useStylesLoRaWAN();
-    const {
-        device,
-        setDevice
-    } = props;
+// hooks.addDeviceHook((props: DeviceHookProps) => {
+//     const classes = useStylesLoRaWAN();
+//     const {
+//         device,
+//         setDevice
+//     } = props;
 
-    const [profile, setProfile] = useState("");
+//     const [profile, setProfile] = useState("");
 
-    const lorawan = device?.meta["lorawan"];
+//     const lorawan = device?.meta["lorawan"];
 
-    const handleProfileChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setProfile(event.target.value as string);
-    };
+//     const handleProfileChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+//         setProfile(event.target.value as string);
+//     };
 
-    const handleRemoveClick = () => {
-        if(confirm("Do you want to remove the LoRaWAN settings from this device?")) {
-            setDevice((device: Device) => ({
-                ...device,
-                meta: {
-                    ...device.meta,
-                    lorawan: undefined
-                }
-            }));
-        }
-    }
+//     const handleRemoveClick = () => {
+//         if(confirm("Do you want to remove the LoRaWAN settings from this device?")) {
+//             setDevice((device: Device) => ({
+//                 ...device,
+//                 meta: {
+//                     ...device.meta,
+//                     lorawan: undefined
+//                 }
+//             }));
+//         }
+//     }
 
-    return (
-        <div className={classes.root}><div className={classes.scrollBox}>
-        <Grow in={!!lorawan} key="waziup.wazigate-lora">
-        <Paper variant="outlined" className={classes.paper}>
-            <Toolbar variant="dense">
-                <IconButton edge="start">
-                    <RouterIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap className={classes.name}>
-                    LoRaWAN Settings
-                </Typography>
-                <IconButton onClick={handleRemoveClick}>
-                    <RemoveIcon />
-                </IconButton>
-            </Toolbar>
-            <div className={classes.body}>
-                <FormControl className={classes.shortInput}>
-                    <InputLabel id="lorawan-profile-label">LoRaWAN Profile</InputLabel>
-                    <Select
-                        labelId="lorawan-profile-label"
-                        id="lorawan-profile"
-                        value={profile}
-                        onChange={handleProfileChange}
-                    >
-                        <MenuItem value="WaziDev">WaziDev</MenuItem>
-                        <MenuItem value="">Other</MenuItem>
-                    </Select>
-                </FormControl><br />
-                { profile === "WaziDev" ? (
-                    <Fragment>
-                        <TextField id="lorawan-devaddr" label="DevAddr (Device Address)" className={classes.shortInput}/><br />
-                        <TextField id="lorawan-nwskey" label="NwkSKey (Network Session Key)" className={classes.longInput}/><br />
-                        <TextField id="lorawan-appkey" label="AppKey (App Key)" className={classes.longInput}/>
-                    </Fragment>
-                ): null }
-            </div>
-        </Paper>
-        </Grow>
-        </div></div>
-    );
-});
+//     return (
+//         <div className={classes.root}><div className={classes.scrollBox}>
+//         <Grow in={!!lorawan} key="waziup.wazigate-lora">
+//         <Paper variant="outlined" className={classes.paper}>
+//             <Toolbar variant="dense">
+//                 <IconButton edge="start">
+//                     <RouterIcon />
+//                 </IconButton>
+//                 <Typography variant="h6" noWrap className={classes.name}>
+//                     LoRaWAN Settings
+//                 </Typography>
+//                 <IconButton onClick={handleRemoveClick}>
+//                     <RemoveIcon />
+//                 </IconButton>
+//             </Toolbar>
+//             <div className={classes.body}>
+//                 <FormControl className={classes.shortInput}>
+//                     <InputLabel id="lorawan-profile-label">LoRaWAN Profile</InputLabel>
+//                     <Select
+//                         labelId="lorawan-profile-label"
+//                         id="lorawan-profile"
+//                         value={profile}
+//                         onChange={handleProfileChange}
+//                     >
+//                         <MenuItem value="WaziDev">WaziDev</MenuItem>
+//                         <MenuItem value="">Other</MenuItem>
+//                     </Select>
+//                 </FormControl><br />
+//                 { profile === "WaziDev" ? (
+//                     <Fragment>
+//                         <TextField id="lorawan-devaddr" label="DevAddr (Device Address)" className={classes.shortInput}/><br />
+//                         <TextField id="lorawan-nwskey" label="NwkSKey (Network Session Key)" className={classes.longInput}/><br />
+//                         <TextField id="lorawan-appkey" label="AppKey (App Key)" className={classes.longInput}/>
+//                     </Fragment>
+//                 ): null }
+//             </div>
+//         </Paper>
+//         </Grow>
+//         </div></div>
+//     );
+// });
 
 type Props = {
     handleDrawerToggle: () => void;
@@ -349,7 +323,7 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
     const [device, setDevice] = useState<Device>(null);
     const [error, setError] = useState<Error>(null);
     if (error === null && device === null) {
-        gateway.getDevice(deviceID).then(setDevice, setError);
+        wazigate.getDevice(deviceID).then(setDevice, setError);
     }
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);

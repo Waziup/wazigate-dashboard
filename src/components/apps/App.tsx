@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as waziup from "waziup";
+import React from "react";
+import waziup from "waziup";
 import { TimeComp } from "../Time";
 import { Redirect } from "react-router-dom";
 
@@ -20,8 +20,6 @@ import {
   MDBDropdownItem,
   MDBCol
 } from "mdbreact";
-
-declare var gateway: waziup.Waziup;
 
 export declare type WaziApp = {
   id: string;
@@ -102,7 +100,7 @@ export class AppItem extends React.Component<Props, State> {
   load() {
     if (!this._isMounted) return;
     this.setState({ loading: true });
-    gateway.getApp(this.props.id).then(
+    wazigate.getApp(this.props.id).then(
       res => {
         this.setState({
           data: res as any,
@@ -146,7 +144,7 @@ export class AppItem extends React.Component<Props, State> {
       modalCnfrm: false
     });
 
-    gateway.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then(
+    wazigate.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then(
       res => {
         this.setState({
           setRemoveLoading: false,
@@ -176,7 +174,7 @@ export class AppItem extends React.Component<Props, State> {
       setStartLoading: action == "start" || action == "first-start",
       setStopLoading: action == "stop"
     });
-    gateway.setAppConfig(this.props.id, { action: action } as AppConfig).then(
+    wazigate.setAppConfig(this.props.id, { action: action } as AppConfig).then(
       res => {
         this.setState({
           setStartLoading: false,
@@ -209,7 +207,7 @@ export class AppItem extends React.Component<Props, State> {
     if (this.state.setRestartLoading) return; // Already on progress
     this.setState({ setRestartLoading: true });
     var newPolicy = e.target.innerHTML;
-    gateway
+    wazigate
       .setAppConfig(this.props.id, { restart: newPolicy } as AppConfig)
       .then(
         res => {

@@ -1,11 +1,9 @@
-import * as React from "react";
-import * as waziup from "waziup";
-
-declare var gateway: waziup.Waziup;
+import React from "react";
+import waziup from "waziup";
 
 interface Props {
     path: string;
     app: string;
 }
 
-export const AppsProxyComp = (props: Props) => <iframe className="app" src={gateway.toProxyURL(props.app, props.path)} />;
+export const AppsProxyComp = (props: Props) => <iframe className="app" src={wazigate.toProxyURL(props.app, props.path)} />;

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { Typography, makeStyles } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
 
 const useStyles = makeStyles((theme) => ({

@@ -1,55 +1,40 @@
 import React, { Fragment, useState, MouseEvent } from "react";
-import { Device, Waziup, Sensor } from "waziup";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SyncIcon from '@material-ui/icons/Sync';
-import MenuIcon from '@material-ui/icons/Menu';
-import AppsIcon from '@material-ui/icons/Apps';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { Waziup, Sensor } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
-import ontologies, { SensingDevice } from "../../ontologies.json";
+import ontologies from "../../ontologies.json";
 import ontologiesSprite from "../../img/ontologies.svg";
 import SVGSpriteIcon from "../SVGSpriteIcon";
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
+import MenuIcon from '@material-ui/icons/Menu';
 import SaveIcon from '@material-ui/icons/Save';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { green } from '@material-ui/core/colors';
-import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import Menu from '@material-ui/core/Menu';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-declare var gateway: Waziup;
+import {
+    AppBar,
+    IconButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography,
+    makeStyles,
+    InputLabel,
+    InputAdornment,
+    FormControl,
+    TextField,
+    MenuItem,
+    Select,
+    Button,
+    CircularProgress,
+    Snackbar,
+    Breadcrumbs,
+    Link,
+    Menu,
+    colors
+} from '@material-ui/core';
+
 
 const drawerWidth = 240;
 
@@ -139,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
     },
     submitHead: {},
     buttonProgress: {
-        color: green[500],
+        color: colors.green[500],
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -181,7 +166,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
     const [sensor, setSensor] = useState(null as Sensor);
     const [error, setError] = useState(null as Error);
     if (error === null && sensor === null) {
-        gateway.getSensor(deviceID, sensorID).then(setSensor, setError);
+        wazigate.getSensor(deviceID, sensorID).then(setSensor, setError);
     }
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);

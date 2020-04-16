@@ -1,6 +1,8 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import * as waziup from "waziup";
+
+import "./external";
 
 import { version, branch } from "./version";
 
@@ -23,12 +25,12 @@ else if (navigator.platform.indexOf("Mac") == 0)
 else if (navigator.platform.indexOf("Linux") != -1)
     document.body.classList.add("linux");
 
-waziup.connect().then(gateway => {
-    (window as any)["gateway"] = gateway;
+waziup.connect().then(wazigate => {
+    (window as any)["wazigate"] = wazigate;
 
     if (isDemo) {
-        gateway.toURL = (path: string) => `demo/${path}.json`;
-        gateway.toProxyURL = (name: string, path: string) => `demo/apps/${name}/${path}`;
+        wazigate.toURL = (path: string) => `demo/${path}.json`;
+        wazigate.toProxyURL = (name: string, path: string) => `demo/apps/${name}/${path}`;
     }
     
     ReactDOM.render(

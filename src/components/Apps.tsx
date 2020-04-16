@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as waziup from "waziup";
+import React from "react";
+import waziup from "waziup";
 import App from "./apps/App";
 import NewApp from "./apps/NewApp";
 import {
@@ -10,8 +10,6 @@ import {
   MDBRow,
   MDBBtn
 } from "mdbreact";
-
-declare var gateway: waziup.Waziup;
 
 export interface Props {
   filter?: "installed" | "available";
@@ -49,9 +47,9 @@ export class AppsPageComp extends React.Component<Props, State> {
     var apps;
 
     if (filter == "available") {
-      apps = await gateway.get<any>("apps?available"); // Later we will change this when we fix the wazi-lib
+      apps = await wazigate.get<any>("apps?available"); // Later we will change this when we fix the wazi-lib
     } else {
-      apps = await gateway.getApps();
+      apps = await wazigate.getApps();
     }
 
     this.setState({

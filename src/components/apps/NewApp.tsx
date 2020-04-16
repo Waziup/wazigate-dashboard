@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as waziup from "waziup";
+import React from "react";
+import waziup from "waziup";
 import { TimeComp } from "../Time";
 import { Redirect } from "react-router-dom";
 
@@ -16,8 +16,6 @@ import {
   MDBModalFooter,
   MDBCol
 } from "mdbreact";
-
-declare var gateway: waziup.Waziup;
 
 export declare type WaziApp = {
   id: string;
@@ -84,7 +82,7 @@ export class AppItem extends React.Component<Props, State> {
   load() {
     if (!this._isMounted) return;
     this.setState({ loading: true });
-    gateway.getApp(this.props.id).then(
+    wazigate.getApp(this.props.id).then(
       res => {
         this.setState({
           data: res as any,
@@ -108,7 +106,7 @@ export class AppItem extends React.Component<Props, State> {
 
   //In future we will move this to the waziup package
   async getAppiLogs(id: string): Promise<any> {
-    return gateway.get<any>("apps/" + id + "?install_logs");
+    return wazigate.get<any>("apps/" + id + "?install_logs");
   }
 
   /*---------------*/
@@ -139,7 +137,7 @@ export class AppItem extends React.Component<Props, State> {
 
   startApp = () => {
     this.setState({ setStartLoading: true });
-    gateway.setAppConfig(this.props.id, { action: "first-start" } as any).then(
+    wazigate.setAppConfig(this.props.id, { action: "first-start" } as any).then(
       res => {
         this.setState({ setStartLoading: false });
         setTimeout(() => {
@@ -162,7 +160,7 @@ export class AppItem extends React.Component<Props, State> {
 
     this.iStatusLoop();
 
-    gateway.installApp(this.props.appInfo.image).then(
+    wazigate.installApp(this.props.appInfo.image).then(
       res => {
         this.setState({
           installLoading: false,

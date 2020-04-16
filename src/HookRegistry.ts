@@ -1,5 +1,7 @@
 import { Device, Sensor, Actuator } from "waziup";
 
+declare var hooks: HookRegistry;
+
 export type Hook = () => JSX.Element
 export interface MenuHookProps {
     handleMenuClose: () => void;
@@ -40,6 +42,40 @@ export default class HookRegistry {
         [id: string]: [any, number][]
     } = {}
 
+    pending: {
+        [id: string]: () => void
+    } = {}
+
+    resolve() {
+        if (!document.currentScript) {
+            throw "hooks.resolve() must be called only once from a loading hook script";
+        } else {
+            const id = document.currentScript.getAttribute("data-hook");
+            if(!id) {
+                throw "hooks.resolve() was called from a script that is not a hook";
+            } else {
+                if (!(id in hooks.pending)) {
+                    throw "hooks.resolve() must be called only once ";
+                } else {
+                    hooks.pending[id]();
+                    delete hooks.pending[id];
+                }
+            }
+        }
+    }
+
+    load(src: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            var script = document.createElement("script");
+            var rnd = `${Math.random()}`.slice(2);
+            hooks.pending[rnd] = resolve;
+            script.setAttribute("data-hook", rnd);
+            script.src = src;
+            script.addEventListener("error", reject);
+            document.head.appendChild(script);
+        });
+    }
+
     add(id: string, hook: any, prio: number = 0) {
         if (id in this.hooks) {
             this.hooks[id].push([hook, prio]);
@@ -78,15 +114,15 @@ export default class HookRegistry {
 
     getAt(id: string) {
         const subId = `${id}.`
-        const d = depth(id)+1;
+        const d = this.depth(id)+1;
         // const hooks = Object.entries(this.hooks)
-        //     .filter(([id]) => id.startsWith(subId) && depth(id) === d)
+        //     .filter(([id]) => id.startsWith(subId) && dthis.epth(id) === d)
         //     .map(([id, hooks]) => hooks)
         //     .flat()
         //     .sort((a, b) => a[1]-b[1])
         //     .map(hook => hook[0]);
         const hooksList = Object.entries(this.hooks)
-            .filter(([id]) => id.startsWith(subId) && depth(id) === d);
+            .filter(([id]) => id.startsWith(subId) && this.depth(id) === d);
         var hooks: {
             [id: string]: any[];
         } = {};
@@ -98,9 +134,9 @@ export default class HookRegistry {
 
     getAtPrio(id: string): [string, any][] {
         const subId = `${id}.`
-        const d = depth(id)+1;
+        const d = this.depth(id)+1;
         const hooks = Object.entries(this.hooks)
-            .filter(([id]) => id.startsWith(subId) && depth(id) === d)
+            .filter(([id]) => id.startsWith(subId) && this.depth(id) === d)
             .map(([id, hooks]) => hooks.map(([hook, prio]) => [id, hook, prio] as [string, any, number]))
             .flat()
             .sort((a, b) => a[2]-b[2])
@@ -109,9 +145,9 @@ export default class HookRegistry {
 
     getAtFlat(id: string) {
         const subId = `${id}.`
-        const d = depth(id)+1;
+        const d = this.depth(id)+1;
         const hooks = Object.entries(this.hooks)
-            .filter(([id]) => id.startsWith(subId) && depth(id) === d)
+            .filter(([id]) => id.startsWith(subId) && this.depth(id) === d)
             .map(([id, hooks]) => hooks)
             .flat()
             .sort((a, b) => a[1]-b[1])
@@ -121,9 +157,9 @@ export default class HookRegistry {
 
     getSubIDs(id: string) {
         const subID = `${id}.`
-        const d = depth(id)+1;
+        const d = this.depth(id)+1;
         const keys = Object.keys(this.hooks)
-            .filter(id => id.startsWith(subID) && depth(id) === d)
+            .filter(id => id.startsWith(subID) && this.depth(id) === d)
         return keys;
     }
 
@@ -160,15 +196,12 @@ export default class HookRegistry {
     addActuatorMetaHook(meta: string, hook: ActuatorHook, prio: number = 0) {
         this.add(`sensor.meta.${meta}`, hook, prio)
     }
+
+    depth(id: string) {
+        for(var c=-1, i=-2; i!=-1; c++, i=id.indexOf(".",i+1));
+        return c;
+    }
 }
 
-const hooks = new HookRegistry;
-(window as any)["hooks"] = hooks;
-
-function depth(id: string) {
-    for(var c=-1, i=-2; i!=-1; c++, i=id.indexOf(".",i+1));
-    return c;
-}
-
-
+(global as any)["hooks"] = new HookRegistry;
  

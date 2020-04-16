@@ -1,30 +1,16 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState } from "react";
 import { Device, Waziup } from "waziup";
 import { DeviceComp } from "./devices/Device";
-import Error from "../Error";
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
-import SyncIcon from '@material-ui/icons/Sync';
 import MenuIcon from '@material-ui/icons/Menu';
-import AppsIcon from '@material-ui/icons/Apps';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-
-declare var gateway: Waziup;
+import {
+    Fab,
+    AppBar,
+    IconButton,
+    Toolbar,
+    Typography,
+    makeStyles,
+} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -83,7 +69,7 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
     const classes = useStyles();
 
     const [devices, setDevices] = useState(null as Device[]);
-    if (devices === null) gateway.getDevices().then(setDevices);
+    if (devices === null) wazigate.getDevices().then(setDevices);
 
     const createDevice = () => {
         var deviceName = prompt('Please insert a new device name:', '');

@@ -84,6 +84,5 @@ module.exports = {
 			react: "React",
 			"react-dom": "ReactDOM",
 		},
-		// /@material-ui\/core\/.*/
 	]
 };

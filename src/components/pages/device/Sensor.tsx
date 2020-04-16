@@ -1,33 +1,24 @@
-import React, { useState, MouseEvent } from "react";
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import React from "react";
 import ontologies from "../../../ontologies.json";
 import ontologiesSprite from "../../../img/ontologies.svg";
 import SVGSpriteIcon from "../../SVGSpriteIcon";
-import Divider from '@material-ui/core/Divider';
 import { Sensor } from "waziup";
 import clsx from 'clsx';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
+
+import {
+    Collapse,
+    Card,
+    CardContent,
+    IconButton,
+    makeStyles,
+    Typography,
+    List,
+    ListItemIcon,
+    ListItemText,
+    ListItem,
+    colors,
+} from '@material-ui/core';
 
 type Props = {
     deviceID: string;
@@ -62,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(180deg)',
     },
     avatar: {
-        backgroundColor: red[500],
+        backgroundColor: colors.red[500],
     },
     value: {
         float: "right",
