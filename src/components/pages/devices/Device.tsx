@@ -27,6 +27,7 @@ import {
 type Props = {
     device: Device;
     className?: string;
+    onDelete: () => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const DeviceComp = ({ device, className }: Props) => {
+export const DeviceComp = ({ device, className, onDelete }: Props) => {
     const classes = useStyles();
 
     const [deviceName, setDeviceName] = useState(device.name);
@@ -87,6 +88,13 @@ export const DeviceComp = ({ device, className }: Props) => {
     const handleMenuClose = () => {
         setMenuAnchorEl(null);
     };
+    const handleDeleteClick = () => {
+        handleMenuClose();
+        if (confirm(`Delete device '${device.id}'?\nThis will delete the device, all of its sensors and actuators and all data values.\n\nThis cannot be undone!`)) {
+            wazigate.deleteDevice(device.id);
+            onDelete();
+        }
+    }
 
     // const sensors = device.sensors.map(sensor => {
     //     const ont = ontologies.sensingDevices[sensor.kind]
@@ -167,7 +175,7 @@ export const DeviceComp = ({ device, className }: Props) => {
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem onClick={handleDeleteClick}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>

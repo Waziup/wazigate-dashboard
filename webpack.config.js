@@ -26,7 +26,7 @@ export const branch = "${branch}";
 );
 
 module.exports = {
-	mode: "production",
+	mode: "development",
 
 	devtool: "source-map",
 

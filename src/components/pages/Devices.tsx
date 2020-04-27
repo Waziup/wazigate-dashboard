@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Device, Waziup } from "waziup";
 import { DeviceComp } from "./devices/Device";
 import AddIcon from '@material-ui/icons/Add';
@@ -69,20 +69,30 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
     const classes = useStyles();
 
     const [devices, setDevices] = useState(null as Device[]);
-    if (devices === null) wazigate.getDevices().then(setDevices);
+    useEffect(() => {
+        wazigate.getDevices().then(setDevices);
+        const cb = (device: Device) => {
+            console.log("A device was created remotely.", device);
+            wazigate.getDevices().then(setDevices);
+        };
+        wazigate.subscribe<Device>("devices", cb);
+        return () => wazigate.unsubscribe("devices", cb);
+    }, []);
 
-    const createDevice = () => {
+    const createDevice = async () => {
         var deviceName = prompt('Please insert a new device name:', '');
         if (deviceName) {
             var device: Device = {
+                id: "",
                 name: deviceName,
-                id: "123456",
                 sensors: [],
                 actuators: [],
                 meta: {},
                 modified: new Date(),
                 created: new Date(),
             };
+            const id = await wazigate.addDevice(device);
+            device.id = id;
             setDevices(devices => [...devices, device]);
         }
     }
@@ -93,13 +103,19 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
     } else if(devices.length === 0) {
         body = "There are no devices yet. Click '+' to add a new device."
     } else {
-        body = devices.map((device) => (
-            <DeviceComp
-                key={device.id}
-                className={classes.device}
-                device={device}
-            />
-        ))
+        body = devices.map((device) => {
+            const handleDeviceDelete = () => {
+                setDevices(devices => devices.filter(d => d.id != device.id));
+            }
+            return (
+                <DeviceComp
+                    key={device.id}
+                    className={classes.device}
+                    device={device}
+                    onDelete={handleDeviceDelete}
+                />
+            );
+        })
     }
 
     return (
