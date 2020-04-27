@@ -4,25 +4,26 @@ html {
 
 body {
   margin: 0;
-  background-color:#f1f1f1;
+  background-color: #f1f1f1;
   font-size: 16px;
   line-height: 1.25em;
-  font-family: 'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif;
   position: relative;
   cursor: default;
   user-select: none;
   display: flex;
   flex-direction: column;
   height: 100%;
-  
+
   box-sizing: border-box;
-  
+
   .code {
     font-family: "monospace";
   }
 
   &.windows {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-family: "Segoe UI", Tahoma, sans-serif;
     .code {
       font-family: Consolas, Lucida Console, Courier New, monospace;
     }
@@ -36,7 +37,8 @@ body {
   }
 
   &.mac {
-    font-family: '.SFNSDisplay-Regular', 'Helvetica Neue', 'Lucida Grande', sans-serif;
+    font-family: ".SFNSDisplay-Regular", "Helvetica Neue", "Lucida Grande",
+      sans-serif;
     .code {
       font-family: Menlo, monospace;
     }
@@ -50,7 +52,10 @@ body {
 ///////////////////////////////////////////////////////////////////////////////
 // general styles
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: normal;
   margin: 0;
   line-height: initial;
@@ -67,7 +72,7 @@ pre {
 
 .error {
   background-color: #ffb294;
-  background-image: url('../img/error.svg');
+  background-image: url("../img/error.svg");
   background-size: 90px 90px;
   background-position: top right;
   background-repeat: no-repeat;
@@ -80,7 +85,6 @@ pre {
   margin: 40px 0 20px 0;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // menu styles
 
@@ -90,13 +94,13 @@ pre {
   bottom: 1.25em;
   top: 0;
   width: 240px;
-  background-color: #34425A;
+  background-color: #34425a;
   padding-top: 60px;
   color: #f1f1f1;
 
   &:before {
-    content: '';
-    background: url('../img/wazigate.svg');
+    content: "";
+    background: url("../img/wazigate.svg");
     background-size: 120px 78px;
     position: absolute;
     bottom: 10px;
@@ -128,11 +132,8 @@ pre {
   }
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // statusbar styles
-
 
 #statusbar {
   position: fixed;
@@ -143,13 +144,7 @@ pre {
   background: #303846;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // device styles
@@ -165,7 +160,7 @@ pre {
     display: inline-block;
     vertical-align: top;
   }
-    
+
   .device-name {
     padding: 5px 10px;
     cursor: text;
@@ -311,7 +306,8 @@ pre {
   }
 }
 
-input, select {
+input,
+select {
   background: unset;
   height: 1.75em;
   line-height: 1.75em;
@@ -330,7 +326,7 @@ input, select {
 
   .lora-id {
     width: 100%;
-    padding: .25em 12px;
+    padding: 0.25em 12px;
     line-height: 1.25em;
     height: 1.75em;
     box-sizing: border-box;
@@ -358,5 +354,16 @@ input, select {
   bottom: 32px;
   &:hover {
     background: #f38c5c;
+  }
+}
+
+.MuiFab-root.wazigate-fabSetting {
+  background: #66c;
+  outline: none;
+  position: fixed;
+  right: 12px;
+  bottom: 32px;
+  &:hover {
+    background: #a6c;
   }
 }

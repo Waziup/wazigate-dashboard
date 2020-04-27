@@ -8,8 +8,22 @@ import {
   MDBCol,
   MDBContainer,
   MDBRow,
-  MDBBtn
+  MDBBtn,
 } from "mdbreact";
+
+import AddIcon from "@material-ui/icons/Add";
+import SettingsIcon from "@material-ui/icons/Settings";
+
+import {
+  Fab,
+  // AppBar,
+  // IconButton,
+  // Toolbar,
+  // Typography,
+  // makeStyles,
+} from "@material-ui/core";
+
+/*---------------*/
 
 export interface Props {
   filter?: "installed" | "available";
@@ -28,7 +42,7 @@ export class AppsPageComp extends React.Component<Props, State> {
     this.state = {
       apps: null,
       loading: true,
-      filter: this.props.filter
+      filter: this.props.filter,
     };
   }
 
@@ -54,7 +68,7 @@ export class AppsPageComp extends React.Component<Props, State> {
 
     this.setState({
       apps: apps,
-      loading: false
+      loading: false,
     });
   }
 
@@ -84,7 +98,7 @@ export class AppsPageComp extends React.Component<Props, State> {
       } else {
         //Exclude the system app from the list, we may use internal(private) flag in future
         let apps = this.state.apps.filter(
-          obj => obj.id != "waziup.wazigate-system"
+          (obj) => obj.id != "waziup.wazigate-system"
         );
         results = apps
           ? apps.map((res, index) => <App key={index} id={res.id} />)
@@ -101,26 +115,32 @@ export class AppsPageComp extends React.Component<Props, State> {
       );
     }
 
+    var manageApps = this.state.filter == "installed";
+
     return (
       <MDBContainer>
-        <MDBRow>
-          <MDBBtn
-            style={{ display: this.state.filter == "available" ? "none" : "" }}
-            onClick={() => this.load("available")}
-            color="orange"
-          >
-            <MDBIcon icon="puzzle-piece" /> Install a new App
-          </MDBBtn>
-
-          <MDBBtn
-            style={{ display: this.state.filter == "installed" ? "none" : "" }}
-            onClick={() => this.load("installed")}
-            color="primary"
-          >
-            <MDBIcon icon="cogs" /> Manage installed Apps
-          </MDBBtn>
-        </MDBRow>
         <MDBRow>{results}</MDBRow>
+        <span className="MuiFab-root">
+          {manageApps ? (
+            <Fab
+              className="wazigate-fabAdd"
+              onClick={() => this.load("available")}
+              aria-label="add"
+              title="Install a new App"
+            >
+              <AddIcon />
+            </Fab>
+          ) : (
+            <Fab
+              className="wazigate-fabSetting"
+              onClick={() => this.load("installed")}
+              aria-label="edit"
+              title="Manage installed Apps"
+            >
+              <SettingsIcon />
+            </Fab>
+          )}
+        </span>
       </MDBContainer>
     );
   }
