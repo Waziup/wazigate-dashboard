@@ -66,6 +66,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const defaultKindIcon = "meter";
+
 export const DeviceComp = ({ device, className, onDelete }: Props) => {
     const classes = useStyles();
 
@@ -199,23 +201,29 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
             <CardContent>
                 <List dense={true}>
                     { device.sensors.map(sensor => {
-                        const kind = ontologies.sensingDevices[sensor.kind]
-                        const unit = ontologies.units[(sensor as any).unit];
+                        const kind = (sensor.meta.kind || "") as string;
+                        const quantity = (sensor.meta.quantity || "") as string;
+                        const unit = (sensor.meta.unit || "") as string;
+
+                        const icon = ontologies.sensingDevices[kind]?.icon || defaultKindIcon;
+                        const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
+                        const unitLabel = ontologies.units[unit]?.label || unit;
+
                         return (
                             <ListItem component="a" key={sensor.id} button href={`#/devices/${device.id}/sensors/${sensor.id}`}>
                                 <ListItemIcon>
                                     <SVGSpriteIcon
                                         className={classes.icon}
-                                        src={`dist/${ontologiesSprite}#${kind?kind.icon:"meter"}`}
+                                        src={`dist/${ontologiesSprite}#${icon}`}
                                     />
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={sensor.name}
-                                    secondary={kind?kind.label:""}
+                                    secondary={kindLabel}
                                 />
                                 <ListItemText
                                     className={classes.value}
-                                    primary={`${sensor.value}${unit?` ${unit.label}`:""}`}
+                                    primary={`${sensor.value}${unitLabel?` ${unitLabel}`:""}`}
                                 />
                             </ListItem>
                         )

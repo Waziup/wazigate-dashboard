@@ -96808,6 +96808,14 @@ class Waziup {
             await this.set(`devices/${id1}/sensors/${arg2}/values`, arg3);
         }
     }
+    async setSensorName(id1, arg2, arg3) {
+        if (arguments.length === 2) {
+            await this.set(`sensors/${id1}/name`, arg2);
+        }
+        else {
+            await this.set(`devices/${id1}/sensors/${arg2}/name`, arg3);
+        }
+    }
     async setSensorMeta(id1, arg2, arg3) {
         if (arguments.length === 2) {
             await this.set(`sensors/${id1}/meta`, arg2);
@@ -96895,6 +96903,14 @@ class Waziup {
         }
         else {
             await this.set(`devices/${id1}/actuators/${arg2}/values`, arg3);
+        }
+    }
+    async setActuatorName(id1, arg2, arg3) {
+        if (arguments.length === 2) {
+            await this.set(`actuators/${id1}/name`, arg2);
+        }
+        else {
+            await this.set(`devices/${id1}/actuators/${arg2}/name`, arg3);
         }
     }
     async setActuatorMeta(id1, arg2, arg3) {
@@ -99060,19 +99076,21 @@ function SensorPage({ deviceID, handleDrawerToggle }) {
         if (sensorName) {
             var sensor = {
                 name: sensorName,
-                id: "123456",
+                id: "",
                 meta: {},
                 value: null,
                 time: null,
-                kind: null,
-                quantity: null,
-                unit: null,
                 modified: new Date(),
                 created: new Date(),
             };
-            setDevice(device => {
-                device.sensors.push(sensor);
-                return Object.assign({}, device);
+            wazigate.addSensor(deviceID, sensor).then(id => {
+                sensor.id = id;
+                setDevice(device => {
+                    device.sensors.push(sensor);
+                    return Object.assign({}, device);
+                });
+            }, (err) => {
+                alert("There was an error creating the sensor:\n" + err);
             });
         }
     };
@@ -99082,19 +99100,21 @@ function SensorPage({ deviceID, handleDrawerToggle }) {
         if (actuatorName) {
             var actuator = {
                 name: actuatorName,
-                id: "123456",
+                id: "",
                 meta: {},
                 value: null,
                 time: null,
-                kind: "Counter",
-                quantity: "Count",
-                unit: null,
                 modified: new Date(),
                 created: new Date(),
             };
-            setDevice(device => {
-                device.actuators.push(actuator);
-                return Object.assign({}, device);
+            wazigate.addActuator(deviceID, actuator).then(id => {
+                actuator.id = id;
+                setDevice(device => {
+                    device.actuators.push(actuator);
+                    return Object.assign({}, device);
+                });
+            }, (err) => {
+                alert("There was an error creating the actuator:\n" + err);
             });
         }
     };
@@ -99485,9 +99505,9 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     const classes = useStyles();
     const [sensor, setSensor] = react_1.useState(null);
     const [error, setError] = react_1.useState(null);
-    if (error === null && sensor === null) {
+    react_1.useEffect(() => {
         wazigate.getSensor(deviceID, sensorID).then(setSensor, setError);
-    }
+    }, []);
     const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
     const handleMenuClick = (event) => {
         event.stopPropagation();
@@ -99501,20 +99521,34 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         setMenuAnchorEl(null);
     };
     const handleRenameClick = () => {
-        const newSensorName = prompt("New sensor name:", sensor.name);
+        handleMenuClose();
+        const oldSensorName = sensor.name;
+        const newSensorName = prompt("New sensor name:", oldSensorName);
         if (newSensorName) {
-            setSensor(sensor => {
-                sensor.name = newSensorName;
-                return sensor;
+            setSensor(sensor => (Object.assign(Object.assign({}, sensor), { name: newSensorName })));
+            wazigate.setSensorName(deviceID, sensorID, newSensorName).then(() => {
+                // OK
+            }, (err) => {
+                setSensor(sensor => (Object.assign(Object.assign({}, sensor), { 
+                    // revert changes
+                    name: oldSensorName })));
+                alert("There was an error changing the sensor name:\n" + err);
             });
         }
-        handleMenuClose();
     };
-    const [kind, setKind] = react_1.useState(["AirThermometer", null]);
-    const [kindId, kindMetaName] = kind;
-    const kinds = ontologies_json_1.default.sensingDevices;
-    const [quantityId, setQuantityId] = react_1.useState("AirTemperature");
-    const [unitId, setUnitId] = react_1.useState("DegreeCelsius");
+    const handleDeleteClick = () => {
+        handleMenuClose();
+        if (confirm(`Delete sensor '${sensorID}'?\nThis will delete the sensor and all sensor values.\n\nThis cannot be undone!`)) {
+            wazigate.deleteSensor(deviceID, sensorID).then(() => {
+                location.href = `#/devices/${deviceID}`;
+            }, (err) => {
+                alert("There was an error deleting the sensor:\n" + err);
+            });
+        }
+    };
+    var kind = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.kind) || "";
+    var quantity = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.quantity) || "";
+    var unit = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.unit) || "";
     const [headState, setHeadState] = react_1.useState(OK);
     const [snackBarOpen, setSnackBarOpen] = react_1.useState(false);
     const handleSnackbarClose = (event, reason) => {
@@ -99525,10 +99559,16 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     };
     const submitDeviceHead = () => {
         setHeadState(DoingSync);
-        setTimeout(() => {
+        wazigate.setSensorMeta(deviceID, sensorID, {
+            kind: kind || null,
+            quantity: quantity || null,
+            unit: unit || null
+        }).then(() => {
             setHeadState(OK);
-            setSnackBarOpen(true);
-        }, 2000);
+        }, (err) => {
+            alert("There was an error saving the metadata:\n" + err);
+            setHeadState(HasUnsavedChanges);
+        });
     };
     var body;
     if (sensor === null && error === null) {
@@ -99539,74 +99579,58 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     }
     else {
         const ontology = ontologies_json_1.default.sensingDevices;
-        const kindInput = (react_1.default.createElement(Autocomplete_1.default, { value: kind, className: classes.kind, id: "kind-select", options: Object.keys(ontology).map((kindId) => [kindId, null]), onChange: (event, kind) => {
+        const kindInput = (react_1.default.createElement(Autocomplete_1.default, { value: kind, className: classes.kind, id: "kind-select", options: Object.keys(ontology), onChange: (event, kind) => {
                 if (typeof kind === "string") {
-                    setKind([null, kind]);
-                }
-                else if (kind === null) {
-                    setKind([null, null]);
-                }
-                else {
-                    setKind(kind);
-                    const [kindId] = kind;
-                    const quantityId = ontology[kindId].quantities[0] || null;
-                    if (quantityId !== null) {
-                        setQuantityId(quantityId);
-                        const unitId = ontologies_json_1.default.quantities[quantityId].units[0] || null;
-                        if (unitId !== null) {
-                            setUnitId(unitId);
+                    if (kind in ontologies_json_1.default.sensingDevices) {
+                        const quantities = ontologies_json_1.default.sensingDevices[kind].quantities;
+                        if (!quantities.includes(quantity)) {
+                            quantity = quantities[0];
+                            if (quantity) {
+                                const units = ontologies_json_1.default.quantities[quantity].units;
+                                unit = units[0] || "";
+                            }
+                            else {
+                                quantity = "";
+                                unit = "";
+                            }
                         }
                     }
+                    setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: kind, quantity: quantity, unit: unit }) })));
+                }
+                else {
+                    setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: "" }) })));
                 }
                 setHeadState(HasUnsavedChanges);
             }, filterOptions: (options, params) => {
                 const filtered = filter(options, params);
                 if (params.inputValue !== '') {
-                    filtered.push([null, params.inputValue]);
+                    filtered.push(params.inputValue);
                 }
                 return filtered;
             }, getOptionLabel: (kind) => {
                 if (typeof kind === "string") {
+                    if (kind in ontologies_json_1.default.sensingDevices) {
+                        return ontologies_json_1.default.sensingDevices[kind].label;
+                    }
                     return kind;
                 }
-                else if (kind === null) {
-                    return "";
-                }
-                else {
-                    const [kindId, kindMetaName] = kind;
-                    if (kindId === null) {
-                        if (kindMetaName !== null) {
-                            return kindMetaName;
-                        }
-                        return "";
-                    }
-                    return kinds[kindId].label;
-                }
+                return "";
             }, renderOption: (kind) => {
                 var icon;
                 var label;
                 if (typeof kind === "string") {
-                    icon = defaultKindIcon;
-                    label = "string value option";
-                }
-                else if (kind === null) {
-                    icon = defaultKindIcon;
-                    label = "null value option";
-                }
-                else {
-                    const [kindId, kindMetaName] = kind;
-                    if (kindId !== null) {
-                        icon = kinds[kindId].icon;
-                        label = kinds[kindId].label;
-                    }
-                    else if (kindMetaName !== null) {
-                        icon = defaultKindIcon;
-                        label = `Use \"${kindMetaName}\"`;
+                    if (kind in ontologies_json_1.default.sensingDevices) {
+                        icon = ontologies_json_1.default.sensingDevices[kind].icon;
+                        label = ontologies_json_1.default.sensingDevices[kind].label;
                     }
                     else {
                         icon = defaultKindIcon;
-                        label = `Unspecified kind`;
+                        label = `Use \"${kind}\"`;
                     }
+                }
+                else {
+                    icon = defaultKindIcon;
+                    label = "null value option";
                 }
                 return (react_1.default.createElement(react_1.Fragment, null,
                     react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` }),
@@ -99616,13 +99640,13 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
             freeSolo: true, renderInput: (params) => {
                 var icon;
                 var label;
-                if (kindId !== null) {
-                    icon = kinds[kindId].icon;
-                    label = kinds[kindId].label;
+                if (kind in ontologies_json_1.default.sensingDevices) {
+                    icon = ontologies_json_1.default.sensingDevices[kind].icon;
+                    label = ontologies_json_1.default.sensingDevices[kind].label;
                 }
                 else {
                     icon = defaultKindIcon;
-                    label = kindMetaName;
+                    label = kind;
                 }
                 params.InputProps.startAdornment = (react_1.default.createElement(react_1.Fragment, null,
                     params.InputProps.startAdornment || null,
@@ -99634,32 +99658,32 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                     react_1.default.createElement(core_1.TextField, Object.assign({}, params, { label: "Sensor Kind", placeholder: "no sensor kind" }))));
             } }));
         var quantities = [];
-        if (kindId !== null) {
-            quantities = ontology[kindId].quantities;
+        if (kind in ontologies_json_1.default.sensingDevices) {
+            quantities = ontologies_json_1.default.sensingDevices[kind].quantities;
         }
         var quantityInput = null;
         if (quantities.length !== 0) {
             quantityInput = (react_1.default.createElement(core_1.FormControl, { className: classes.quantity },
                 react_1.default.createElement(core_1.InputLabel, { id: "quantity-select-lebel" }, "Quantity"),
-                react_1.default.createElement(core_1.Select, { labelId: "quantity-select-lebel", id: "quantity-select", value: quantityId, onChange: (event) => {
-                        if (event.target.value !== quantityId) {
-                            setQuantityId(event.target.value);
+                react_1.default.createElement(core_1.Select, { labelId: "quantity-select-lebel", id: "quantity-select", value: quantity, onChange: (event) => {
+                        if (event.target.value !== quantity) {
+                            setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { quantity: event.target.value }) })));
                             setHeadState(HasUnsavedChanges);
                         }
-                    } }, quantities.map((quantityId) => (react_1.default.createElement(core_1.MenuItem, { value: quantityId }, ontologies_json_1.default.quantities[quantityId].label))))));
+                    } }, quantities.map((quantity) => (react_1.default.createElement(core_1.MenuItem, { value: quantity }, ontologies_json_1.default.quantities[quantity].label))))));
         }
         var unitInput = null;
-        if (kindId !== null && quantityId !== null) {
-            const units = ontologies_json_1.default.quantities[quantityId].units;
+        if (kind in ontologies_json_1.default.sensingDevices && quantity) {
+            const units = ontologies_json_1.default.quantities[quantity].units;
             if (units.length !== 0) {
                 unitInput = (react_1.default.createElement(core_1.FormControl, { className: classes.unit },
                     react_1.default.createElement(core_1.InputLabel, { id: "unit-select-lebel" }, "Unit"),
-                    react_1.default.createElement(core_1.Select, { labelId: "unit-select-lebel", id: "unit-select", value: unitId, onChange: (event) => {
-                            if (event.target.value !== unitId) {
-                                setUnitId(event.target.value);
+                    react_1.default.createElement(core_1.Select, { labelId: "unit-select-lebel", id: "unit-select", value: unit, onChange: (event) => {
+                            if (event.target.value !== unit) {
+                                setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { unit: event.target.value }) })));
                                 setHeadState(HasUnsavedChanges);
                             }
-                        } }, ontologies_json_1.default.quantities[quantityId].units.map((unitID) => (react_1.default.createElement(core_1.MenuItem, { value: unitID }, ontologies_json_1.default.units[unitID].label))))));
+                        } }, ontologies_json_1.default.quantities[quantity].units.map((unit) => (react_1.default.createElement(core_1.MenuItem, { value: unit }, ontologies_json_1.default.units[unit].label))))));
             }
         }
         // <Autocomplete
@@ -99706,7 +99730,7 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Edit_1.default, { fontSize: "small" })),
                 react_1.default.createElement(core_1.ListItemText, { primary: "Rename" })),
-            react_1.default.createElement(core_1.MenuItem, { onClick: handleMenuClose },
+            react_1.default.createElement(core_1.MenuItem, { onClick: handleDeleteClick },
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Delete_1.default, { fontSize: "small" })),
                 react_1.default.createElement(core_1.ListItemText, { primary: "Delete" }))),
@@ -99779,9 +99803,13 @@ const useStyles = core_1.makeStyles((theme) => ({
 }));
 const defaultKindIcon = "meter";
 function Sensor({ deviceID, sensor, className }) {
+    var _a, _b;
     const classes = useStyles();
-    const kind = sensor.kind ? ontologies_json_1.default.sensingDevices[sensor.kind] : null;
-    const unit = sensor.kind && sensor.unit ? ontologies_json_1.default.units[sensor.unit] : null;
+    const kind = (sensor.meta.kind || "");
+    const quantity = (sensor.meta.quantity || "");
+    const unit = (sensor.meta.unit || "");
+    const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultKindIcon;
+    const kindLabel = ((_b = ontologies_json_1.default.sensingDevices[kind]) === null || _b === void 0 ? void 0 : _b.label) || kind;
     // const [sensorName, setSensorName] = useState(sensor.name);
     // const handleNameClick = () => {
     //     const newSensorName = prompt("New sensor name:", sensorName);
@@ -99810,8 +99838,8 @@ function Sensor({ deviceID, sensor, className }) {
         react_1.default.createElement(core_1.List, { dense: true },
             react_1.default.createElement(core_1.ListItem, { component: "a", button: true, href: `#/devices/${deviceID}/sensors/${sensor.id}` },
                 react_1.default.createElement(core_1.ListItemIcon, null,
-                    react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${kind ? kind.icon : defaultKindIcon}` })),
-                react_1.default.createElement(core_1.ListItemText, { primary: sensor.name, secondary: kind ? kind.label : "" }),
+                    react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` })),
+                react_1.default.createElement(core_1.ListItemText, { primary: sensor.name, secondary: kindLabel }),
                 react_1.default.createElement(core_1.IconButton, { className: clsx_1.default(classes.expand, {
                         [classes.expandOpen]: expanded,
                     }), onClick: handleExpandClick, "aria-expanded": expanded, "aria-label": "show more" },
@@ -99900,6 +99928,7 @@ const useStyles = core_1.makeStyles((theme) => ({
         marginLeft: "1.5em",
     },
 }));
+const defaultKindIcon = "meter";
 exports.DeviceComp = ({ device, className, onDelete }) => {
     const classes = useStyles();
     const [deviceName, setDeviceName] = react_1.useState(device.name);
@@ -99993,13 +100022,18 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
         react_1.default.createElement(core_1.Divider, null),
         react_1.default.createElement(core_1.CardContent, null,
             react_1.default.createElement(List_1.default, { dense: true }, device.sensors.map(sensor => {
-                const kind = ontologies_json_1.default.sensingDevices[sensor.kind];
-                const unit = ontologies_json_1.default.units[sensor.unit];
+                var _a, _b, _c;
+                const kind = (sensor.meta.kind || "");
+                const quantity = (sensor.meta.quantity || "");
+                const unit = (sensor.meta.unit || "");
+                const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultKindIcon;
+                const kindLabel = ((_b = ontologies_json_1.default.sensingDevices[kind]) === null || _b === void 0 ? void 0 : _b.label) || kind;
+                const unitLabel = ((_c = ontologies_json_1.default.units[unit]) === null || _c === void 0 ? void 0 : _c.label) || unit;
                 return (react_1.default.createElement(core_1.ListItem, { component: "a", key: sensor.id, button: true, href: `#/devices/${device.id}/sensors/${sensor.id}` },
                     react_1.default.createElement(core_1.ListItemIcon, null,
-                        react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${kind ? kind.icon : "meter"}` })),
-                    react_1.default.createElement(core_1.ListItemText, { primary: sensor.name, secondary: kind ? kind.label : "" }),
-                    react_1.default.createElement(core_1.ListItemText, { className: classes.value, primary: `${sensor.value}${unit ? ` ${unit.label}` : ""}` })));
+                        react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` })),
+                    react_1.default.createElement(core_1.ListItemText, { primary: sensor.name, secondary: kindLabel }),
+                    react_1.default.createElement(core_1.ListItemText, { className: classes.value, primary: `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}` })));
             })))));
 };
 const alphabetcolors = ["#5A8770", "#B2B7BB", "#6FA9AB", "#F5AF29", "#0088B9", "#F18636", "#D93A37", "#A6B12E", "#5C9BBC", "#F5888D", "#9A89B5", "#407887", "#9A89B5", "#5A8770", "#D33F33", "#A2B01F", "#F0B126", "#0087BF", "#F18636", "#0087BF", "#B2B7BB", "#72ACAE", "#9C8AB4", "#5A8770", "#EEB424", "#407887"];

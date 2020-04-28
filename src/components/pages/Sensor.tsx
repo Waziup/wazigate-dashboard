@@ -1,4 +1,4 @@
-import React, { Fragment, useState, MouseEvent } from "react";
+import React, { Fragment, useState, MouseEvent, useEffect } from "react";
 import { Waziup, Sensor } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
@@ -147,13 +147,11 @@ type Props = {
 
 const defaultKindIcon = "meter";
 
-type KindId = string;
-type MetaKindName = string;
-type KindOption = [KindId, MetaKindName];
-type QuantityId = string;
-type UnitId = string;
+type Kind = string;
+type Unit = string;
+type Quantity = string;
 
-const filter = createFilterOptions<KindOption>();
+const filter = createFilterOptions<Kind>();
 
 const OK = 0;
 const HasUnsavedChanges = 1;
@@ -165,9 +163,9 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
 
     const [sensor, setSensor] = useState(null as Sensor);
     const [error, setError] = useState(null as Error);
-    if (error === null && sensor === null) {
+    useEffect(() => {
         wazigate.getSensor(deviceID, sensorID).then(setSensor, setError);
-    }
+    }, []);
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const handleMenuClick = (event: MouseEvent) => {
@@ -182,22 +180,40 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
         setMenuAnchorEl(null);
     };
     const handleRenameClick = () => {
-        const newSensorName = prompt("New sensor name:", sensor.name);
+        handleMenuClose();
+        const oldSensorName = sensor.name;
+        const newSensorName = prompt("New sensor name:", oldSensorName);
         if (newSensorName) {
-            setSensor(sensor => {
-                sensor.name = newSensorName;
-                return sensor;
+            setSensor(sensor => ({
+                ...sensor,
+                name: newSensorName
+            }));
+            wazigate.setSensorName(deviceID, sensorID, newSensorName).then(() => {
+                // OK
+            }, (err: Error) => {
+                setSensor(sensor => ({
+                    ...sensor,
+                    // revert changes
+                    name: oldSensorName
+                }));
+                alert("There was an error changing the sensor name:\n"+err);
             });
         }
+    }
+    const handleDeleteClick = () => {
         handleMenuClose();
+        if (confirm(`Delete sensor '${sensorID}'?\nThis will delete the sensor and all sensor values.\n\nThis cannot be undone!`)) {
+            wazigate.deleteSensor(deviceID, sensorID).then(() => {
+                location.href = `#/devices/${deviceID}`;
+            }, (err: Error) => {
+                alert("There was an error deleting the sensor:\n"+err);
+            });
+        }
     }
 
-    const [kind, setKind] = useState<KindOption>(["AirThermometer", null]);
-    const [kindId, kindMetaName] = kind;
-    const kinds = ontologies.sensingDevices;
-
-    const [quantityId, setQuantityId] = useState<QuantityId>("AirTemperature");
-    const [unitId, setUnitId] = useState<UnitId>("DegreeCelsius");
+    var kind: Kind = sensor?.meta.kind || "";
+    var quantity: Quantity = sensor?.meta.quantity || "";
+    var unit: Unit = sensor?.meta.unit || "";
 
     const [headState, setHeadState] = useState(OK);
 
@@ -211,10 +227,17 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
 
     const submitDeviceHead = () => {
         setHeadState(DoingSync);
-        setTimeout(() => {
+
+        wazigate.setSensorMeta(deviceID, sensorID, {
+            kind: kind || null,
+            quantity: quantity || null,
+            unit: unit || null
+        }).then(() => {
             setHeadState(OK);
-            setSnackBarOpen(true);
-        }, 2000)
+        }, (err: Error) => {
+            alert("There was an error saving the metadata:\n"+err)
+            setHeadState(HasUnsavedChanges);
+        });
     }
 
     var body: React.ReactNode;
@@ -229,70 +252,72 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                 value={kind}
                 className={classes.kind}
                 id="kind-select"
-                options={Object.keys(ontology).map((kindId) => [kindId, null] as KindOption)}
-                onChange={(event: any, kind: KindOption) => {
+                options={Object.keys(ontology) as Kind[]}
+                onChange={(event: any, kind: Kind) => {
                     if (typeof kind === "string") {
-                        setKind([null, kind]);
-                    } else if (kind === null) {
-                        setKind([null, null])
-                    } else {
-                        setKind(kind);
-                        const [kindId] = kind;
-                        const quantityId = ontology[kindId].quantities[0] || null;
-                        if (quantityId !== null) {
-                            setQuantityId(quantityId);
-                            const unitId = ontologies.quantities[quantityId].units[0] || null;
-                            if (unitId !== null) {
-                                setUnitId(unitId)
+                        if (kind in ontologies.sensingDevices) {
+                            const quantities = ontologies.sensingDevices[kind].quantities;
+                            if (!quantities.includes(quantity)) {
+                                quantity = quantities[0];
+                                if (quantity) {
+                                    const units = ontologies.quantities[quantity].units
+                                    unit = units[0] || "";
+                                } else {
+                                    quantity = "";
+                                    unit = "";
+                                }
                             }
                         }
+                        setSensor(sensor => ({
+                            ...sensor,
+                            meta: {
+                                ...sensor.meta,
+                                kind: kind,
+                                quantity: quantity,
+                                unit: unit,
+                            }
+                        }));
+                    } else {
+                        setSensor(sensor => ({
+                            ...sensor,
+                            meta: {
+                                ...sensor.meta,
+                                kind: "",
+                            }
+                        }));
                     }
                     setHeadState(HasUnsavedChanges);
                 }}
                 filterOptions={(options, params) => {
-                    const filtered = filter(options, params) as KindOption[];
+                    const filtered = filter(options, params) as Kind[];
                     if (params.inputValue !== '') {
-                      filtered.push([null, params.inputValue]);
+                      filtered.push(params.inputValue);
                     }
                     return filtered;
                   }}
-                getOptionLabel={(kind: KindOption) => {
+                getOptionLabel={(kind: Kind) => {
                     if (typeof kind === "string") {
-                        return kind;
-                    } else if (kind === null) {
-                        return "";
-                    } else {
-                        const [kindId, kindMetaName] = kind;
-                        if (kindId === null) {
-                            if (kindMetaName !== null) {
-                                return kindMetaName;
-                            }
-                            return "";
+                        if (kind in ontologies.sensingDevices) {
+                            return ontologies.sensingDevices[kind].label;
                         }
-                        return kinds[kindId].label;
+                        return kind;
                     }
+                    return "";
                 }}
-                renderOption={(kind: KindOption) => {
+                renderOption={(kind: Kind) => {
                     var icon: string;
                     var label: string;
                     if (typeof kind === "string") {
-                        icon = defaultKindIcon;
-                        label = "string value option";
-                    } else if (kind === null) {
-                        icon = defaultKindIcon;
-                        label = "null value option";
-                    } else {
-                        const [kindId, kindMetaName] = kind;
-                        if (kindId !== null) {
-                            icon = kinds[kindId].icon;
-                            label = kinds[kindId].label;
-                        } else if (kindMetaName !== null) {
-                            icon = defaultKindIcon;
-                            label = `Use \"${kindMetaName}\"`;
+                        if (kind in ontologies.sensingDevices) {
+                            icon = ontologies.sensingDevices[kind].icon;
+                            label = ontologies.sensingDevices[kind].label;
                         } else {
                             icon = defaultKindIcon;
-                            label = `Unspecified kind`;
+                            label = `Use \"${kind}\"`;
                         }
+                    } else {
+                        icon = defaultKindIcon;
+                        label = "null value option";
                     }
                     return (
                         <Fragment>
@@ -309,12 +334,12 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                 renderInput={(params) => {
                     var icon: string;
                     var label: string;
-                    if (kindId !== null) {
-                        icon = kinds[kindId].icon;
-                        label = kinds[kindId].label;
+                    if (kind in ontologies.sensingDevices) {
+                        icon = ontologies.sensingDevices[kind].icon;
+                        label = ontologies.sensingDevices[kind].label;
                     } else {
                         icon = defaultKindIcon;
-                        label = kindMetaName;
+                        label = kind;
                     }
                     params.InputProps.startAdornment = (
                         <Fragment>
@@ -352,9 +377,9 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                 }}
             />
         )
-        var quantities: QuantityId[] = [];
-        if (kindId !== null) {
-            quantities = ontology[kindId].quantities;
+        var quantities: Quantity[] = [];
+        if (kind in ontologies.sensingDevices) {
+            quantities = ontologies.sensingDevices[kind].quantities;
         }
         var quantityInput: JSX.Element = null;
         if (quantities.length !== 0) {
@@ -364,16 +389,22 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     <Select
                         labelId="quantity-select-lebel"
                         id="quantity-select"
-                        value={quantityId}
+                        value={quantity}
                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                            if(event.target.value !== quantityId) {
-                                setQuantityId(event.target.value as QuantityId);
+                            if(event.target.value !== quantity) {
+                                setSensor(sensor => ({
+                                    ...sensor,
+                                    meta: {
+                                        ...sensor.meta,
+                                        quantity: event.target.value as Quantity,
+                                    }
+                                }));
                                 setHeadState(HasUnsavedChanges);
                             }
                         }}
                     >
-                        {quantities.map((quantityId) => (
-                            <MenuItem value={quantityId}>{ ontologies.quantities[quantityId].label }</MenuItem>
+                        {quantities.map((quantity) => (
+                            <MenuItem value={quantity}>{ ontologies.quantities[quantity].label }</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -381,8 +412,8 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
         }
 
         var unitInput: JSX.Element = null;
-        if (kindId !== null && quantityId !== null) {
-            const units = ontologies.quantities[quantityId].units;
+        if (kind in ontologies.sensingDevices && quantity) {
+            const units = ontologies.quantities[quantity].units;
             if (units.length !== 0) {
                 unitInput = (
                     <FormControl className={classes.unit}>
@@ -390,16 +421,22 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                         <Select
                             labelId="unit-select-lebel"
                             id="unit-select"
-                            value={unitId}
+                            value={unit}
                             onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                                if(event.target.value !== unitId) {
-                                    setUnitId(event.target.value as UnitId);
+                                if(event.target.value !== unit) {
+                                    setSensor(sensor => ({
+                                        ...sensor,
+                                        meta: {
+                                            ...sensor.meta,
+                                            unit: event.target.value as Unit,
+                                        }
+                                    }));
                                     setHeadState(HasUnsavedChanges);
                                 }
                             }}
                         >
-                            {ontologies.quantities[quantityId].units.map((unitID) => (
-                                <MenuItem value={unitID}>{ ontologies.units[unitID].label }</MenuItem>
+                            {ontologies.quantities[quantity].units.map((unit) => (
+                                <MenuItem value={unit}>{ ontologies.units[unit].label }</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -507,7 +544,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem onClick={handleDeleteClick}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
