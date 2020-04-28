@@ -9,7 +9,11 @@
 		"watch": "npx webpack --watch",
 		"http-server": "http-server"
 	},
-	"author": "",
+	"repository": "github:Waziup/wazigate-dashboard",
+	"author": "Johann Forster <johann.forster@waziup.org>",
+	"maintainers": [
+		"Mojtaba Eskandari <mojtaba.eskandari@waziup.org>"
+	],
 	"license": "ISC",
 	"devDependencies": {
 		"@material-ui/core": "^4.9.12",
