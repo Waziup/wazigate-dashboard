@@ -1,8 +1,49 @@
 [
-    {
-      "id": "waziup.wazi-on-sensors"
-    },
-    {
-      "id": "waziup.wazigate-lora"
+  {
+    "id": "waziup.wazi-on-sensors"
+  },
+  {
+    "id": "waziup.wazigate-lora",
+    "waziapp": {
+      "menu": {
+        "settings.lora": {
+          "primary": "LoRaWAN",
+          "iconSrc": "img/LoRaWAN.svg",
+          "prio": 120
+        }
+      },
+      "hook": "dist/hook.js"
     }
-  ]
+  },
+  {
+    "id": "waziup.wazigate-system",
+    "name": "wazigate-system",
+    "version": "1.0.0",
+    "description": "Wazigate System",
+    "types": "dashboard.d.ts",
+    "private": true,
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "npx webpack --env.entry=index",
+      "watch": "npx webpack --env.entry=index --watch",
+      "http-server": "http-server"
+    },
+    "author": "Moji",
+    "license": "ISC",
+    "waziapp": {
+      "menu": {
+        "settings": {
+          "primary": "Settings",
+          "iconSrc": "ui/src/img/settings.svg",
+          "href": "#/apps/waziup.wazigate-system/ui/",
+          "prio": 60
+        },
+        "settings.wifi": {
+          "primary": "Wifi",
+          "iconSrc": "ui/src/img/wifi.svg",
+          "href": "#/apps/waziup.wazigate-system/ui/#/internet"
+        }
+      }
+    }
+  }
+]

@@ -4,7 +4,7 @@ import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
-import waziup, { MenuHook } from "waziup";
+import waziup, { MenuHook, App } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
 import SyncIcon from '@material-ui/icons/Sync';
 import WifiIcon from '@material-ui/icons/Wifi';
@@ -33,6 +33,7 @@ import {
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import SyncPage from "./pages/Sync";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap-css-only/css/bootstrap.min.css";
@@ -134,6 +135,11 @@ const useStyles = makeStyles((theme: Theme) =>
     menu: {
       flexGrow: 1,
     },
+    menuIcon: {
+      width: "1em",
+      height: "1em",
+      fontSize: "1.5rem",
+    },
     status: {
       color: "#dfe0e4",
       borderRadius: 0,
@@ -153,33 +159,29 @@ hooks.setMenuHook("dashboard", {
   icon: <DashboardIcon />,
   href: "#",
   target: "",
-});
+}, 20);
 hooks.setMenuHook("sync", {
   primary: "Sync",
   icon: <SyncIcon />,
   href: "#/sync",
-});
-hooks.setMenuHook("settings", {
-  primary: "Settings",
-  icon: <SettingsIcon />,
-  href: "#/settings",
-});
-hooks.setMenuHook("settings.wifi", {
-  primary: "Wifi",
-  icon: <WifiIcon />,
-  href: "#/settings",
-});
+}, 40);
+// hooks.setMenuHook("settings", {
+//   primary: "Settings",
+//   icon: <SettingsIcon />,
+//   href: "#/settings",
+// });
+// hooks.setMenuHook("settings.wifi", {
+//   primary: "Wifi",
+//   icon: <WifiIcon />,
+//   href: "#/settings",
+// });
 hooks.setMenuHook("apps", {
   primary: "Apps",
   icon: <AppsIcon />,
   href: "#/apps",
-});
+}, 80);
 
 type MQTTState = "disconnected" | "connecting" | "connected" | "error";
-
-declare interface PromiseConstructor {
-  allSettled(promises: Array<Promise<any>>): Promise<Array<{status: 'fulfilled' | 'rejected', value?: any, reason?: any}>>;
-}
 
 export const DashboardComp = () => {
   const classes = useStyles();
@@ -219,10 +221,17 @@ export const DashboardComp = () => {
         setApps([]);
       } else {
         Promise.allSettled(apps.map((app, i) => {
-          if (app.id === "waziup.wazigate-lora") {
-            return hooks.load(wazigate.toProxyURL("waziup.wazigate-lora", "dist/hook.js"));
+          const menu = app.waziapp?.menu;
+          if (menu) {
+            for (const id in menu) {
+              const item = menu[id];
+              if (item.iconSrc) item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
+              hooks.setMenuHook(id, item, item.prio);
+            }
           }
-          return Promise.resolve();
+          const hook = app.waziapp?.hook;
+          if (!hook) return Promise.resolve(null);
+          return hooks.load(wazigate.toProxyURL(app.id, hook));
         })).then(pen => {
           console.log("Apps loaded:", pen);
           setApps(apps);
@@ -273,6 +282,7 @@ export const DashboardComp = () => {
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
+    const icon = item.icon ? item.icon : item.iconSrc ? <img className={classes.menuIcon} src={item.iconSrc} /> : null;
     return (
       <Fragment key={id}>
         <ListItem
@@ -283,7 +293,9 @@ export const DashboardComp = () => {
           onClick={subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null}
           className={`${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}`}
         >
-          <ListItemIcon className={classes.drawerIcon}>{item.icon}</ListItemIcon>
+          <ListItemIcon className={classes.drawerIcon}>
+            {icon}
+          </ListItemIcon>
           <ListItemText primary={item.primary} />
           {subItems.length !== 0 ? (open ?
             <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} /> :
@@ -345,6 +357,8 @@ export const DashboardComp = () => {
   } else {
     if (page == "#/" || page == "#" || page == "") {
       body = <DevicesPage handleDrawerToggle={handleDrawerToggle} />;
+    } else if (page === "#/sync") {
+      body = <SyncPage handleDrawerToggle={handleDrawerToggle} />;
     } else if (page === "#/apps") {
       body = <AppsPageComp filter="installed" />;
     } else if (page === "#/apps/new") {

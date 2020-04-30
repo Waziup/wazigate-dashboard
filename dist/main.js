@@ -37075,36 +37075,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/icons/Settings.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/@material-ui/icons/Settings.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
-  transform: "scale(1.2, 1.2)",
-  d: "M15.95 10.78c.03-.25.05-.51.05-.78s-.02-.53-.06-.78l1.69-1.32c.15-.12.19-.34.1-.51l-1.6-2.77c-.1-.18-.31-.24-.49-.18l-1.99.8c-.42-.32-.86-.58-1.35-.78L12 2.34c-.03-.2-.2-.34-.4-.34H8.4c-.2 0-.36.14-.39.34l-.3 2.12c-.49.2-.94.47-1.35.78l-1.99-.8c-.18-.07-.39 0-.49.18l-1.6 2.77c-.1.18-.06.39.1.51l1.69 1.32c-.04.25-.07.52-.07.78s.02.53.06.78L2.37 12.1c-.15.12-.19.34-.1.51l1.6 2.77c.1.18.31.24.49.18l1.99-.8c.42.32.86.58 1.35.78l.3 2.12c.04.2.2.34.4.34h3.2c.2 0 .37-.14.39-.34l.3-2.12c.49-.2.94-.47 1.35-.78l1.99.8c.18.07.39 0 .49-.18l1.6-2.77c.1-.18.06-.39-.1-.51l-1.67-1.32zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"
-}), 'Settings');
-
-exports.default = _default;
-
-/***/ }),
-
 /***/ "./node_modules/@material-ui/icons/Sync.js":
 /*!*************************************************!*\
   !*** ./node_modules/@material-ui/icons/Sync.js ***!
@@ -37129,35 +37099,6 @@ var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/crea
 var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
   d: "M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
 }), 'Sync');
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/icons/Wifi.js":
-/*!*************************************************!*\
-  !*** ./node_modules/@material-ui/icons/Wifi.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
-  d: "M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"
-}), 'Wifi');
 
 exports.default = _default;
 
@@ -96945,8 +96886,11 @@ class Waziup {
     setCloudPaused(id, paused) {
         return this.set(`clouds/${id}/paused`, paused);
     }
-    setCloudCredentials(id, cred) {
-        return this.set(`clouds/${id}/credentials`, cred);
+    async setCloudCredentials(id, username, token) {
+        await Promise.all([
+            this.set(`clouds/${id}/username`, username),
+            this.set(`clouds/${id}/token`, token),
+        ]);
     }
     async getCloudStatus(id) {
         var status = await this.get(`clouds/${id}/status`);
@@ -97838,11 +97782,9 @@ const Devices_1 = __importDefault(__webpack_require__(/*! ./pages/Devices */ "./
 const Error_1 = __importDefault(__webpack_require__(/*! ./pages/Error */ "./src/components/pages/Error.tsx"));
 const AppsProxy_1 = __webpack_require__(/*! ./AppsProxy */ "./src/components/AppsProxy.tsx");
 const Sync_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Sync */ "./node_modules/@material-ui/icons/Sync.js"));
-const Wifi_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Wifi */ "./node_modules/@material-ui/icons/Wifi.js"));
 const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps */ "./node_modules/@material-ui/icons/Apps.js"));
 const Link_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Link */ "./node_modules/@material-ui/icons/Link.js"));
 const LinkOff_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LinkOff */ "./node_modules/@material-ui/icons/LinkOff.js"));
-const Settings_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Settings */ "./node_modules/@material-ui/icons/Settings.js"));
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
@@ -97850,6 +97792,7 @@ const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/c
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const ExpandLess_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandLess */ "./node_modules/@material-ui/icons/ExpandLess.js"));
 const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
+const Sync_2 = __importDefault(__webpack_require__(/*! ./pages/Sync */ "./src/components/pages/Sync.tsx"));
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
@@ -97933,6 +97876,11 @@ const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
     menu: {
         flexGrow: 1,
     },
+    menuIcon: {
+        width: "1em",
+        height: "1em",
+        fontSize: "1.5rem",
+    },
     status: {
         color: "#dfe0e4",
         borderRadius: 0,
@@ -97950,27 +97898,27 @@ hooks.setMenuHook("dashboard", {
     icon: react_1.default.createElement(Dashboard_1.default, null),
     href: "#",
     target: "",
-});
+}, 20);
 hooks.setMenuHook("sync", {
     primary: "Sync",
     icon: react_1.default.createElement(Sync_1.default, null),
     href: "#/sync",
-});
-hooks.setMenuHook("settings", {
-    primary: "Settings",
-    icon: react_1.default.createElement(Settings_1.default, null),
-    href: "#/settings",
-});
-hooks.setMenuHook("settings.wifi", {
-    primary: "Wifi",
-    icon: react_1.default.createElement(Wifi_1.default, null),
-    href: "#/settings",
-});
+}, 40);
+// hooks.setMenuHook("settings", {
+//   primary: "Settings",
+//   icon: <SettingsIcon />,
+//   href: "#/settings",
+// });
+// hooks.setMenuHook("settings.wifi", {
+//   primary: "Wifi",
+//   icon: <WifiIcon />,
+//   href: "#/settings",
+// });
 hooks.setMenuHook("apps", {
     primary: "Apps",
     icon: react_1.default.createElement(Apps_2.default, null),
     href: "#/apps",
-});
+}, 80);
 exports.DashboardComp = () => {
     const classes = useStyles();
     const theme = styles_1.useTheme();
@@ -98004,10 +97952,20 @@ exports.DashboardComp = () => {
             }
             else {
                 Promise.allSettled(apps.map((app, i) => {
-                    if (app.id === "waziup.wazigate-lora") {
-                        return hooks.load(wazigate.toProxyURL("waziup.wazigate-lora", "dist/hook.js"));
+                    var _a, _b;
+                    const menu = (_a = app.waziapp) === null || _a === void 0 ? void 0 : _a.menu;
+                    if (menu) {
+                        for (const id in menu) {
+                            const item = menu[id];
+                            if (item.iconSrc)
+                                item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
+                            hooks.setMenuHook(id, item, item.prio);
+                        }
                     }
-                    return Promise.resolve();
+                    const hook = (_b = app.waziapp) === null || _b === void 0 ? void 0 : _b.hook;
+                    if (!hook)
+                        return Promise.resolve(null);
+                    return hooks.load(wazigate.toProxyURL(app.id, hook));
                 })).then(pen => {
                     console.log("Apps loaded:", pen);
                     setApps(apps);
@@ -98050,9 +98008,10 @@ exports.DashboardComp = () => {
     const menuItem = (id, item) => {
         const open = openMenues.has(id);
         const subItems = hooks.getAtPrio(id);
+        const icon = item.icon ? item.icon : item.iconSrc ? react_1.default.createElement("img", { className: classes.menuIcon, src: item.iconSrc }) : null;
         return (react_1.default.createElement(react_1.Fragment, { key: id },
             react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: id, href: item.href, onClick: subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null, className: `${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}` },
-                react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, item.icon),
+                react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, icon),
                 react_1.default.createElement(core_1.ListItemText, { primary: item.primary }),
                 subItems.length !== 0 ? (open ?
                     react_1.default.createElement(ExpandLess_1.default, { onClick: handleMenuCloserClick.bind(null, id) }) :
@@ -98093,6 +98052,9 @@ exports.DashboardComp = () => {
     else {
         if (page == "#/" || page == "#" || page == "") {
             body = react_1.default.createElement(Devices_1.default, { handleDrawerToggle: handleDrawerToggle });
+        }
+        else if (page === "#/sync") {
+            body = react_1.default.createElement(Sync_2.default, { handleDrawerToggle: handleDrawerToggle });
         }
         else if (page === "#/apps") {
             body = react_1.default.createElement(Apps_1.AppsPageComp, { filter: "installed" });
@@ -99746,6 +99708,108 @@ exports.default = SensorPage;
 
 /***/ }),
 
+/***/ "./src/components/pages/Sync.tsx":
+/*!***************************************!*\
+  !*** ./src/components/pages/Sync.tsx ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const Clouds_1 = __webpack_require__(/*! ./sync/Clouds */ "./src/components/pages/sync/Clouds.tsx");
+const drawerWidth = 240;
+const useStyles = core_1.makeStyles((theme) => ({
+    page: {
+        marginTop: "64px",
+    },
+    body: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    cloud: {
+        margin: theme.spacing(2),
+        textAlign: "left",
+    },
+    fab: {
+        background: "#f35e19",
+        outline: "none",
+        position: "fixed",
+        right: "12px",
+        bottom: "12px",
+        "&:hover": {
+            background: "#f38c5c",
+        },
+    },
+    appBar: {
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        background: "#f1f1f1",
+        color: "unset",
+        boxShadow: "0 0 2px #f1f1f1",
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
+    },
+    appBarInner: {
+        padding: "0",
+    },
+    heading: {
+    // fontWeight: "lighter",
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
+    },
+}));
+function SyncPage({ handleDrawerToggle }) {
+    const classes = useStyles();
+    const [clouds, setClouds] = react_1.useState(null);
+    react_1.useEffect(() => {
+        wazigate.getClouds().then((clouds) => setClouds(Object.values(clouds)));
+    }, []);
+    var body;
+    if (clouds === null) {
+        body = "Loading... please wait.";
+    }
+    else if (clouds.length === 0) {
+        body = "There are no clouds yet.";
+    }
+    else {
+        body = clouds.map((cloud) => {
+            return (react_1.default.createElement(Clouds_1.CloudComp, { key: cloud.id, className: classes.cloud, cloud: cloud }));
+        });
+    }
+    return (react_1.default.createElement("div", { className: classes.page },
+        react_1.default.createElement(core_1.AppBar, { position: "fixed", className: classes.appBar },
+            react_1.default.createElement(core_1.Toolbar, { className: classes.appBarInner },
+                react_1.default.createElement(core_1.IconButton, { color: "inherit", "aria-label": "open drawer", edge: "start", onClick: handleDrawerToggle, className: classes.menuButton },
+                    react_1.default.createElement(Menu_1.default, null)),
+                react_1.default.createElement(core_1.Typography, { variant: "h6", noWrap: true, className: classes.heading }, "Synchronization"))),
+        react_1.default.createElement("div", { className: classes.body }, body)));
+}
+exports.default = SyncPage;
+
+
+/***/ }),
+
 /***/ "./src/components/pages/device/Sensor.tsx":
 /*!************************************************!*\
   !*** ./src/components/pages/device/Sensor.tsx ***!
@@ -100056,6 +100120,144 @@ function randomColor() {
 
 /***/ }),
 
+/***/ "./src/components/pages/sync/Clouds.tsx":
+/*!**********************************************!*\
+  !*** ./src/components/pages/sync/Clouds.tsx ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const MoreVert_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/MoreVert */ "./node_modules/@material-ui/icons/MoreVert.js"));
+const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Menu */ "./node_modules/@material-ui/core/esm/Menu/index.js"));
+const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
+const Save_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Save */ "./node_modules/@material-ui/icons/Save.js"));
+const List_1 = __importDefault(__webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js"));
+const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const useStyles = core_1.makeStyles((theme) => ({
+    root: {
+        width: 400,
+        display: "inline-block",
+        verticalAlign: "top",
+    },
+    name: {
+        cursor: "text",
+        '&:hover': {
+            "text-decoration": "underline",
+        },
+    },
+    icon: {
+        width: "40px",
+        height: "40px",
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: core_1.colors.red[500],
+    },
+    value: {
+        float: "right",
+        flexGrow: 0,
+        marginLeft: "1.5em",
+    },
+}));
+exports.CloudComp = ({ cloud, className }) => {
+    const classes = useStyles();
+    var [cloud, setCloud] = react_1.useState(cloud);
+    // const [deviceName, setDeviceName] = useState(device.name);
+    // const handleNameClick = () => {
+    //     const newDeviceName = prompt("New device name:", deviceName);
+    //     if (newDeviceName) setDeviceName(newDeviceName);
+    //     handleMenuClose();
+    // }
+    const setCloudName = (name) => {
+        setCloud(cloud => (Object.assign({}, cloud)));
+    };
+    const [hasUnsavedChanges, sethasUnsavedChanges] = react_1.useState(false);
+    const handleNameClick = () => {
+        const newCloudName = prompt("New cloud name:", cloud.id);
+        if (newCloudName)
+            setCloudName(newCloudName);
+        handleMenuClose();
+    };
+    const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
+    const handleMenuClick = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setMenuAnchorEl(event.currentTarget);
+    };
+    const handleMenuMouseDown = (event) => {
+        event.stopPropagation();
+    };
+    const handleMenuClose = () => {
+        setMenuAnchorEl(null);
+    };
+    const handleEnabledChange = (event) => {
+        if (hasUnsavedChanges)
+            return;
+        const enabled = event.target.checked;
+        setCloud(cloud => (Object.assign(Object.assign({}, cloud), { paused: !enabled })));
+    };
+    const handleInputChange = (event) => {
+        setCloud(cloud => (Object.assign(Object.assign({}, cloud), { [event.target.name]: event.target.value })));
+        sethasUnsavedChanges(true);
+    };
+    const handleSaveClick = () => {
+        sethasUnsavedChanges(false);
+    };
+    return (react_1.default.createElement(core_1.Card, { className: clsx_1.default(classes.root, className) },
+        react_1.default.createElement(List_1.default, { dense: true },
+            react_1.default.createElement(core_1.ListItem, null,
+                react_1.default.createElement(core_1.ListItemIcon, null,
+                    react_1.default.createElement(core_1.Avatar, { "aria-label": "recipe", className: classes.avatar }, cloud.id)),
+                react_1.default.createElement(core_1.ListItemText, { primary: cloud.id, secondary: `ID ${cloud.id}` }),
+                react_1.default.createElement(core_1.IconButton, { className: classes.value, "aria-label": "settings", "aria-controls": "cloud-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
+                    react_1.default.createElement(MoreVert_1.default, null)))),
+        react_1.default.createElement(Menu_1.default, { id: "cloud-menu", anchorEl: menuAnchorEl, keepMounted: true, open: Boolean(menuAnchorEl), onClose: handleMenuClose },
+            react_1.default.createElement(core_1.MenuItem, { onClick: handleNameClick },
+                react_1.default.createElement(core_1.ListItemIcon, null,
+                    react_1.default.createElement(Edit_1.default, { fontSize: "small" })),
+                react_1.default.createElement(core_1.ListItemText, { primary: "Rename" }))),
+        react_1.default.createElement(core_1.Divider, null),
+        react_1.default.createElement(core_1.CardContent, null,
+            react_1.default.createElement(core_1.FormGroup, null,
+                react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { checked: !cloud.paused, onChange: handleEnabledChange, name: "sync-enabled", color: "primary" }), label: "Active Sync" }),
+                react_1.default.createElement(core_1.TextField, { required: true, label: "REST Address", name: "rest", value: cloud.rest, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }),
+                react_1.default.createElement(core_1.TextField, { label: "MQTT Address", name: "mqtt", value: cloud.mqtt, placeholder: "generated from REST address", onChange: handleInputChange, margin: "normal", InputLabelProps: {
+                        shrink: true,
+                    }, disabled: !cloud.paused }),
+                react_1.default.createElement(core_1.TextField, { label: "Username", name: "username", value: cloud.username, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }),
+                react_1.default.createElement(core_1.TextField, { label: "Password", type: "password", name: "password", value: cloud.password, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }))),
+        react_1.default.createElement(core_1.CardActions, null,
+            react_1.default.createElement(core_1.Grow, { in: hasUnsavedChanges },
+                react_1.default.createElement(core_1.Button, { variant: "contained", color: "primary", startIcon: react_1.default.createElement(Save_1.default, null), onClick: handleSaveClick }, "Save")))));
+};
+
+
+/***/ }),
+
 /***/ "./src/external.ts":
 /*!*************************!*\
   !*** ./src/external.ts ***!
@@ -100097,7 +100299,7 @@ window["MaterialUI"] = MaterialUI;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("img/c462a6521d383dbc61546dcf727254d6.svg");
+/* harmony default export */ __webpack_exports__["default"] = ("img/4423017d98dfd83345be802220fcc666.svg");
 
 /***/ }),
 
@@ -100110,7 +100312,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("img/622e94b9f6781166199267da8a90d0c7.svg");
+/* harmony default export */ __webpack_exports__["default"] = ("img/e6d076cd519c1a9fec210b04b9ce5463.svg");
 
 /***/ }),
 
