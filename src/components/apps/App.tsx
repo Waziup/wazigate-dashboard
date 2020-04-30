@@ -18,7 +18,7 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBCol
+  MDBCol,
 } from "mdbreact";
 
 export declare type WaziApp = {
@@ -82,7 +82,7 @@ export class AppItem extends React.Component<Props, State> {
 
       modalCnfrm: false,
       modalCnfrmMsg: "",
-      uninstallKeepConfig: true
+      uninstallKeepConfig: true,
     };
   }
 
@@ -101,13 +101,13 @@ export class AppItem extends React.Component<Props, State> {
     if (!this._isMounted) return;
     this.setState({ loading: true });
     wazigate.getApp(this.props.id).then(
-      res => {
+      (res) => {
         this.setState({
           data: res as any,
-          loading: false
+          loading: false,
         });
       },
-      error => {
+      (error) => {
         // Notify(error);
         this.setState({ loading: false });
       }
@@ -128,40 +128,40 @@ export class AppItem extends React.Component<Props, State> {
         ? "Are you sure that you want to uninstall this app?"
         : "Are you sure that you want to completely remove this app?",
       uninstallKeepConfig: keepConfig,
-      modalCnfrm: true
+      modalCnfrm: true,
     });
   }
 
   toggleModalCnfrm = () => {
     this.setState({
-      modalCnfrm: !this.state.modalCnfrm
+      modalCnfrm: !this.state.modalCnfrm,
     });
   };
 
   uninstallApp = () => {
     this.setState({
       setRemoveLoading: true,
-      modalCnfrm: false
+      modalCnfrm: false,
     });
 
     wazigate.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then(
-      res => {
+      (res) => {
         this.setState({
           setRemoveLoading: false,
           // modalMsg: res as any,
           modalMsg: "The App is uninstalled",
-          error: false
+          error: false,
         });
 
         setTimeout(() => {
           this.setState({ redirect: true });
         }, 2000);
       },
-      error => {
+      (error) => {
         this.setState({
           setRemoveLoading: false,
           modalMsg: error as any,
-          error: true
+          error: true,
         });
       }
     );
@@ -172,15 +172,15 @@ export class AppItem extends React.Component<Props, State> {
   postAppAction(action: string) {
     this.setState({
       setStartLoading: action == "start" || action == "first-start",
-      setStopLoading: action == "stop"
+      setStopLoading: action == "stop",
     });
     wazigate.setAppConfig(this.props.id, { action: action } as AppConfig).then(
-      res => {
+      (res) => {
         this.setState({
           setStartLoading: false,
           setStopLoading: false,
           modalMsg: res as any,
-          error: false
+          error: false,
         });
 
         this.load();
@@ -189,12 +189,12 @@ export class AppItem extends React.Component<Props, State> {
           this.setState({ modalMsg: "" });
         }, 5000);
       },
-      error => {
+      (error) => {
         this.setState({
           setStartLoading: false,
           setStopLoading: false,
           modalMsg: error as any,
-          error: true
+          error: true,
         });
         this.load();
       }
@@ -210,11 +210,11 @@ export class AppItem extends React.Component<Props, State> {
     wazigate
       .setAppConfig(this.props.id, { restart: newPolicy } as AppConfig)
       .then(
-        res => {
+        (res) => {
           this.setState({ setRestartLoading: false });
           this.load();
         },
-        error => {
+        (error) => {
           this.setState({ setRestartLoading: false });
           this.load();
         }
@@ -225,7 +225,7 @@ export class AppItem extends React.Component<Props, State> {
 
   toggleModalHP = () => {
     this.setState({
-      modalHP: !this.state.modalHP
+      modalHP: !this.state.modalHP,
     });
   };
 
@@ -266,6 +266,8 @@ export class AppItem extends React.Component<Props, State> {
     }
 
     /*-------*/
+
+    var isSysApp = this.props.id == "waziup.wazigate-system";
 
     // console.log(this.state.apps);
     var isRunning =
@@ -427,12 +429,13 @@ export class AppItem extends React.Component<Props, State> {
                   caret
                   color="default"
                   title="Change the restart policy"
+                  disabled={isSysApp}
                 >
                   <MDBIcon
                     icon="cog"
                     spin
                     style={{
-                      display: this.state.setRestartLoading ? "" : "none"
+                      display: this.state.setRestartLoading ? "" : "none",
                     }}
                   />{" "}
                   Restart Policy
@@ -472,6 +475,7 @@ export class AppItem extends React.Component<Props, State> {
               title="Uninstall, but keep config and data files"
               onClick={() => this.uninstallAppModal(true)}
               color="deep-orange"
+              disabled={isSysApp}
             >
               <MDBIcon
                 icon={
@@ -490,6 +494,7 @@ export class AppItem extends React.Component<Props, State> {
               title="Remove completely"
               onClick={() => this.uninstallAppModal(false)}
               color="danger"
+              disabled={isSysApp}
             >
               <MDBIcon
                 icon={
@@ -505,7 +510,7 @@ export class AppItem extends React.Component<Props, State> {
             </MDBBtn>
 
             <MDBBtn
-              disabled={!isRunning}
+              disabled={isSysApp || !isRunning}
               title="Stop"
               onClick={() => this.postAppAction("stop")}
               color="elegant"
