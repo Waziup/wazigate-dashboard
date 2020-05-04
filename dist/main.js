@@ -97942,9 +97942,12 @@ exports.DashboardComp = () => {
         setMobileOpen(!mobileOpen);
     };
     const [page, setPage] = react_1.useState(location.hash);
-    window.addEventListener("hashchange", () => setPage(location.hash));
     const [apps, setApps] = react_1.useState(null);
     react_1.useEffect(() => {
+        window.addEventListener("hashchange", () => {
+            setPage(location.hash);
+            setMobileOpen(false);
+        });
         wazigate.getApps().then((apps) => {
             if (apps === null) {
                 console.error("The server reported no apps.");
@@ -99332,6 +99335,17 @@ exports.default = ErrorPage;
 
 "use strict";
 
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -99355,6 +99369,7 @@ const Close_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Close
 const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
 const MoreVert_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/MoreVert */ "./node_modules/@material-ui/icons/MoreVert.js"));
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
+const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const drawerWidth = 240;
 const useStyles = core_1.makeStyles((theme) => ({
@@ -99455,20 +99470,62 @@ const useStyles = core_1.makeStyles((theme) => ({
         display: "inline-block",
         verticalAlign: "bottom",
         position: 'relative',
+    },
+    smallInput: {
+        width: 160,
+        margin: theme.spacing(1),
+    },
+    headBar: {
+        background: "none",
+        boxShadow: "none",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+    normalMargin: {
+        margin: theme.spacing(1),
+    },
+    submitChanges: {
+        width: 180,
+        margin: theme.spacing(1),
     }
 }));
 const defaultKindIcon = "meter";
 const filter = Autocomplete_1.createFilterOptions();
-const OK = 0;
-const HasUnsavedChanges = 1;
-const DoingSync = 2;
-const Loading = 3;
+function TabPanel(props) {
+    const { children, value, index } = props, other = __rest(props, ["children", "value", "index"]);
+    return (react_1.default.createElement(core_1.Paper, Object.assign({ square: true, role: "tabpanel", hidden: value !== index, id: `sensor-tabpanel-${index}`, "aria-labelledby": `sensor-tab-${index}` }, other), value === index && (react_1.default.createElement(core_1.Box, { p: 3 }, children))));
+}
+const useDirtyIndicatorStyles = core_1.makeStyles((theme) => ({
+    root: {},
+    bullet: {
+        fontSize: "1.6em",
+        lineHeight: 0,
+        verticalAlign: "middle",
+    }
+}));
+function DirtyIndicator(props) {
+    const { children, visible, className } = props, other = __rest(props, ["children", "visible", "className"]);
+    const dirtyIndicatorClasses = useDirtyIndicatorStyles();
+    return (react_1.default.createElement("div", Object.assign({ className: clsx_1.default(dirtyIndicatorClasses.root, className) }, other),
+        visible ? react_1.default.createElement("span", { className: dirtyIndicatorClasses.bullet }, "\u2022 ") : null,
+        children));
+}
+function tabProps(index) {
+    return {
+        id: `sensor-tab-${index}`,
+        'aria-controls': `sensor-tabpanel-${index}`,
+    };
+}
 function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     const classes = useStyles();
+    const [rSensor, setRemoteSensor] = react_1.useState(null);
     const [sensor, setSensor] = react_1.useState(null);
     const [error, setError] = react_1.useState(null);
     react_1.useEffect(() => {
-        wazigate.getSensor(deviceID, sensorID).then(setSensor, setError);
+        wazigate.getSensor(deviceID, sensorID).then(sensor => {
+            setSensor(sensor);
+            setRemoteSensor(sensor);
+        }, setError);
     }, []);
     const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
     const handleMenuClick = (event) => {
@@ -99511,7 +99568,6 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     var kind = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.kind) || "";
     var quantity = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.quantity) || "";
     var unit = (sensor === null || sensor === void 0 ? void 0 : sensor.meta.unit) || "";
-    const [headState, setHeadState] = react_1.useState(OK);
     const [snackBarOpen, setSnackBarOpen] = react_1.useState(false);
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -99519,18 +99575,39 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         }
         setSnackBarOpen(false);
     };
+    const [tab, setTab] = react_1.useState(0);
+    const handleTabChange = (event, i) => {
+        setTab(i);
+    };
     const submitDeviceHead = () => {
-        setHeadState(DoingSync);
         wazigate.setSensorMeta(deviceID, sensorID, {
             kind: kind || null,
             quantity: quantity || null,
             unit: unit || null
         }).then(() => {
-            setHeadState(OK);
+            setRemoteSensor(rSensor => (Object.assign(Object.assign({}, rSensor), { meta: Object.assign(Object.assign({}, rSensor.meta), { kind: sensor.meta.kind, quantity: sensor.meta.quantity, unit: sensor.meta.unit }) })));
         }, (err) => {
             alert("There was an error saving the metadata:\n" + err);
-            setHeadState(HasUnsavedChanges);
         });
+    };
+    const submitSync = () => {
+        wazigate.setSensorMeta(deviceID, sensorID, {
+            syncInterval: sensor.meta.syncInterval,
+            doNotSync: sensor.meta.doNotSync,
+        }).then(() => {
+            setRemoteSensor(rSensor => (Object.assign(Object.assign({}, rSensor), { meta: Object.assign(Object.assign({}, rSensor.meta), { syncInterval: sensor.meta.syncInterval, doNotSync: sensor.meta.doNotSync }) })));
+        }, (err) => {
+            alert("There was an error saving the metadata:\n" + err);
+        });
+    };
+    const handleEnableSyncChange = (event) => {
+        const enabled = event.target.checked;
+        const doNotSync = enabled ? null : true;
+        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { doNotSync: doNotSync }) })));
+    };
+    const handleSyncIntervalChange = (event) => {
+        const interval = event.target.value || null;
+        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { syncInterval: interval }) })));
     };
     var body;
     if (sensor === null && error === null) {
@@ -99562,7 +99639,6 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                 else {
                     setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: "" }) })));
                 }
-                setHeadState(HasUnsavedChanges);
             }, filterOptions: (options, params) => {
                 const filtered = filter(options, params);
                 if (params.inputValue !== '') {
@@ -99630,7 +99706,6 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                 react_1.default.createElement(core_1.Select, { labelId: "quantity-select-lebel", id: "quantity-select", value: quantity, onChange: (event) => {
                         if (event.target.value !== quantity) {
                             setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { quantity: event.target.value }) })));
-                            setHeadState(HasUnsavedChanges);
                         }
                     } }, quantities.map((quantity) => (react_1.default.createElement(core_1.MenuItem, { value: quantity }, ontologies_json_1.default.quantities[quantity].label))))));
         }
@@ -99643,35 +99718,34 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                     react_1.default.createElement(core_1.Select, { labelId: "unit-select-lebel", id: "unit-select", value: unit, onChange: (event) => {
                             if (event.target.value !== unit) {
                                 setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { unit: event.target.value }) })));
-                                setHeadState(HasUnsavedChanges);
                             }
                         } }, ontologies_json_1.default.quantities[quantity].units.map((unit) => (react_1.default.createElement(core_1.MenuItem, { value: unit }, ontologies_json_1.default.units[unit].label))))));
             }
         }
-        // <Autocomplete
-        // id="quantity-select"
-        // options={quantities}
-        // getOptionLabel={
-        //     (quantityId) => 
-        // }
-        // style={{ width: 300 }}
-        // renderInput={(params) =>
-        //     <TextField
-        //         {...params}
-        //         className={classes.quantity}
-        //         label="Quantity"
-        //         placeholder="no quantity"
-        //     />
-        // }
-        // />
+        const hasUnsavedOntChanges = ((rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.unit) !== (sensor === null || sensor === void 0 ? void 0 : sensor.meta.unit) ||
+            (rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.kind) !== (sensor === null || sensor === void 0 ? void 0 : sensor.meta.kind) ||
+            (rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.quantity) !== (sensor === null || sensor === void 0 ? void 0 : sensor.meta.quantity));
+        const hasUnsavedSyncChanges = ((!!(rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.doNotSync)) !== (!!(sensor === null || sensor === void 0 ? void 0 : sensor.meta.doNotSync)) ||
+            ((rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.syncInterval) || null) !== ((sensor === null || sensor === void 0 ? void 0 : sensor.meta.syncInterval) || null));
         body = (react_1.default.createElement(react_1.Fragment, null,
-            react_1.default.createElement("div", { className: classes.deviceHead },
+            react_1.default.createElement(core_1.AppBar, { position: "static", className: classes.headBar },
+                react_1.default.createElement(core_1.Tabs, { value: tab, onChange: handleTabChange, indicatorColor: "primary", textColor: "primary" },
+                    react_1.default.createElement(core_1.Tab, Object.assign({ label: react_1.default.createElement(react_1.Fragment, null,
+                            react_1.default.createElement(DirtyIndicator, { visible: hasUnsavedOntChanges }, "Ontology")) }, tabProps(0))),
+                    react_1.default.createElement(core_1.Tab, Object.assign({ label: react_1.default.createElement(react_1.Fragment, null,
+                            react_1.default.createElement(DirtyIndicator, { visible: hasUnsavedSyncChanges }, "Sync")) }, tabProps(1))))),
+            react_1.default.createElement(TabPanel, { value: tab, index: 0 },
                 kindInput,
                 quantityInput,
                 unitInput,
-                headState === HasUnsavedChanges || headState === DoingSync ? (react_1.default.createElement("div", { className: classes.submitHeadWrapper },
-                    react_1.default.createElement(core_1.Button, { className: classes.submitHead, variant: "contained", color: "primary", onClick: submitDeviceHead, disabled: headState === DoingSync, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save"),
-                    headState === DoingSync ? (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })) : null)) : null),
+                hasUnsavedOntChanges ? (react_1.default.createElement("div", { className: classes.submitHeadWrapper },
+                    react_1.default.createElement(core_1.Button, { className: classes.submitHead, variant: "contained", color: "primary", onClick: submitDeviceHead, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save"))) : null),
+            react_1.default.createElement(TabPanel, { value: tab, index: 1 },
+                react_1.default.createElement(core_1.FormGroup, null,
+                    react_1.default.createElement(core_1.FormControlLabel, { className: classes.normalMargin, control: react_1.default.createElement(core_1.Switch, { checked: !sensor.meta.doNotSync, onChange: handleEnableSyncChange, name: "sensor-sync", color: "primary" }), label: "Sync Sensor" }),
+                    react_1.default.createElement(core_1.TextField, { id: "sensor-sync-interval", className: classes.smallInput, onChange: handleSyncIntervalChange, label: "Sync Interval", defaultValue: "2m" }),
+                    react_1.default.createElement(core_1.Grow, { in: hasUnsavedSyncChanges },
+                        react_1.default.createElement(core_1.Button, { className: classes.submitChanges, variant: "contained", color: "primary", onClick: submitSync, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save")))),
             react_1.default.createElement(core_1.Snackbar, { anchorOrigin: {
                     vertical: 'bottom',
                     horizontal: 'right',
@@ -100146,11 +100220,14 @@ const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Menu */
 const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
 const Save_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Save */ "./node_modules/@material-ui/icons/Save.js"));
 const List_1 = __importDefault(__webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js"));
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/wazigate.svg */ "./src/img/wazigate.svg"));
 const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const useStyles = core_1.makeStyles((theme) => ({
     root: {
         width: 400,
+        maxWidth: "calc(100% - 32px)",
         display: "inline-block",
         verticalAlign: "top",
     },
@@ -100163,6 +100240,11 @@ const useStyles = core_1.makeStyles((theme) => ({
     icon: {
         width: "40px",
         height: "40px",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -100182,24 +100264,25 @@ const useStyles = core_1.makeStyles((theme) => ({
         flexGrow: 0,
         marginLeft: "1.5em",
     },
+    wrapper: {
+        position: "relative",
+    },
+    progress: {
+        color: "#4caf50",
+        display: "inline",
+    }
 }));
 exports.CloudComp = ({ cloud, className }) => {
     const classes = useStyles();
     var [cloud, setCloud] = react_1.useState(cloud);
-    // const [deviceName, setDeviceName] = useState(device.name);
-    // const handleNameClick = () => {
-    //     const newDeviceName = prompt("New device name:", deviceName);
-    //     if (newDeviceName) setDeviceName(newDeviceName);
-    //     handleMenuClose();
-    // }
-    const setCloudName = (name) => {
-        setCloud(cloud => (Object.assign({}, cloud)));
-    };
     const [hasUnsavedChanges, sethasUnsavedChanges] = react_1.useState(false);
-    const handleNameClick = () => {
+    const [saving, setSaving] = react_1.useState(false);
+    const handleRenameClick = () => {
         const newCloudName = prompt("New cloud name:", cloud.id);
-        if (newCloudName)
-            setCloudName(newCloudName);
+        if (newCloudName) {
+            setCloud(cloud => (Object.assign(Object.assign({}, cloud), { name: newCloudName })));
+        }
+        // TODO: Implement name save at wazigate-edge
         handleMenuClose();
     };
     const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
@@ -100215,41 +100298,71 @@ exports.CloudComp = ({ cloud, className }) => {
         setMenuAnchorEl(null);
     };
     const handleEnabledChange = (event) => {
-        if (hasUnsavedChanges)
+        if (hasUnsavedChanges) {
+            alert("Save all changes before activating the synchronization!");
             return;
+        }
         const enabled = event.target.checked;
         setCloud(cloud => (Object.assign(Object.assign({}, cloud), { paused: !enabled })));
+        setSaving(true);
+        const timer = new Promise(resolve => setTimeout(resolve, 2000));
+        wazigate.setCloudPaused(cloud.id, !enabled).then(() => {
+            timer.then(() => {
+                setSaving(false);
+            });
+        }, (err) => {
+            setSaving(false);
+            setCloud(cloud => (Object.assign(Object.assign({}, cloud), { paused: enabled })));
+            if (enabled) {
+                alert("There was an error activating the sync:\n" + err);
+            }
+            else {
+                alert("There was an error saving the changes:\n" + err);
+            }
+        });
     };
     const handleInputChange = (event) => {
-        setCloud(cloud => (Object.assign(Object.assign({}, cloud), { [event.target.name]: event.target.value })));
+        const name = event.target.name;
+        const value = event.target.value;
+        setCloud(cloud => (Object.assign(Object.assign({}, cloud), { [name]: value })));
         sethasUnsavedChanges(true);
     };
     const handleSaveClick = () => {
-        sethasUnsavedChanges(false);
+        Promise.all([
+            wazigate.set(`clouds/${cloud.id}/rest`, cloud.rest),
+            wazigate.set(`clouds/${cloud.id}/mqtt`, cloud.mqtt),
+            wazigate.setCloudCredentials(cloud.id, cloud.username, cloud.token),
+        ]).then(() => {
+            sethasUnsavedChanges(false);
+        }, (err) => {
+            alert("There was an error saving the changes:\n" + err);
+        });
     };
     return (react_1.default.createElement(core_1.Card, { className: clsx_1.default(classes.root, className) },
+        react_1.default.createElement(core_1.Grow, { in: saving },
+            react_1.default.createElement(core_1.LinearProgress, null)),
         react_1.default.createElement(List_1.default, { dense: true },
             react_1.default.createElement(core_1.ListItem, null,
-                react_1.default.createElement(core_1.ListItemIcon, null,
-                    react_1.default.createElement(core_1.Avatar, { "aria-label": "recipe", className: classes.avatar }, cloud.id)),
-                react_1.default.createElement(core_1.ListItemText, { primary: cloud.id, secondary: `ID ${cloud.id}` }),
+                react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }),
+                react_1.default.createElement(core_1.ListItemText, { primary: cloud.name || cloud.id, secondary: `ID ${cloud.id}` }),
                 react_1.default.createElement(core_1.IconButton, { className: classes.value, "aria-label": "settings", "aria-controls": "cloud-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
                     react_1.default.createElement(MoreVert_1.default, null)))),
         react_1.default.createElement(Menu_1.default, { id: "cloud-menu", anchorEl: menuAnchorEl, keepMounted: true, open: Boolean(menuAnchorEl), onClose: handleMenuClose },
-            react_1.default.createElement(core_1.MenuItem, { onClick: handleNameClick },
+            react_1.default.createElement(core_1.MenuItem, { onClick: handleRenameClick },
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Edit_1.default, { fontSize: "small" })),
                 react_1.default.createElement(core_1.ListItemText, { primary: "Rename" }))),
         react_1.default.createElement(core_1.Divider, null),
         react_1.default.createElement(core_1.CardContent, null,
             react_1.default.createElement(core_1.FormGroup, null,
-                react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { checked: !cloud.paused, onChange: handleEnabledChange, name: "sync-enabled", color: "primary" }), label: "Active Sync" }),
-                react_1.default.createElement(core_1.TextField, { required: true, label: "REST Address", name: "rest", value: cloud.rest, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }),
+                react_1.default.createElement("div", { className: classes.wrapper },
+                    react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { checked: !cloud.paused, onChange: handleEnabledChange, name: "sync-enabled", color: "primary" }), label: "Active Sync" })),
+                react_1.default.createElement(core_1.TextField, { required: true, label: "REST Address", name: "rest", value: cloud.rest, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused || saving }),
                 react_1.default.createElement(core_1.TextField, { label: "MQTT Address", name: "mqtt", value: cloud.mqtt, placeholder: "generated from REST address", onChange: handleInputChange, margin: "normal", InputLabelProps: {
                         shrink: true,
-                    }, disabled: !cloud.paused }),
-                react_1.default.createElement(core_1.TextField, { label: "Username", name: "username", value: cloud.username, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }),
-                react_1.default.createElement(core_1.TextField, { label: "Password", type: "password", name: "password", value: cloud.password, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused }))),
+                    }, disabled: !cloud.paused || saving }),
+                react_1.default.createElement(core_1.TextField, { label: "Username", name: "username", value: cloud.username, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused || saving }),
+                react_1.default.createElement(core_1.TextField, { label: "Password", type: "password", name: "token", value: cloud.token, onChange: handleInputChange, margin: "normal", disabled: !cloud.paused || saving }))),
         react_1.default.createElement(core_1.CardActions, null,
             react_1.default.createElement(core_1.Grow, { in: hasUnsavedChanges },
                 react_1.default.createElement(core_1.Button, { variant: "contained", color: "primary", startIcon: react_1.default.createElement(Save_1.default, null), onClick: handleSaveClick }, "Save")))));

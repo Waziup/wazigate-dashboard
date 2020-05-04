@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, Fragment } from "react";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import EditIcon from '@material-ui/icons/Edit';
@@ -7,9 +7,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import List from '@material-ui/core/List';
 import ontologies from "../../../ontologies.json";
 import ontologiesSprite from "../../../img/ontologies.svg";
+import _wazigateLogo from "../../../img/wazigate.svg"
 import SVGSpriteIcon from "../../SVGSpriteIcon";
 import { Device, Cloud } from "waziup";
 import clsx from "clsx";
+
+const wazigateLogo = `dist/${_wazigateLogo}`;
 
 import {
     Divider,
@@ -30,7 +33,10 @@ import {
     Switch,
     Button,
     CardActions,
-    Grow
+    Grow,
+    Icon,
+    CircularProgress,
+    LinearProgress
 } from '@material-ui/core';
 
 type Props = {
@@ -41,6 +47,7 @@ type Props = {
 const useStyles = makeStyles((theme) => ({
     root: {
         width: 400,
+        maxWidth: "calc(100% - 32px)",
         display: "inline-block",
         verticalAlign: "top",
     },
@@ -53,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         width: "40px",
         height: "40px",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -72,6 +84,13 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 0,
         marginLeft: "1.5em",
     },
+    wrapper: {
+        position: "relative",
+    },
+    progress: {
+        color: "#4caf50",
+        display: "inline",
+    }
 }));
 
 
@@ -80,25 +99,18 @@ export const CloudComp = ({ cloud, className }: Props) => {
 
     var [cloud, setCloud] = useState(cloud);
 
-    // const [deviceName, setDeviceName] = useState(device.name);
-    // const handleNameClick = () => {
-    //     const newDeviceName = prompt("New device name:", deviceName);
-    //     if (newDeviceName) setDeviceName(newDeviceName);
-    //     handleMenuClose();
-    // }
-
-    const setCloudName = (name: string) => {
-        setCloud(cloud => ({
-            ...cloud,
-            // name: name
-        }));
-    }
-
     const [hasUnsavedChanges, sethasUnsavedChanges] = useState(false);
+    const [saving, setSaving] = useState(false);
 
-    const handleNameClick = () => {
+    const handleRenameClick = () => {
         const newCloudName = prompt("New cloud name:", cloud.id);
-        if (newCloudName) setCloudName(newCloudName);
+        if (newCloudName) {
+            setCloud(cloud => ({
+                ...cloud,
+                name: newCloudName,
+            }));
+        }
+        // TODO: Implement name save at wazigate-edge
         handleMenuClose();
     }
 
@@ -116,40 +128,67 @@ export const CloudComp = ({ cloud, className }: Props) => {
     };
 
     const handleEnabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (hasUnsavedChanges) return;
+        if (hasUnsavedChanges) {
+            alert("Save all changes before activating the synchronization!");
+            return
+        }
         const enabled = event.target.checked;
         setCloud(cloud => ({
             ...cloud,
             paused: !enabled
         }));
+        setSaving(true);
+        const timer = new Promise(resolve => setTimeout(resolve, 2000));
+        wazigate.setCloudPaused(cloud.id, !enabled).then(() => {
+            timer.then(() => {
+                setSaving(false);
+            })
+        }, (err: Error) => {
+            setSaving(false);
+            setCloud(cloud => ({
+                ...cloud,
+                paused: enabled
+            }));
+            if(enabled) {
+                alert("There was an error activating the sync:\n" + err);
+            } else {
+                alert("There was an error saving the changes:\n" + err);
+            }
+        });
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.name;
+        const value = event.target.value;
         setCloud(cloud => ({
             ...cloud,
-            [event.target.name]: event.target.value
+            [name]: value,
         }));
         sethasUnsavedChanges(true);
     };
 
     const handleSaveClick = () => {
-        sethasUnsavedChanges(false);
+        Promise.all([
+            wazigate.set(`clouds/${cloud.id}/rest`, cloud.rest),
+            wazigate.set(`clouds/${cloud.id}/mqtt`, cloud.mqtt),
+            wazigate.setCloudCredentials(cloud.id, cloud.username, cloud.token),
+        ]).then(() => {
+            sethasUnsavedChanges(false);
+        }, (err: Error) => {
+            alert("There was an error saving the changes:\n" + err);
+        });
     }
 
     return (
         <Card className={clsx(classes.root, className)}>
+            <Grow in={saving}>
+                <LinearProgress />
+            </Grow>
             <List dense={true}>
                 <ListItem>
-                    <ListItemIcon>
-                        <Avatar
-                            aria-label="recipe"
-                            className={classes.avatar}
-                        >
-                            {cloud.id}
-                        </Avatar>
-                    </ListItemIcon>
+                    <img className={classes.logo} src={wazigateLogo} />
                     <ListItemText
-                        primary={cloud.id}
+                        primary={cloud.name || cloud.id}
                         secondary={`ID ${cloud.id}`}
                     />
                     <IconButton
@@ -171,7 +210,7 @@ export const CloudComp = ({ cloud, className }: Props) => {
                 open={Boolean(menuAnchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={handleNameClick}>
+                <MenuItem onClick={handleRenameClick}>
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
@@ -187,17 +226,21 @@ export const CloudComp = ({ cloud, className }: Props) => {
             <Divider />
             <CardContent>
                 <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={!cloud.paused}
-                                onChange={handleEnabledChange}
-                                name="sync-enabled"
-                                color="primary"
-                            />
-                        }
-                        label="Active Sync"
-                    />
+                    <div className={classes.wrapper}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={!cloud.paused}
+                                    onChange={handleEnabledChange}
+                                    name="sync-enabled"
+                                    color="primary"
+                                />
+                            }
+                            label="Active Sync"
+                        />
+
+                        
+                    </div>
                     <TextField
                         required
                         label="REST Address"
@@ -205,7 +248,7 @@ export const CloudComp = ({ cloud, className }: Props) => {
                         value={cloud.rest}
                         onChange={handleInputChange}
                         margin="normal"
-                        disabled={!cloud.paused}
+                        disabled={!cloud.paused || saving}
                     />
                     <TextField
                         label="MQTT Address"
@@ -217,33 +260,33 @@ export const CloudComp = ({ cloud, className }: Props) => {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        disabled={!cloud.paused}
+                        disabled={!cloud.paused || saving}
                     />
                     <TextField
                         label="Username"
                         name="username"
-                        value={(cloud as any).username}
+                        value={cloud.username}
                         onChange={handleInputChange}
                         margin="normal"
-                        disabled={!cloud.paused}
+                        disabled={!cloud.paused || saving}
                     />
                     <TextField
                         label="Password"
                         type="password"
-                        name="password"
-                        value={(cloud as any).password}
+                        name="token"
+                        value={cloud.token}
                         onChange={handleInputChange}
                         margin="normal"
-                        disabled={!cloud.paused}
+                        disabled={!cloud.paused || saving}
                     />
                 </FormGroup>
-                
+
             </CardContent>
             <CardActions>
                 <Grow in={hasUnsavedChanges}>
                     <Button
                         variant="contained"
-                        color="primary" 
+                        color="primary"
                         startIcon={<SaveIcon />}
                         onClick={handleSaveClick}
                     >

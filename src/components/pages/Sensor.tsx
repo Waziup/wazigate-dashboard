@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
+import clsx from "clsx";
 
 import {
     AppBar,
@@ -32,7 +33,16 @@ import {
     Breadcrumbs,
     Link,
     Menu,
-    colors
+    colors,
+    Tabs,
+    Tab,
+    Box,
+    Paper,
+    FormGroup,
+    FormControlLabel,
+    Switch,
+    Grow,
+    Badge
 } from '@material-ui/core';
 
 
@@ -136,6 +146,23 @@ const useStyles = makeStyles((theme) => ({
         display: "inline-block",
         verticalAlign: "bottom",
         position: 'relative',
+    },
+    smallInput: {
+        width: 160,
+        margin: theme.spacing(1),
+    },
+    headBar: {
+        background: "none",
+        boxShadow: "none",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+    normalMargin: {
+        margin: theme.spacing(1),
+    },
+    submitChanges: {
+        width: 180,
+        margin: theme.spacing(1),
     }
 }));
 
@@ -153,18 +180,76 @@ type Quantity = string;
 
 const filter = createFilterOptions<Kind>();
 
-const OK = 0;
-const HasUnsavedChanges = 1;
-const DoingSync = 2;
-const Loading = 3;
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+}
 
-export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Props) {
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <Paper
+            square
+            role="tabpanel"
+            hidden={value !== index}
+            id={`sensor-tabpanel-${index}`}
+            aria-labelledby={`sensor-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>{children}</Box>
+            )}
+        </Paper>
+    );
+}
+
+interface DirtyIndicatorProps {
+    children?: React.ReactNode;
+    className?: string;
+    visible: boolean;
+}
+
+const useDirtyIndicatorStyles = makeStyles((theme) => ({
+    root: {
+    },
+    bullet: {
+        fontSize: "1.6em",
+        lineHeight: 0,
+        verticalAlign: "middle",
+    }
+}));
+
+function DirtyIndicator(props: DirtyIndicatorProps) {
+    const { children, visible, className, ...other } = props;
+    const dirtyIndicatorClasses = useDirtyIndicatorStyles();
+    return (
+        <div className={clsx(dirtyIndicatorClasses.root, className)} {...other}>
+            {visible ? <span className={dirtyIndicatorClasses.bullet}>• </span> : null}
+            {children}
+        </div>
+    );
+}
+
+function tabProps(index: any) {
+    return {
+        id: `sensor-tab-${index}`,
+        'aria-controls': `sensor-tabpanel-${index}`,
+    };
+}
+
+export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: Props) {
     const classes = useStyles();
 
+    const [rSensor, setRemoteSensor] = useState(null as Sensor);
     const [sensor, setSensor] = useState(null as Sensor);
     const [error, setError] = useState(null as Error);
     useEffect(() => {
-        wazigate.getSensor(deviceID, sensorID).then(setSensor, setError);
+        wazigate.getSensor(deviceID, sensorID).then(sensor => {
+            setSensor(sensor)
+            setRemoteSensor(sensor);
+        }, setError);
     }, []);
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -196,7 +281,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     // revert changes
                     name: oldSensorName
                 }));
-                alert("There was an error changing the sensor name:\n"+err);
+                alert("There was an error changing the sensor name:\n" + err);
             });
         }
     }
@@ -206,7 +291,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
             wazigate.deleteSensor(deviceID, sensorID).then(() => {
                 location.href = `#/devices/${deviceID}`;
             }, (err: Error) => {
-                alert("There was an error deleting the sensor:\n"+err);
+                alert("There was an error deleting the sensor:\n" + err);
             });
         }
     }
@@ -215,33 +300,81 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
     var quantity: Quantity = sensor?.meta.quantity || "";
     var unit: Unit = sensor?.meta.unit || "";
 
-    const [headState, setHeadState] = useState(OK);
-
     const [snackBarOpen, setSnackBarOpen] = useState(false);
     const handleSnackbarClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
         setSnackBarOpen(false);
     };
 
-    const submitDeviceHead = () => {
-        setHeadState(DoingSync);
+    const [tab, setTab] = useState(0);
+    const handleTabChange = (event: React.ChangeEvent<{}>, i: number) => {
+        setTab(i);
+    };
 
+    const submitDeviceHead = () => {
         wazigate.setSensorMeta(deviceID, sensorID, {
             kind: kind || null,
             quantity: quantity || null,
             unit: unit || null
         }).then(() => {
-            setHeadState(OK);
+            setRemoteSensor(rSensor => ({
+                ...rSensor,
+                meta: {
+                    ...rSensor.meta,
+                    kind: sensor.meta.kind,
+                    quantity: sensor.meta.quantity,
+                    unit: sensor.meta.unit,
+                }
+            }))
         }, (err: Error) => {
-            alert("There was an error saving the metadata:\n"+err)
-            setHeadState(HasUnsavedChanges);
+            alert("There was an error saving the metadata:\n" + err)
         });
     }
 
+    const submitSync = () => {
+        wazigate.setSensorMeta(deviceID, sensorID, {
+            syncInterval: sensor.meta.syncInterval,
+            doNotSync: sensor.meta.doNotSync,
+        }).then(() => {
+            setRemoteSensor(rSensor => ({
+                ...rSensor,
+                meta: {
+                    ...rSensor.meta,
+                    syncInterval: sensor.meta.syncInterval,
+                    doNotSync: sensor.meta.doNotSync,
+                }
+            }))
+        }, (err: Error) => {
+            alert("There was an error saving the metadata:\n" + err)
+        });
+    }
+
+    const handleEnableSyncChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const enabled = event.target.checked;
+        const doNotSync = enabled ? null : true;
+        setSensor(sensor => ({
+            ...sensor,
+            meta: {
+                ...sensor.meta,
+                doNotSync: doNotSync,
+            }
+        }));
+    }
+    const handleSyncIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const interval = event.target.value || null;
+        setSensor(sensor => ({
+            ...sensor,
+            meta: {
+                ...sensor.meta,
+                syncInterval: interval,
+            }
+        }));
+    }
+
     var body: React.ReactNode;
-    if(sensor === null && error === null) {
+    if (sensor === null && error === null) {
         body = "Loading... please wait.";
     } else if (error != null) {
         body = <Error error={error} />
@@ -286,15 +419,14 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                             }
                         }));
                     }
-                    setHeadState(HasUnsavedChanges);
                 }}
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params) as Kind[];
                     if (params.inputValue !== '') {
-                      filtered.push(params.inputValue);
+                        filtered.push(params.inputValue);
                     }
                     return filtered;
-                  }}
+                }}
                 getOptionLabel={(kind: Kind) => {
                     if (typeof kind === "string") {
                         if (kind in ontologies.sensingDevices) {
@@ -325,7 +457,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                                 className={classes.icon}
                                 src={`dist/${ontologiesSprite}#${icon}`}
                             />
-                            { label }
+                            {label}
                         </Fragment>
                     );
                 }}
@@ -343,7 +475,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     }
                     params.InputProps.startAdornment = (
                         <Fragment>
-                            { params.InputProps.startAdornment || null }
+                            {params.InputProps.startAdornment || null}
                             <InputAdornment position="start">
                                 <SVGSpriteIcon
                                     className={classes.kindIcon}
@@ -364,13 +496,13 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                                 {...params}
                                 label="Sensor Kind"
                                 placeholder="no sensor kind"
-                                // InputProps={{
-                                //     startAdornment: (
-                                //         <InputAdornment position="start">
-                                //             <AccountCircle />
-                                //         </InputAdornment>
-                                //     ),
-                                // }}
+                            // InputProps={{
+                            //     startAdornment: (
+                            //         <InputAdornment position="start">
+                            //             <AccountCircle />
+                            //         </InputAdornment>
+                            //     ),
+                            // }}
                             />
                         </Fragment>
                     )
@@ -391,7 +523,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                         id="quantity-select"
                         value={quantity}
                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                            if(event.target.value !== quantity) {
+                            if (event.target.value !== quantity) {
                                 setSensor(sensor => ({
                                     ...sensor,
                                     meta: {
@@ -399,12 +531,11 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                                         quantity: event.target.value as Quantity,
                                     }
                                 }));
-                                setHeadState(HasUnsavedChanges);
                             }
                         }}
                     >
                         {quantities.map((quantity) => (
-                            <MenuItem value={quantity}>{ ontologies.quantities[quantity].label }</MenuItem>
+                            <MenuItem value={quantity}>{ontologies.quantities[quantity].label}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -423,7 +554,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                             id="unit-select"
                             value={unit}
                             onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                                if(event.target.value !== unit) {
+                                if (event.target.value !== unit) {
                                     setSensor(sensor => ({
                                         ...sensor,
                                         meta: {
@@ -431,12 +562,11 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                                             unit: event.target.value as Unit,
                                         }
                                     }));
-                                    setHeadState(HasUnsavedChanges);
                                 }
                             }}
                         >
                             {ontologies.quantities[quantity].units.map((unit) => (
-                                <MenuItem value={unit}>{ ontologies.units[unit].label }</MenuItem>
+                                <MenuItem value={unit}>{ontologies.units[unit].label}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -444,46 +574,88 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
             }
         }
 
-        // <Autocomplete
-        // id="quantity-select"
-        // options={quantities}
-        // getOptionLabel={
-        //     (quantityId) => 
-        // }
-        // style={{ width: 300 }}
-        // renderInput={(params) =>
-        //     <TextField
-        //         {...params}
-        //         className={classes.quantity}
-        //         label="Quantity"
-        //         placeholder="no quantity"
-        //     />
-        // }
-        // />
+        const hasUnsavedOntChanges = (
+            rSensor?.meta.unit !== sensor?.meta.unit ||
+            rSensor?.meta.kind !== sensor?.meta.kind ||
+            rSensor?.meta.quantity !== sensor?.meta.quantity
+        )
+
+        const hasUnsavedSyncChanges = (
+            (!!rSensor?.meta.doNotSync) !== (!!sensor?.meta.doNotSync) ||
+            (rSensor?.meta.syncInterval||null) !== (sensor?.meta.syncInterval||null)
+        )
+
         body = (
             <Fragment>
-                <div className={classes.deviceHead}>
-                    { kindInput }
-                    { quantityInput }
-                    { unitInput }
-                    { headState === HasUnsavedChanges || headState === DoingSync ? (
+                <AppBar position="static" className={classes.headBar}>
+                    <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
+                        <Tab label={
+                            <Fragment>
+                                <DirtyIndicator visible={hasUnsavedOntChanges}>Ontology</DirtyIndicator>
+                            </Fragment>
+                        } {...tabProps(0)} />
+                        <Tab label={
+                            <Fragment>
+                            <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
+                            </Fragment>
+                        } {...tabProps(1)} />
+                    </Tabs>
+                </AppBar>
+
+                <TabPanel value={tab} index={0}>
+                    {kindInput}
+                    {quantityInput}
+                    {unitInput}
+                    {hasUnsavedOntChanges ? (
                         <div className={classes.submitHeadWrapper}>
                             <Button
                                 className={classes.submitHead}
                                 variant="contained"
                                 color="primary"
                                 onClick={submitDeviceHead}
-                                disabled={headState === DoingSync}
                                 startIcon={<SaveIcon />}
                             >
                                 Save
                             </Button>
-                            { headState === DoingSync ? (
-                                <CircularProgress size={24} className={classes.buttonProgress} />
-                            ): null }
                         </div>
-                    ): null}
-                </div>
+                    ) : null}
+                </TabPanel>
+
+                <TabPanel value={tab} index={1}>
+                    <FormGroup>
+                        <FormControlLabel
+                            className={classes.normalMargin}
+                            control={
+                                <Switch
+                                    checked={!sensor.meta.doNotSync}
+                                    onChange={handleEnableSyncChange}
+                                    name="sensor-sync"
+                                    color="primary"
+                                />
+                            }
+                            label="Sync Sensor"
+                        />
+                        <TextField
+                            id="sensor-sync-interval"
+                            className={classes.smallInput}
+                            onChange={handleSyncIntervalChange}
+                            label="Sync Interval"
+                            defaultValue="2m"
+                        />
+                        <Grow in={hasUnsavedSyncChanges}>
+                            <Button
+                                className={classes.submitChanges}
+                                variant="contained"
+                                color="primary"
+                                onClick={submitSync}
+                                startIcon={<SaveIcon />}
+                            >
+                                Save
+                            </Button>
+                        </Grow>
+                    </FormGroup>
+                </TabPanel>
+
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
@@ -493,13 +665,13 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     autoHideDuration={6000}
                     onClose={handleSnackbarClose}
                     action={
-                    <Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </Fragment>
+                        <Fragment>
+                            <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Fragment>
                     }
-                /> 
+                />
             </Fragment>
         )
     }
@@ -518,7 +690,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.name}>
-                        { error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...") }
+                        {error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...")}
                     </Typography>
                     <IconButton
                         aria-label="settings"
@@ -553,7 +725,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
             </Menu>
             <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
                 <Link color="inherit" href="#">Devices</Link>
-                <Link color="inherit" href={`#/devices/${deviceID}`}>{ deviceID }</Link>
+                <Link color="inherit" href={`#/devices/${deviceID}`}>{deviceID}</Link>
                 <span>Sensors</span>
                 <Link
                     color="textPrimary"
@@ -563,7 +735,7 @@ export default function SensorPage({sensorID, deviceID, handleDrawerToggle}: Pro
                     {sensorID}
                 </Link>
             </Breadcrumbs>
-            { body }
+            {body}
         </div>
     );
 }

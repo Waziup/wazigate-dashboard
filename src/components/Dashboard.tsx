@@ -210,11 +210,15 @@ export const DashboardComp = () => {
   };
 
   const [page, setPage] = useState(location.hash);
-  window.addEventListener("hashchange", () => setPage(location.hash));
 
   const [apps, setApps] = useState(null);
 
   useEffect(() => {
+    window.addEventListener("hashchange", () => {
+      setPage(location.hash);
+      setMobileOpen(false);
+    });
+
     wazigate.getApps().then((apps) => {
       if (apps === null) {
         console.error("The server reported no apps.");
