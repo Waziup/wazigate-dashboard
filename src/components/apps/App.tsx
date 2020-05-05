@@ -59,6 +59,15 @@ export interface State {
   modalCnfrm: boolean;
   modalCnfrmMsg: string;
   uninstallKeepConfig: boolean;
+
+  update: {
+    loading: boolean;
+    modal: boolean; //Modal visibility
+    status: any;
+    btnTxt: string; // Button text
+    modalMsg: string;
+    newUpdate: boolean;
+  };
 }
 
 export class AppItem extends React.Component<Props, State> {
@@ -83,6 +92,15 @@ export class AppItem extends React.Component<Props, State> {
       modalCnfrm: false,
       modalCnfrmMsg: "",
       uninstallKeepConfig: true,
+
+      update: {
+        loading: false,
+        modal: false,
+        status: null,
+        btnTxt: "Check for Update",
+        modalMsg: "",
+        newUpdate: false,
+      },
     };
   }
 
@@ -91,6 +109,7 @@ export class AppItem extends React.Component<Props, State> {
   componentDidMount() {
     this._isMounted = true;
     this.load();
+    this.updateApp();
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -231,6 +250,162 @@ export class AppItem extends React.Component<Props, State> {
 
   /*---------------*/
 
+  updateModal = () => {
+    this.setState({
+      update: {
+        modal: !this.state.update.modal,
+        loading: this.state.update.loading,
+        status: this.state.update.status,
+        btnTxt: this.state.update.btnTxt,
+        modalMsg: this.state.update.modalMsg,
+        newUpdate: this.state.update.newUpdate,
+      },
+    });
+  };
+
+  /*---------------*/
+
+  //In future we will move this to the waziup package
+  async getAppiLogs(id: string): Promise<any> {
+    return wazigate.get<any>("apps/" + id + "?install_logs");
+  }
+
+  async waziupCheckUpdateApp(id: string): Promise<any> {
+    return wazigate.get<any>("update/" + id);
+  }
+
+  async waziupUpdateApp(id: string): Promise<any> {
+    return wazigate.set<any>("update/" + id, {});
+  }
+
+  /*---------------*/
+
+  uStatusLoop() {
+    if (
+      !this._isMounted ||
+      (this.state.update.status && this.state.update.status.done)
+    )
+      return;
+
+    console.log("update Logs is called");
+
+    this.getAppiLogs(this.props.id).then(
+      (res) => {
+        this.setState({
+          update: {
+            modal: this.state.update.modal,
+            loading: this.state.update.loading,
+            status: res,
+            btnTxt: this.state.update.btnTxt,
+            modalMsg: this.state.update.modalMsg,
+            newUpdate: this.state.update.newUpdate,
+          },
+        });
+        setTimeout(() => {
+          this.uStatusLoop();
+        }, 1000); // Check every second
+      },
+      (error) => {
+        // Notify(error);
+      }
+    );
+  }
+
+  /*---------------*/
+
+  updateApp = () => {
+    if (!this._isMounted) return;
+
+    //Check for updates first
+    if (!this.state.update.newUpdate) {
+      this.setState({
+        update: {
+          modal: this.state.update.modal,
+          loading: true,
+          status: null,
+          btnTxt: "Checking for new updates...",
+          modalMsg: "",
+          newUpdate: this.state.update.newUpdate,
+        },
+      });
+
+      this.waziupCheckUpdateApp(this.props.id).then(
+        (res) => {
+          this.setState({
+            update: {
+              modal: this.state.update.modal,
+              loading: false,
+              status: null,
+              btnTxt: res.newUpdate
+                ? "Download and update"
+                : "Check for updates",
+              modalMsg: "New update is available",
+              newUpdate: res.newUpdate,
+            },
+          });
+          // this.load();
+        },
+        (error) => {
+          this.setState({
+            update: {
+              modal: this.state.update.modal,
+              loading: false,
+              status: null,
+              btnTxt: "Check for updates",
+              modalMsg: error as any,
+              newUpdate: false,
+            },
+          });
+        }
+      );
+
+      return; // Only check
+    } //End of if (!this.state.update.newUpdate);
+
+    this.setState({
+      update: {
+        modal: this.state.update.modal,
+        loading: true,
+        status: { log: "" },
+        btnTxt: "Updating...",
+        modalMsg: "",
+        newUpdate: this.state.update.newUpdate,
+      },
+    });
+
+    this.uStatusLoop();
+
+    this.waziupUpdateApp(this.props.id).then(
+      (res) => {
+        this.setState({
+          update: {
+            modal: this.state.update.modal,
+            loading: false,
+            status: this.state.update.status,
+            btnTxt: "Check for update",
+            modalMsg: res as any,
+            newUpdate: this.state.update.newUpdate,
+          },
+        });
+        this.load();
+      },
+      (error) => {
+        this.setState({
+          update: {
+            modal: this.state.update.modal,
+            loading: false,
+            status: this.state.update.status,
+            btnTxt: this.state.update.btnTxt,
+            modalMsg: error as any,
+            newUpdate: this.state.update.newUpdate,
+          },
+        });
+      }
+    );
+  };
+
+  /*---------------*/
+
   render() {
     if (this.state.redirect) {
       window.location.reload(); // Not a good tactic, but we will fix it later
@@ -271,7 +446,7 @@ export class AppItem extends React.Component<Props, State> {
 
     // console.log(this.state.apps);
     var isRunning =
-      this.state.data.state && this.state.data.state.Running == true;
+      this.state.data.state && this.state.data.state.running == true;
 
     return (
       <MDBCol sm="4">
@@ -299,7 +474,7 @@ export class AppItem extends React.Component<Props, State> {
             <MDBAlert color={isRunning ? "info" : "warning"}>
               Status:{" "}
               {this.state.data.state
-                ? this.state.data.state.Status
+                ? this.state.data.state.status
                 : "Disabled"}
             </MDBAlert>
             {/* <MDBAlert color="info">Id: {this.state.data.Id}</MDBAlert> */}
@@ -314,6 +489,10 @@ export class AppItem extends React.Component<Props, State> {
 
             <MDBBtn onClick={this.toggleModalHP}>
               <MDBIcon icon="cogs" /> Setting
+            </MDBBtn>
+
+            <MDBBtn onClick={this.updateModal}>
+              <MDBIcon icon="sync" spin={this.state.update.loading} /> Update
             </MDBBtn>
           </MDBCardBody>
         </MDBCard>
@@ -338,11 +517,11 @@ export class AppItem extends React.Component<Props, State> {
               ""
             )}
 
-            {this.state.data.state && this.state.data.state.Health ? (
+            {this.state.data.state && this.state.data.state.health ? (
               <MDBAlert color="success">
                 <MDBIcon icon="briefcase-medical" /> Health:{" "}
                 <b className="text-capitalize">
-                  {this.state.data.state.Health}
+                  {this.state.data.state.health}
                 </b>
               </MDBAlert>
             ) : (
@@ -353,18 +532,18 @@ export class AppItem extends React.Component<Props, State> {
               <MDBIcon icon="tachometer-alt" /> Status:{" "}
               <b className="text-capitalize">
                 {this.state.data.state
-                  ? this.state.data.state.Status
+                  ? this.state.data.state.status
                   : "Disabled"}{" "}
               </b>
             </MDBAlert>
 
             {isRunning &&
             this.state.data.state &&
-            this.state.data.state.StartedAt ? (
+            this.state.data.state.startedAt ? (
               <MDBAlert color="info">
                 <MDBIcon icon="stopwatch" /> Started:{" "}
                 <b>
-                  <TimeComp time={new Date(this.state.data.state.StartedAt)} />
+                  <TimeComp time={new Date(this.state.data.state.startedAt)} />
                 </b>
               </MDBAlert>
             ) : (
@@ -373,32 +552,32 @@ export class AppItem extends React.Component<Props, State> {
 
             {!isRunning &&
             this.state.data.state &&
-            this.state.data.state.FinishedAt ? (
+            this.state.data.state.finishedAt ? (
               <MDBAlert color="info">
                 <MDBIcon icon="history" /> Finished:{" "}
                 <b>
-                  <TimeComp time={new Date(this.state.data.state.FinishedAt)} />
+                  <TimeComp time={new Date(this.state.data.state.finishedAt)} />
                 </b>
               </MDBAlert>
             ) : (
               ""
             )}
 
-            {this.state.data.state && this.state.data.state.Error ? (
+            {this.state.data.state && this.state.data.state.error ? (
               <MDBAlert color="warning">
                 <MDBIcon icon="exclamation-triangle" /> Error:{" "}
-                <b>{this.state.data.state.Error}</b>
+                <b>{this.state.data.state.error}</b>
               </MDBAlert>
             ) : (
               ""
             )}
 
             {this.state.data.state &&
-            this.state.data.state.RestartPolicy !== null ? (
+            this.state.data.state.restartPolicy !== null ? (
               <MDBAlert color="info">
                 <MDBIcon icon="caret-square-right" /> Restart policy:{" "}
                 <b className="text-capitalize">
-                  {this.state.data.state.RestartPolicy}
+                  {this.state.data.state.restartPolicy}
                 </b>
               </MDBAlert>
             ) : (
@@ -524,18 +703,94 @@ export class AppItem extends React.Component<Props, State> {
             <MDBBtn
               disabled={isRunning}
               title={
-                this.state.data.state && this.state.data.state.StartedAt != ""
+                this.state.data.state && this.state.data.state.startedAt != ""
                   ? "Start"
                   : "First Launch"
               }
               onClick={() =>
                 this.postAppAction(
-                  this.state.data.state && this.state.data.state.StartedAt != ""
+                  this.state.data.state && this.state.data.state.startedAt != ""
                     ? "start"
                     : "first-start"
                 )
               }
               color="elegant"
+            >
+              <MDBIcon
+                icon={this.state.setStartLoading ? "cog" : "play"}
+                spin={this.state.setStartLoading}
+              />
+            </MDBBtn>
+
+            {/* <MDBBtn color="secondary" onClick={this.toggleModalHP}>
+              Close
+            </MDBBtn> */}
+          </MDBModalFooter>
+        </MDBModal>
+
+        {/* --------------------------- */}
+
+        <MDBModal
+          isOpen={this.state.update.modal}
+          toggle={this.updateModal}
+          centered
+          size="lg"
+        >
+          <MDBModalHeader toggle={this.updateModal} title={this.props.id}>
+            Update {this.state.data.name}
+          </MDBModalHeader>
+
+          <MDBModalBody>
+            <MDBAlert color="info">
+              Current Version:{" "}
+              <b>{this.state.data.version ? this.state.data.version : "---"}</b>
+            </MDBAlert>
+
+            <textarea
+              rows={14}
+              className="bg-dark text-light form-control form-rounded"
+              // spellCheck={false}
+              // contentEditable={false}
+              readOnly={true}
+              value={
+                this.state.update.status ? this.state.update.status.log : "---"
+              }
+              hidden={this.state.update.status == null}
+            ></textarea>
+            {this.state.modalMsg != "" ? (
+              <MDBAlert color={this.state.error ? "warning" : "info"} dismiss>
+                {this.state.modalMsg}
+              </MDBAlert>
+            ) : (
+              ""
+            )}
+          </MDBModalBody>
+
+          <MDBModalFooter className="p-0">
+            <MDBBtn
+              disabled={this.state.update.loading}
+              onClick={this.updateApp}
+              color="orange"
+            >
+              <MDBIcon icon="sync" spin={this.state.update.loading} />
+              {"  " + this.state.update.btnTxt}
+            </MDBBtn>
+
+            <MDBBtn
+              disabled={isRunning || this.state.update.loading}
+              title={
+                this.state.data.state && this.state.data.state.startedAt != ""
+                  ? "Start"
+                  : "First Launch"
+              }
+              onClick={() =>
+                this.postAppAction(
+                  this.state.data.state && this.state.data.state.startedAt != ""
+                    ? "start"
+                    : "first-start"
+                )
+              }
+              color="primary"
             >
               <MDBIcon
                 icon={this.state.setStartLoading ? "cog" : "play"}

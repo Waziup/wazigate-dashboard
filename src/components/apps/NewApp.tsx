@@ -14,7 +14,7 @@ import {
   MDBModalBody,
   MDBModalHeader,
   MDBModalFooter,
-  MDBCol
+  MDBCol,
 } from "mdbreact";
 
 export declare type WaziApp = {
@@ -64,7 +64,7 @@ export class AppItem extends React.Component<Props, State> {
       installStatus: null,
 
       setStartLoading: false,
-      installSuccess: false
+      installSuccess: false,
     };
   }
 
@@ -83,13 +83,13 @@ export class AppItem extends React.Component<Props, State> {
     if (!this._isMounted) return;
     this.setState({ loading: true });
     wazigate.getApp(this.props.id).then(
-      res => {
+      (res) => {
         this.setState({
           data: res as any,
-          loading: false
+          loading: false,
         });
       },
-      error => {
+      (error) => {
         // Notify(error);
         this.setState({ loading: false });
       }
@@ -119,15 +119,15 @@ export class AppItem extends React.Component<Props, State> {
       return;
 
     this.getAppiLogs(this.props.id).then(
-      res => {
+      (res) => {
         this.setState({
-          installStatus: res
+          installStatus: res,
         });
         setTimeout(() => {
           this.iStatusLoop();
         }, 1000); // Check every second
       },
-      error => {
+      (error) => {
         // Notify(error);
       }
     );
@@ -138,15 +138,15 @@ export class AppItem extends React.Component<Props, State> {
   startApp = () => {
     this.setState({ setStartLoading: true });
     wazigate.setAppConfig(this.props.id, { action: "first-start" } as any).then(
-      res => {
+      (res) => {
         this.setState({ setStartLoading: false });
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       },
-      error => {
+      (error) => {
         this.setState({
-          setStartLoading: false
+          setStartLoading: false,
         });
       }
     );
@@ -161,20 +161,20 @@ export class AppItem extends React.Component<Props, State> {
     this.iStatusLoop();
 
     wazigate.installApp(this.props.appInfo.image).then(
-      res => {
+      (res) => {
         this.setState({
           installLoading: false,
           modalMsg: res as any,
           error: false,
-          installSuccess: true
+          installSuccess: true,
         });
         this.load();
       },
-      error => {
+      (error) => {
         this.setState({
           installLoading: false,
           modalMsg: error as any,
-          error: true
+          error: true,
         });
       }
     );
@@ -184,7 +184,7 @@ export class AppItem extends React.Component<Props, State> {
 
   toggleModalHP = () => {
     this.setState({
-      modalHP: !this.state.modalHP
+      modalHP: !this.state.modalHP,
     });
   };
 
@@ -220,14 +220,14 @@ export class AppItem extends React.Component<Props, State> {
             Object.getOwnPropertyNames(this.state.data).length != 0 ? (
               <MDBAlert
                 color={
-                  this.state.data.state && this.state.data.state.Running
+                  this.state.data.state && this.state.data.state.running
                     ? "info"
                     : "warning"
                 }
               >
                 Status:{" "}
                 {this.state.data.state
-                  ? this.state.data.state.Status
+                  ? this.state.data.state.status
                   : "Disabled"}
               </MDBAlert>
             ) : (

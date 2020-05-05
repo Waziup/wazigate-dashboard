@@ -87,7 +87,6 @@ export class AppsPageComp extends React.Component<Props, State> {
 
     var results;
     if (this.state.apps) {
-      console.log(this.state.apps);
       if (this.state.filter == "available") {
         results = this.state.apps.map((res, index) => (
           <MDBCol key={index} sm="4">
@@ -95,10 +94,6 @@ export class AppsPageComp extends React.Component<Props, State> {
           </MDBCol>
         ));
       } else {
-        //Exclude the system app from the list, we may use internal(private) flag in future
-        // let apps = this.state.apps.filter(
-        //   (obj) => obj.id != "waziup.wazigate-system"
-        // );
         results = this.state.apps.map((res, index) => (
           <App key={index} id={res.id} />
         ));
