@@ -339,7 +339,9 @@ export class AppItem extends React.Component<Props, State> {
               btnTxt: res.newUpdate
                 ? "Download and update"
                 : "Check for updates",
-              modalMsg: "New update is available",
+              modalMsg: res.newUpdate
+                ? "New update is available"
+                : "This App is up to date",
               newUpdate: res.newUpdate,
             },
           });
@@ -491,7 +493,10 @@ export class AppItem extends React.Component<Props, State> {
               <MDBIcon icon="cogs" /> Setting
             </MDBBtn>
 
-            <MDBBtn onClick={this.updateModal}>
+            <MDBBtn
+              onClick={this.updateModal}
+              color={this.state.update.newUpdate ? "orange" : "default"}
+            >
               <MDBIcon icon="sync" spin={this.state.update.loading} /> Update
             </MDBBtn>
           </MDBCardBody>
@@ -757,9 +762,9 @@ export class AppItem extends React.Component<Props, State> {
               }
               hidden={this.state.update.status == null}
             ></textarea>
-            {this.state.modalMsg != "" ? (
-              <MDBAlert color={this.state.error ? "warning" : "info"} dismiss>
-                {this.state.modalMsg}
+            {this.state.update.modalMsg != "" ? (
+              <MDBAlert color="dark" dismiss>
+                {this.state.update.modalMsg}
               </MDBAlert>
             ) : (
               ""
