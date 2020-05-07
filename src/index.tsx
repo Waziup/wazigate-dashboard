@@ -25,16 +25,30 @@ if (navigator.platform.indexOf("Win") == 0)
 else if (navigator.platform.indexOf("Mac") == 0)
   document.body.classList.add("mac");
 else if (navigator.platform.indexOf("Linux") != -1)
-  document.body.classList.add("linux");
+    document.body.classList.add("linux");
 
-waziup.connect().then((wazigate) => {
-  (window as any)["wazigate"] = wazigate;
 
-  if (isDemo) {
-    wazigate.toURL = (path: string) => `demo/${path}.json`;
-    wazigate.toProxyURL = (name: string, path: string) =>
-      `demo/apps/${name}/${path}`;
-  }
+// const send = WebSocket.prototype.send;
+// WebSocket.prototype.send = function(data: ArrayBuffer) {
+//     if (data.byteLength !== 1) send.apply(this, arguments);
+// }
 
-  ReactDOM.render(<DashboardComp />, document.getElementById("dashboard"));
-});
+waziup.connect().then(wazigate => {
+    (window as any)["wazigate"] = wazigate;
+
+    if (isDemo) {
+        wazigate.toURL = (path: string) => `demo/${path}.json`;
+        wazigate.toProxyURL = (name: string, path: string) => `demo/apps/${name}/${path}`;
+        wazigate.set = (path: string, val: any) => Promise.resolve(null);
+        wazigate.connectMQTT = (onConnect: () => void) => setTimeout(onConnect);
+        wazigate.reconnectMQTT = () => {};
+        wazigate.disconnectMQTT = (onDisconnect: () => void) => setTimeout(onDisconnect);
+        wazigate.subscribe = (path: string) => {};
+        wazigate.unsubscribe = (path: string) => {};
+    }
+    
+    ReactDOM.render(
+        <DashboardComp/>,
+        document.getElementById("dashboard")
+    );
+})

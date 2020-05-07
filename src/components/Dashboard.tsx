@@ -1,24 +1,22 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { AppsPageComp } from "./Apps";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
-import waziup, { MenuHook } from "waziup";
+import waziup, { MenuHook, App } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
-import SyncIcon from "@material-ui/icons/Sync";
-import WifiIcon from "@material-ui/icons/Wifi";
-import RouterIcon from "@material-ui/icons/Router";
-import AppsIcon from "@material-ui/icons/Apps";
-import SettingsIcon from "@material-ui/icons/Settings";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import {
-  makeStyles,
-  useTheme,
-  Theme,
-  createStyles,
-} from "@material-ui/core/styles";
+import SyncIcon from '@material-ui/icons/Sync';
+import WifiIcon from '@material-ui/icons/Wifi';
+import RouterIcon from '@material-ui/icons/Router';
+import AppsIcon from '@material-ui/icons/Apps';
+import LinkIcon from '@material-ui/icons/Link';
+import LinkOffIcon from '@material-ui/icons/LinkOff';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import wazigateImage from "../img/wazigate.svg";
+import clsx from "clsx";
 
 import {
   Collapse,
@@ -30,11 +28,12 @@ import {
   Drawer,
   Hidden,
   List,
-  Avatar,
-} from "@material-ui/core";
+  Button
+} from '@material-ui/core';
 
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import SyncPage from "./pages/Sync";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap-css-only/css/bootstrap.min.css";
@@ -103,12 +102,15 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
       backgroundColor: "#34425A",
       color: "#f1f1f1",
+      display: "flex",
+      flexDirection: "column",
       "&:before": {
         content: "''",
+        "pointer-events": "none",
         background: `url('dist/${wazigateImage}')`,
         backgroundSize: "120px 78px",
         position: "absolute",
-        bottom: "10px",
+        bottom: "40px",
         left: "60px",
         width: "120px",
         height: "78px",
@@ -128,15 +130,28 @@ const useStyles = makeStyles((theme: Theme) =>
     a: {
       "&:hover": {
         color: "unset !important",
-      },
+      }
     },
-    iconSrc: {
-      width: "30px",
-      height: "30px",
-      // marginLeft: "25px",
-      marginRight: "25px",
+    menu: {
+      flexGrow: 1,
     },
-  })
+    menuIcon: {
+      width: "1em",
+      height: "1em",
+      fontSize: "1.5rem",
+    },
+    status: {
+      color: "#dfe0e4",
+      borderRadius: 0,
+      zIndex: -2,
+    },
+    statusConnected: {
+      background: "#176dbf",
+    },
+    statusError: {
+      background: "#f35e18",
+    },
+  }),
 );
 
 hooks.setMenuHook("dashboard", {
@@ -144,31 +159,50 @@ hooks.setMenuHook("dashboard", {
   icon: <DashboardIcon />,
   href: "#",
   target: "",
-});
+}, 20);
 hooks.setMenuHook("sync", {
   primary: "Sync",
   icon: <SyncIcon />,
   href: "#/sync",
-});
-hooks.setMenuHook("settings", {
-  primary: "Settings",
-  icon: <SettingsIcon />,
-  href: "#/apps/waziup.wazigate-system/ui/",
-});
-hooks.setMenuHook("settings.wifi", {
-  primary: "Wifi",
-  icon: <WifiIcon />,
-  href: "#/apps/waziup.wazigate-system/ui/#internet",
-});
+}, 40);
+// hooks.setMenuHook("settings", {
+//   primary: "Settings",
+//   icon: <SettingsIcon />,
+//   href: "#/settings",
+// });
+// hooks.setMenuHook("settings.wifi", {
+//   primary: "Wifi",
+//   icon: <WifiIcon />,
+//   href: "#/settings",
+// });
 hooks.setMenuHook("apps", {
   primary: "Apps",
   icon: <AppsIcon />,
   href: "#/apps",
-});
+}, 80);
+
+type MQTTState = "disconnected" | "connecting" | "connected" | "error";
 
 export const DashboardComp = () => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const [mqttState, setMQTTState] = useState<MQTTState>("connecting");
+
+  useEffect(() => {
+    wazigate.connectMQTT(() => {
+      console.log("MQTT Connected.");
+      setMQTTState("connected");
+    }, (err: Error) => {
+      console.error("MQTT Err", err);
+      setMQTTState("error");
+    })
+    return () => {
+      wazigate.disconnectMQTT(() => {
+        console.log("MQTT Disconnected.");
+      })
+    }
+  }, []);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
@@ -176,52 +210,39 @@ export const DashboardComp = () => {
   };
 
   const [page, setPage] = useState(location.hash);
-  window.addEventListener("hashchange", () => setPage(location.hash));
 
   const [apps, setApps] = useState(null);
-  if (apps === null) {
-    wazigate.getApps().then((apps) => {
-      //Reading menu from package.json and add it to the hooks:
 
-      apps.forEach((app: any) => {
-        if (app.package && app.package.menu) {
-          var menuId = app.id.replace(".", "_");
-          for (var i in app.package.menu) {
-            hooks.setMenuHook(menuId, {
-              primary: app.package.menu[i].label,
-              iconSrc: app.package.menu[i].icon,
-              href: app.package.menu[i].href,
-            });
-            if (
-              app.package.menu[i].items &&
-              app.package.menu[i].items.length > 0
-            ) {
-              for (var j in app.package.menu[i].items) {
-                hooks.setMenuHook(menuId + "." + j, {
-                  primary: app.package.menu[i].items[j].label,
-                  iconSrc: app.package.menu[i].items[j].icon,
-                  href: app.package.menu[i].items[j].href,
-                });
-              }
+  useEffect(() => {
+    window.addEventListener("hashchange", () => {
+      setPage(location.hash);
+      setMobileOpen(false);
+    });
+
+    wazigate.getApps().then((apps) => {
+      if (apps === null) {
+        console.error("The server reported no apps.");
+        setApps([]);
+      } else {
+        Promise.allSettled(apps.map((app, i) => {
+          const menu = app.waziapp?.menu;
+          if (menu) {
+            for (const id in menu) {
+              const item = menu[id];
+              if (item.iconSrc) item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
+              hooks.setMenuHook(id, item, item.prio);
             }
           }
-        }
-      });
-
-      //-->
-      // More advanced hooks for react based ui s
-      hooks
-        .load(wazigate.toProxyURL("waziup.wazigate-lora", "dist/hook.js"))
-        .then(
-          () => {
-            setApps(apps);
-          },
-          (error) => {
-            setApps(apps);
-          }
-        );
+          const hook = app.waziapp?.hook;
+          if (!hook) return Promise.resolve(null);
+          return hooks.load(wazigate.toProxyURL(app.id, hook));
+        })).then(pen => {
+          console.log("Apps loaded:", pen);
+          setApps(apps);
+        });
+      }
     });
-  }
+  }, []);
 
   const [openMenues, setOpenMenues] = useState(new Set<string>());
   const handleMenuItemClick = (id: string) => {
@@ -261,9 +282,15 @@ export const DashboardComp = () => {
   //     const subItems = menuItems(id);
   //   }
 
+  //   const menuItem = (id: string) => {
+  //     const item = hooks.get(id)[0] as MenuItem;
+  //     const subItems = menuItems(id);
+  //   }
+
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
+    const icon = item.icon ? item.icon : item.iconSrc ? <img className={classes.menuIcon} src={item.iconSrc} /> : null;
     return (
       <Fragment key={id}>
         <ListItem
@@ -271,54 +298,63 @@ export const DashboardComp = () => {
           button
           key={id}
           href={item.href}
-          onClick={
-            subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null
-          }
-          className={`${classes.a} ${
-            hooks.depth(id) >= 2 ? classes.nested : ""
-          }`}
+          onClick={subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null}
+          className={`${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}`}
         >
-          {item.iconSrc ? (
-            <Avatar
-              alt="x"
-              src={item.iconSrc}
-              variant="rounded"
-              className={classes.iconSrc}
-            />
-          ) : (
-            <ListItemIcon className={classes.drawerIcon}>
-              {item.icon}
-            </ListItemIcon>
-          )}
-
+          <ListItemIcon className={classes.drawerIcon}>
+            {icon}
+          </ListItemIcon>
           <ListItemText primary={item.primary} />
-          {subItems.length !== 0 ? (
-            open ? (
-              <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} />
-            ) : (
-              <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
-            )
+          {subItems.length !== 0 ? (open ?
+            <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} /> :
+            <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
           ) : null}
         </ListItem>
-        {subItems.length != 0 ? (
+        {subItems.length != 0 ?
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {subItems.map(([id, item]) => menuItem(id, item))}
             </List>
           </Collapse>
-        ) : null}
+          : null}
       </Fragment>
     );
-  };
+  }
+
+  var mqttStateName: string;
+  var mqttStateClass: string = "";
+  switch (mqttState) {
+    case "connected":
+      mqttStateName = "Connected";
+      mqttStateClass = classes.statusConnected;
+      break;
+    case "connecting":
+      mqttStateName = "Connecting ...";
+      break;
+    case "disconnected":
+      mqttStateName = "Disconnected";
+      break;
+    case "error":
+      mqttStateName = "Error";
+      mqttStateClass = classes.statusError;
+      break;
+  }
 
   const drawer = (
-    <div>
+    <Fragment>
       <div className={classes.toolbar} />
       <Divider />
-      <List>
+      <List className={classes.menu}>
         {hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item))}
       </List>
-    </div>
+      <Button
+        size="small"
+        className={clsx(classes.status, mqttStateClass)}
+        startIcon={mqttState === "connected" ? <LinkIcon /> : <LinkOffIcon />}
+      >
+        {mqttStateName}
+      </Button>
+    </Fragment>
   );
 
   var body: JSX.Element;
@@ -329,6 +365,8 @@ export const DashboardComp = () => {
   } else {
     if (page == "#/" || page == "#" || page == "") {
       body = <DevicesPage handleDrawerToggle={handleDrawerToggle} />;
+    } else if (page === "#/sync") {
+      body = <SyncPage handleDrawerToggle={handleDrawerToggle} />;
     } else if (page === "#/apps") {
       body = <AppsPageComp filter="installed" />;
     } else if (page === "#/apps/new") {

@@ -362,19 +362,21 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
         if (sensorName) {
             var sensor: Sensor = {
                 name: sensorName,
-                id: "123456",
+                id: "",
                 meta: {},
                 value: null,
                 time: null,
-                kind: null,
-                quantity: null,
-                unit: null,
                 modified: new Date(),
                 created: new Date(),
             };
-            setDevice(device => {
-                device.sensors.push(sensor);
-                return {...device};
+            wazigate.addSensor(deviceID, sensor).then(id => {
+                sensor.id = id;
+                setDevice(device => {
+                    device.sensors.push(sensor);
+                    return {...device};
+                });
+            }, (err: Error) => {
+                alert("There was an error creating the sensor:\n"+err);
             });
         }
     }
@@ -385,19 +387,21 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
         if (actuatorName) {
             var actuator: Actuator = {
                 name: actuatorName,
-                id: "123456",
+                id: "",
                 meta: {},
                 value: null,
                 time: null,
-                kind: "Counter",
-                quantity: "Count",
-                unit: null,
                 modified: new Date(),
                 created: new Date(),
             };
-            setDevice(device => {
-                device.actuators.push(actuator);
-                return {...device};
+            wazigate.addActuator(deviceID, actuator).then(id => {
+                actuator.id = id;
+                setDevice(device => {
+                    device.actuators.push(actuator);
+                    return {...device};
+                });
+            }, (err: Error) => {
+                alert("There was an error creating the actuator:\n"+err);
             });
         }
     }

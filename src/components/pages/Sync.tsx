@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Device, Waziup } from "waziup";
+import { Device, Waziup, Cloud } from "waziup";
 import { DeviceComp } from "./devices/Device";
 import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -11,6 +11,7 @@ import {
     Typography,
     makeStyles,
 } from "@material-ui/core";
+import { CloudComp } from "./sync/Clouds";
 
 const drawerWidth = 240;
 
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(1),
         textAlign: "center",
     },
-    device: {
+    cloud: {
         margin: theme.spacing(2),
         textAlign: "left",
     },
@@ -65,54 +66,26 @@ type Props = {
     handleDrawerToggle: () => void;
 };
 
-export default function DevicesPage({handleDrawerToggle}: Props) {
+export default function SyncPage({handleDrawerToggle}: Props) {
     const classes = useStyles();
 
-    const [devices, setDevices] = useState(null as Device[]);
+    const [clouds, setClouds] = useState(null as Cloud[]);
     useEffect(() => {
-        wazigate.getDevices().then(setDevices);
-        const cb = (device: Device) => {
-            console.log("A device was created remotely.", device);
-            wazigate.getDevices().then(setDevices);
-        };
-        wazigate.subscribe<Device>("devices", cb);
-        return () => wazigate.unsubscribe("devices", cb);
+        wazigate.getClouds().then((clouds) => setClouds(Object.values(clouds)));
     }, []);
 
-    const createDevice = async () => {
-        var deviceName = prompt('Please insert a new device name:', '');
-        if (deviceName) {
-            var device: Device = {
-                id: "",
-                name: deviceName,
-                sensors: [],
-                actuators: [],
-                meta: {},
-                modified: new Date(),
-                created: new Date(),
-            };
-            const id = await wazigate.addDevice(device);
-            device.id = id;
-            setDevices(devices => [...devices, device]);
-        }
-    }
-
     var body: React.ReactNode;
-    if(devices === null) {
+    if(clouds === null) {
         body = "Loading... please wait.";
-    } else if(devices.length === 0) {
-        body = "There are no devices yet. Click '+' to add a new device."
+    } else if(clouds.length === 0) {
+        body = "There are no clouds yet."
     } else {
-        body = devices.map((device) => {
-            const handleDeviceDelete = () => {
-                setDevices(devices => devices.filter(d => d.id != device.id));
-            }
+        body = clouds.map((cloud) => {
             return (
-                <DeviceComp
-                    key={device.id}
-                    className={classes.device}
-                    device={device}
-                    onDelete={handleDeviceDelete}
+                <CloudComp
+                    key={cloud.id}
+                    className={classes.cloud}
+                    cloud={cloud}
                 />
             );
         })
@@ -132,14 +105,14 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.heading}>
-                        Dashboard
+                        Synchronization
                     </Typography>
                 </Toolbar>
             </AppBar>
             <div className={classes.body}>{body}</div>
-            <Fab onClick={createDevice} className={classes.fab} aria-label="add">
+            {/* <Fab onClick={createDevice} className={classes.fab} aria-label="add">
                 <AddIcon />
-            </Fab>
+            </Fab> */}
         </div>
     );
 }

@@ -67,8 +67,12 @@ const defaultKindIcon = "meter";
 export default function Sensor({ deviceID, sensor, className }: Props) {
     const classes = useStyles();
 
-    const kind = sensor.kind ? ontologies.sensingDevices[sensor.kind] : null;
-    const unit = sensor.kind && sensor.unit ? ontologies.units[sensor.unit] : null;
+    const kind = (sensor.meta.kind || "") as string;
+    const quantity = (sensor.meta.quantity || "") as string;
+    const unit = (sensor.meta.unit || "") as string;
+
+    const icon = ontologies.sensingDevices[kind]?.icon || defaultKindIcon;
+    const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
 
     // const [sensorName, setSensorName] = useState(sensor.name);
     // const handleNameClick = () => {
@@ -105,12 +109,12 @@ export default function Sensor({ deviceID, sensor, className }: Props) {
                     <ListItemIcon>
                         <SVGSpriteIcon
                             className={classes.icon}
-                            src={`dist/${ontologiesSprite}#${kind ? kind.icon : defaultKindIcon}`}
+                            src={`dist/${ontologiesSprite}#${icon}`}
                         />
                     </ListItemIcon>
                     <ListItemText
                         primary={sensor.name}
-                        secondary={kind ? kind.label : ""}
+                        secondary={kindLabel}
                     />
                     <IconButton
                         className={clsx(classes.expand, {
