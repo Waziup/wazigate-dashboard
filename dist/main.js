@@ -1,3 +1,11 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
 /******/ 		}
@@ -37067,6 +37075,36 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/icons/Settings.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Settings.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  transform: "scale(1.2, 1.2)",
+  d: "M15.95 10.78c.03-.25.05-.51.05-.78s-.02-.53-.06-.78l1.69-1.32c.15-.12.19-.34.1-.51l-1.6-2.77c-.1-.18-.31-.24-.49-.18l-1.99.8c-.42-.32-.86-.58-1.35-.78L12 2.34c-.03-.2-.2-.34-.4-.34H8.4c-.2 0-.36.14-.39.34l-.3 2.12c-.49.2-.94.47-1.35.78l-1.99-.8c-.18-.07-.39 0-.49.18l-1.6 2.77c-.1.18-.06.39.1.51l1.69 1.32c-.04.25-.07.52-.07.78s.02.53.06.78L2.37 12.1c-.15.12-.19.34-.1.51l1.6 2.77c.1.18.31.24.49.18l1.99-.8c.42.32.86.58 1.35.78l.3 2.12c.04.2.2.34.4.34h3.2c.2 0 .37-.14.39-.34l.3-2.12c.49-.2.94-.47 1.35-.78l1.99.8c.18.07.39 0 .49-.18l1.6-2.77c.1-.18.06-.39-.1-.51l-1.67-1.32zM10 13c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"
+}), 'Settings');
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/icons/Sync.js":
 /*!*************************************************!*\
   !*** ./node_modules/@material-ui/icons/Sync.js ***!
@@ -48181,6 +48219,179 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = _react2.default.createContext || _implementation2.default;
 module.exports = exports['default'];
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/style/index.scss":
+/*!***********************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/style/index.scss ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+var ___CSS_LOADER_GET_URL_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/getUrl.js */ "./node_modules/css-loader/dist/runtime/getUrl.js");
+var ___CSS_LOADER_URL_IMPORT_0___ = __webpack_require__(/*! ../img/error.svg */ "./src/img/error.svg");
+var ___CSS_LOADER_URL_IMPORT_1___ = __webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
+var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
+// Module
+exports.push([module.i, "html {\n  height: 100%; }\n\nbody {\n  margin: 0;\n  background-color: #f1f1f1;\n  font-size: 16px;\n  line-height: 1.25em;\n  font-family: \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\",\r sans-serif;\n  position: relative;\n  cursor: default;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  box-sizing: border-box; }\n  body .code {\n    font-family: \"monospace\"; }\n  body.windows {\n    font-family: \"Segoe UI\", Tahoma, sans-serif; }\n    body.windows .code {\n      font-family: Consolas, Lucida Console, Courier New, monospace; }\n  body.linux {\n    font-family: Roboto, Ubuntu, Arial, sans-serif; }\n    body.linux .code {\n      font-family: \"dejavu sans mono, monospace\"; }\n  body.mac {\n    font-family: \".SFNSDisplay-Regular\", \"Helvetica Neue\", \"Lucida Grande\",\r sans-serif; }\n    body.mac .code {\n      font-family: Menlo, monospace; }\n\n#dashboard {\n  height: 100%; }\n\nh1,\nh2,\nh3,\nh4 {\n  font-weight: normal;\n  margin: 0;\n  line-height: initial; }\n\na {\n  color: unset;\n  text-decoration: unset; }\n\npre {\n  margin: 0; }\n\n.error {\n  background-color: #ffb294;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 90px 90px;\n  background-position: top right;\n  background-repeat: no-repeat;\n  padding: 20px 40px;\n  margin: 20px 0; }\n\n.title {\n  padding: 0 20px;\n  margin: 40px 0 20px 0; }\n\n#menu {\n  position: fixed;\n  left: 0;\n  bottom: 1.25em;\n  top: 0;\n  width: 240px;\n  background-color: #34425a;\n  padding-top: 60px;\n  color: #f1f1f1; }\n  #menu:before {\n    content: \"\";\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n    background-size: 120px 78px;\n    position: absolute;\n    bottom: 10px;\n    left: 60px;\n    width: 120px;\n    height: 78px; }\n  #menu .menu-item {\n    display: block;\n    line-height: 32px;\n    font-size: 20px;\n    padding: 4px 12px;\n    cursor: pointer; }\n    #menu .menu-item:hover {\n      background: #2a3548; }\n  #menu .item-icon {\n    width: 24px;\n    height: 24px;\n    vertical-align: sub; }\n  #menu .item-name {\n    margin-left: 12px; }\n\n#statusbar {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 1.25em;\n  background: #303846; }\n\n.devices {\n  padding: 0 20px; }\n  .devices .devices-device {\n    border: 1px solid #b9b9b9;\n    border-radius: 8px;\n    width: 300px;\n    margin: 10px;\n    display: inline-block;\n    vertical-align: top; }\n  .devices .device-name {\n    padding: 5px 10px;\n    cursor: text; }\n    .devices .device-name:hover {\n      text-decoration: underline; }\n  .devices .device-id {\n    font-size: 0.75em;\n    line-height: 1.75em;\n    padding: 0 10px;\n    background: #dedede;\n    color: #a0a0a0;\n    letter-spacing: 1px;\n    border-radius: 0 0 8px 8px; }\n  .devices .device-ent {\n    display: contents; }\n  .devices .ent-preview {\n    text-align: center;\n    max-width: 108px;\n    padding: 5px;\n    min-width: 60px;\n    margin: 5px 0 5px 5px;\n    display: inline-block;\n    cursor: pointer;\n    vertical-align: top;\n    border-radius: 4px; }\n    .devices .ent-preview.open {\n      background: #e8e7e7; }\n    .devices .ent-preview:hover {\n      background: #dedede; }\n  .devices .ent-name {\n    text-overflow: ellipsis;\n    overflow: hidden; }\n  .devices .ent-icon {\n    width: 36px;\n    height: 36px; }\n  .devices .ent-details {\n    float: right;\n    width: 100%;\n    background: #e8e8e8;\n    border-top: 1px solid #dadada;\n    border-bottom: 1px solid #dadada;\n    color: #808080; }\n  .devices .details-name {\n    min-width: 68px;\n    padding: 0 4px 0 8px;\n    line-height: 1.75em;\n    display: inline-block; }\n  .devices .ent-detail {\n    padding: 0 8px; }\n  .devices .details-field {\n    display: flex;\n    flex-wrap: wrap; }\n  .devices .details-value {\n    flex-grow: 1;\n    line-height: 1.75em;\n    padding: 0 8px;\n    display: block; }\n  .devices .ent-value {\n    width: 100px; }\n  .devices .ent-kind {\n    line-height: 1.75em; }\n  .devices .kind-label {\n    display: inline-block;\n    cursor: pointer;\n    padding: 0 4px 0 0; }\n    .devices .kind-label:hover {\n      background: #d8d8d8; }\n  .devices .kind-icon {\n    width: 24px;\n    height: 24px;\n    margin: 2px;\n    vertical-align: bottom; }\n  .devices .kind-unit {\n    font-size: 10px;\n    padding: 0px 4px;\n    line-height: 16px;\n    border: 1px solid #b9b9b9;\n    margin: 0 4px;\n    display: inline-block;\n    border-radius: 2px;\n    cursor: pointer; }\n    .devices .kind-unit:hover {\n      background: #d8d8d8; }\n  .devices .meta-name {\n    padding: 0 8px;\n    font-size: 12px;\n    letter-spacing: 1px;\n    background: #dadada;\n    line-height: 15px; }\n\ninput,\nselect {\n  background: unset;\n  height: 1.75em;\n  line-height: 1.75em;\n  font: unset;\n  padding: 0 4px;\n  border: none;\n  color: unset; }\n\n.meta-lora {\n  background: #c6e2ec; }\n  .meta-lora .meta-name {\n    background: #b3d0da; }\n  .meta-lora .lora-id {\n    width: 100%;\n    padding: 0.25em 12px;\n    line-height: 1.25em;\n    height: 1.75em;\n    box-sizing: border-box;\n    font-size: 12px;\n    letter-spacing: 1.5px;\n    background: #bdd7e0;\n    color: #636d71; }\n\n.app {\n  width: 100%;\n  height: 100%;\n  border: none; }\n\n.MuiFab-root.wazigate-fabAdd {\n  background: #f35e19;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabAdd:hover {\n    background: #f38c5c; }\n\n.MuiFab-root.wazigate-fabSetting {\n  background: #66c;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabSetting:hover {\n    background: #a6c; }\n", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (useSourceMap) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item, useSourceMap);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join('');
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, '']];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
+
+  var cssMapping = item[3];
+
+  if (!cssMapping) {
+    return content;
+  }
+
+  if (useSourceMap && typeof btoa === 'function') {
+    var sourceMapping = toComment(cssMapping);
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+} // Adapted from convert-source-map (MIT)
+
+
+function toComment(sourceMap) {
+  // eslint-disable-next-line no-undef
+  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+  return "/*# ".concat(data, " */");
+}
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/getUrl.js":
+/*!********************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/getUrl.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (url, options) {
+  if (!options) {
+    // eslint-disable-next-line no-param-reassign
+    options = {};
+  } // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+
+
+  url = url && url.__esModule ? url.default : url;
+
+  if (typeof url !== 'string') {
+    return url;
+  } // If url is already wrapped in quotes, remove them
+
+
+  if (/^['"].*['"]$/.test(url)) {
+    // eslint-disable-next-line no-param-reassign
+    url = url.slice(1, -1);
+  }
+
+  if (options.hash) {
+    // eslint-disable-next-line no-param-reassign
+    url += options.hash;
+  } // Should url be wrapped?
+  // See https://drafts.csswg.org/css-values-3/#urls
+
+
+  if (/["'() \t\n]/.test(url) || options.needQuotes) {
+    return "\"".concat(url.replace(/"/g, '\\"').replace(/\n/g, '\\n'), "\"");
+  }
+
+  return url;
+};
 
 /***/ }),
 
@@ -82746,6 +82957,7 @@ function getClientRect(offsets) {
  * @return {Object} client rect
  */
 function getBoundingClientRect(element) {
+  var rect = {};
 
   // IE10 10 FIX: Please, don't ask, the element isn't
   // considered in DOM in some circumstances...
@@ -94174,6 +94386,286 @@ function simpleEnd(buf) {
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+var stylesInDom = [];
+
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+
+  for (var i = 0; i < stylesInDom.length; i++) {
+    if (stylesInDom[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var index = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3]
+    };
+
+    if (index !== -1) {
+      stylesInDom[index].references++;
+      stylesInDom[index].updater(obj);
+    } else {
+      stylesInDom.push({
+        identifier: identifier,
+        updater: addStyle(obj, options),
+        references: 1
+      });
+    }
+
+    identifiers.push(identifier);
+  }
+
+  return identifiers;
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+  var attributes = options.attributes || {};
+
+  if (typeof attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : undefined;
+
+    if (nonce) {
+      attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(attributes).forEach(function (key) {
+    style.setAttribute(key, attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  } else {
+    style.removeAttribute('media');
+  }
+
+  if (sourceMap && btoa) {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+
+    if (Object.prototype.toString.call(newList) !== '[object Array]') {
+      return;
+    }
+
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDom[index].references--;
+    }
+
+    var newLastIdentifiers = modulesToDom(newList, options);
+
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+
+      var _index = getIndexByIdentifier(_identifier);
+
+      if (stylesInDom[_index].references === 0) {
+        stylesInDom[_index].updater();
+
+        stylesInDom.splice(_index, 1);
+      }
+    }
+
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+
 /***/ "./node_modules/tabbable/index.js":
 /*!****************************************!*\
   !*** ./node_modules/tabbable/index.js ***!
@@ -97649,13 +98141,16 @@ const react_1 = __importDefault(__webpack_require__(/*! react */ "react"));
 const App_1 = __importDefault(__webpack_require__(/*! ./apps/App */ "./src/components/apps/App.tsx"));
 const NewApp_1 = __importDefault(__webpack_require__(/*! ./apps/NewApp */ "./src/components/apps/NewApp.tsx"));
 const mdbreact_1 = __webpack_require__(/*! mdbreact */ "./node_modules/mdbreact/dist/mdbreact.esm.js");
+const Add_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Add */ "./node_modules/@material-ui/icons/Add.js"));
+const Settings_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Settings */ "./node_modules/@material-ui/icons/Settings.js"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 class AppsPageComp extends react_1.default.Component {
     constructor(props) {
         super(props);
         this.state = {
             apps: null,
             loading: true,
-            filter: this.props.filter
+            filter: this.props.filter,
         };
     }
     /*---------------*/
@@ -97677,7 +98172,7 @@ class AppsPageComp extends react_1.default.Component {
             }
             this.setState({
                 apps: apps,
-                loading: false
+                loading: false,
             });
         });
     }
@@ -97692,17 +98187,11 @@ class AppsPageComp extends react_1.default.Component {
         var results;
         if (this.state.apps) {
             if (this.state.filter == "available") {
-                results = this.state.apps
-                    ? this.state.apps.map((res, index) => (react_1.default.createElement(mdbreact_1.MDBCol, { key: index, sm: "4" },
-                        react_1.default.createElement(NewApp_1.default, { id: res.id, appInfo: res }))))
-                    : "";
+                results = this.state.apps.map((res, index) => (react_1.default.createElement(mdbreact_1.MDBCol, { key: index, sm: "4" },
+                    react_1.default.createElement(NewApp_1.default, { id: res.id, appInfo: res }))));
             }
             else {
-                //Exclude the system app from the list, we may use internal(private) flag in future
-                let apps = this.state.apps.filter(obj => obj.id != "waziup.wazigate-system");
-                results = apps
-                    ? apps.map((res, index) => react_1.default.createElement(App_1.default, { key: index, id: res.id }))
-                    : "";
+                results = this.state.apps.map((res, index) => (react_1.default.createElement(App_1.default, { key: index, id: res.id })));
             }
         }
         if (!results || results.length == 0) {
@@ -97710,15 +98199,12 @@ class AppsPageComp extends react_1.default.Component {
                 react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "exclamation-circle" }),
                 react_1.default.createElement("span", { className: "" }, " There are no Apps.")));
         }
+        var manageApps = this.state.filter == "installed";
         return (react_1.default.createElement(mdbreact_1.MDBContainer, null,
-            react_1.default.createElement(mdbreact_1.MDBRow, null,
-                react_1.default.createElement(mdbreact_1.MDBBtn, { style: { display: this.state.filter == "available" ? "none" : "" }, onClick: () => this.load("available"), color: "orange" },
-                    react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "puzzle-piece" }),
-                    " Install a new App"),
-                react_1.default.createElement(mdbreact_1.MDBBtn, { style: { display: this.state.filter == "installed" ? "none" : "" }, onClick: () => this.load("installed"), color: "primary" },
-                    react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "cogs" }),
-                    " Manage installed Apps")),
-            react_1.default.createElement(mdbreact_1.MDBRow, null, results)));
+            react_1.default.createElement(mdbreact_1.MDBRow, null, results),
+            react_1.default.createElement("span", { className: "MuiFab-root" }, manageApps ? (react_1.default.createElement(core_1.Fab, { className: "wazigate-fabAdd", onClick: () => this.load("available"), "aria-label": "add", title: "Install a new App" },
+                react_1.default.createElement(Add_1.default, null))) : (react_1.default.createElement(core_1.Fab, { className: "wazigate-fabSetting", onClick: () => this.load("installed"), "aria-label": "edit", title: "Manage installed Apps" },
+                react_1.default.createElement(Settings_1.default, null))))));
     }
 }
 exports.AppsPageComp = AppsPageComp;
@@ -97807,26 +98293,26 @@ const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
 const drawerWidth = 240;
 const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
     root: {
-        display: 'flex',
+        display: "flex",
         minHeight: "100%",
         background: "#f1f1f1",
     },
     drawer: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             width: drawerWidth,
             flexShrink: 0,
         },
     },
     appBar: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
     },
     menuButton: {
         marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
-            display: 'none',
+        [theme.breakpoints.up("sm")]: {
+            display: "none",
         },
     },
     // necessary for content to be below app bar
@@ -97847,7 +98333,7 @@ const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
             left: "60px",
             width: "120px",
             height: "78px",
-        }
+        },
     },
     drawerIcon: {
         color: "rgba(255, 255, 255, 0.84)",
@@ -97999,6 +98485,10 @@ exports.DashboardComp = () => {
     //     const item = hooks.get(id)[0] as MenuItem;
     //     const subItems = menuItems(id);
     //   }
+    //   const menuItem = (id: string) => {
+    //     const item = hooks.get(id)[0] as MenuItem;
+    //     const subItems = menuItems(id);
+    //   }
     const menuItem = (id, item) => {
         const open = openMenues.has(id);
         const subItems = hooks.getAtPrio(id);
@@ -98057,23 +98547,23 @@ exports.DashboardComp = () => {
             body = react_1.default.createElement(Apps_1.AppsPageComp, { filter: "available" });
         }
         else if ((match = page.match(sensorRegExp))) {
-            body = react_1.default.createElement(Sensor_1.default, { deviceID: match[1], sensorID: match[2], handleDrawerToggle: handleDrawerToggle });
+            body = (react_1.default.createElement(Sensor_1.default, { deviceID: match[1], sensorID: match[2], handleDrawerToggle: handleDrawerToggle }));
         }
         else if ((match = page.match(deviceRegExp))) {
-            body = react_1.default.createElement(Device_1.default, { deviceID: match[1], handleDrawerToggle: handleDrawerToggle });
+            body = (react_1.default.createElement(Device_1.default, { deviceID: match[1], handleDrawerToggle: handleDrawerToggle }));
         }
         else if ((match = page.match(appsRegExp))) {
             body = react_1.default.createElement(AppsProxy_1.AppsProxyComp, { app: match[1], path: match[2] });
         }
         else {
-            body = react_1.default.createElement(Error_1.default, { handleDrawerToggle: handleDrawerToggle, error: `Page not found.\nThere is nothing at \"${page}\".` });
+            body = (react_1.default.createElement(Error_1.default, { handleDrawerToggle: handleDrawerToggle, error: `Page not found.\nThere is nothing at \"${page}\".` }));
         }
     }
     return (react_1.default.createElement("div", { className: classes.root },
         react_1.default.createElement(core_1.CssBaseline, null),
         react_1.default.createElement("nav", { className: classes.drawer, "aria-label": "mailbox folders" },
             react_1.default.createElement(core_1.Hidden, { smUp: true, implementation: "css" },
-                react_1.default.createElement(core_1.Drawer, { variant: "temporary", anchor: theme.direction === 'rtl' ? 'right' : 'left', open: mobileOpen, onClose: handleDrawerToggle, classes: {
+                react_1.default.createElement(core_1.Drawer, { variant: "temporary", anchor: theme.direction === "rtl" ? "right" : "left", open: mobileOpen, onClose: handleDrawerToggle, classes: {
                         paper: classes.drawerPaper,
                     }, ModalProps: {
                         keepMounted: true,
@@ -98347,6 +98837,15 @@ exports.TimeComp = TimeComp;
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -98361,29 +98860,29 @@ class AppItem extends react_1.default.Component {
         this._isMounted = false;
         this.toggleModalCnfrm = () => {
             this.setState({
-                modalCnfrm: !this.state.modalCnfrm
+                modalCnfrm: !this.state.modalCnfrm,
             });
         };
         this.uninstallApp = () => {
             this.setState({
                 setRemoveLoading: true,
-                modalCnfrm: false
+                modalCnfrm: false,
             });
-            wazigate.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then(res => {
+            wazigate.uninstallApp(this.props.id, this.state.uninstallKeepConfig).then((res) => {
                 this.setState({
                     setRemoveLoading: false,
                     // modalMsg: res as any,
                     modalMsg: "The App is uninstalled",
-                    error: false
+                    error: false,
                 });
                 setTimeout(() => {
                     this.setState({ redirect: true });
                 }, 2000);
-            }, error => {
+            }, (error) => {
                 this.setState({
                     setRemoveLoading: false,
                     modalMsg: error,
-                    error: true
+                    error: true,
                 });
             });
         };
@@ -98395,10 +98894,10 @@ class AppItem extends react_1.default.Component {
             var newPolicy = e.target.innerHTML;
             wazigate
                 .setAppConfig(this.props.id, { restart: newPolicy })
-                .then(res => {
+                .then((res) => {
                 this.setState({ setRestartLoading: false });
                 this.load();
-            }, error => {
+            }, (error) => {
                 this.setState({ setRestartLoading: false });
                 this.load();
             });
@@ -98406,7 +98905,102 @@ class AppItem extends react_1.default.Component {
         /*---------------*/
         this.toggleModalHP = () => {
             this.setState({
-                modalHP: !this.state.modalHP
+                modalHP: !this.state.modalHP,
+            });
+        };
+        /*---------------*/
+        this.updateModal = () => {
+            this.setState({
+                update: {
+                    modal: !this.state.update.modal,
+                    loading: this.state.update.loading,
+                    status: this.state.update.status,
+                    btnTxt: this.state.update.btnTxt,
+                    modalMsg: this.state.update.modalMsg,
+                    newUpdate: this.state.update.newUpdate,
+                },
+            });
+        };
+        /*---------------*/
+        this.updateApp = () => {
+            if (!this._isMounted)
+                return;
+            //Check for updates first
+            if (!this.state.update.newUpdate) {
+                this.setState({
+                    update: {
+                        modal: this.state.update.modal,
+                        loading: true,
+                        status: null,
+                        btnTxt: "Checking for new updates...",
+                        modalMsg: "",
+                        newUpdate: this.state.update.newUpdate,
+                    },
+                });
+                this.waziupCheckUpdateApp(this.props.id).then((res) => {
+                    this.setState({
+                        update: {
+                            modal: this.state.update.modal,
+                            loading: false,
+                            status: null,
+                            btnTxt: res.newUpdate
+                                ? "Download and update"
+                                : "Check for updates",
+                            modalMsg: res.newUpdate
+                                ? "New update is available"
+                                : "This App is up to date",
+                            newUpdate: res.newUpdate,
+                        },
+                    });
+                    // this.load();
+                }, (error) => {
+                    this.setState({
+                        update: {
+                            modal: this.state.update.modal,
+                            loading: false,
+                            status: null,
+                            btnTxt: "Check for updates",
+                            modalMsg: error,
+                            newUpdate: false,
+                        },
+                    });
+                });
+                return; // Only check
+            } //End of if (!this.state.update.newUpdate);
+            this.setState({
+                update: {
+                    modal: this.state.update.modal,
+                    loading: true,
+                    status: { log: "" },
+                    btnTxt: "Updating...",
+                    modalMsg: "",
+                    newUpdate: this.state.update.newUpdate,
+                },
+            });
+            this.uStatusLoop();
+            this.waziupUpdateApp(this.props.id).then((res) => {
+                this.setState({
+                    update: {
+                        modal: this.state.update.modal,
+                        loading: false,
+                        status: this.state.update.status,
+                        btnTxt: "Check for update",
+                        modalMsg: res,
+                        newUpdate: this.state.update.newUpdate,
+                    },
+                });
+                this.load();
+            }, (error) => {
+                this.setState({
+                    update: {
+                        modal: this.state.update.modal,
+                        loading: false,
+                        status: this.state.update.status,
+                        btnTxt: this.state.update.btnTxt,
+                        modalMsg: error,
+                        newUpdate: this.state.update.newUpdate,
+                    },
+                });
             });
         };
         this.state = {
@@ -98422,12 +99016,21 @@ class AppItem extends react_1.default.Component {
             redirect: false,
             modalCnfrm: false,
             modalCnfrmMsg: "",
-            uninstallKeepConfig: true
+            uninstallKeepConfig: true,
+            update: {
+                loading: false,
+                modal: false,
+                status: null,
+                btnTxt: "Check for Update",
+                modalMsg: "",
+                newUpdate: false,
+            },
         };
     }
     componentDidMount() {
         this._isMounted = true;
         this.load();
+        this.updateApp();
     }
     componentWillUnmount() {
         this._isMounted = false;
@@ -98437,12 +99040,12 @@ class AppItem extends react_1.default.Component {
         if (!this._isMounted)
             return;
         this.setState({ loading: true });
-        wazigate.getApp(this.props.id).then(res => {
+        wazigate.getApp(this.props.id).then((res) => {
             this.setState({
                 data: res,
-                loading: false
+                loading: false,
             });
-        }, error => {
+        }, (error) => {
             // Notify(error);
             this.setState({ loading: false });
         });
@@ -98459,34 +99062,75 @@ class AppItem extends react_1.default.Component {
                 ? "Are you sure that you want to uninstall this app?"
                 : "Are you sure that you want to completely remove this app?",
             uninstallKeepConfig: keepConfig,
-            modalCnfrm: true
+            modalCnfrm: true,
         });
     }
     /*---------------*/
     postAppAction(action) {
         this.setState({
             setStartLoading: action == "start" || action == "first-start",
-            setStopLoading: action == "stop"
+            setStopLoading: action == "stop",
         });
-        wazigate.setAppConfig(this.props.id, { action: action }).then(res => {
+        wazigate.setAppConfig(this.props.id, { action: action }).then((res) => {
             this.setState({
                 setStartLoading: false,
                 setStopLoading: false,
                 modalMsg: res,
-                error: false
+                error: false,
             });
             this.load();
             setTimeout(() => {
                 this.setState({ modalMsg: "" });
             }, 5000);
-        }, error => {
+        }, (error) => {
             this.setState({
                 setStartLoading: false,
                 setStopLoading: false,
                 modalMsg: error,
-                error: true
+                error: true,
             });
             this.load();
+        });
+    }
+    /*---------------*/
+    //In future we will move this to the waziup package
+    getAppiLogs(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return wazigate.get("apps/" + id + "?install_logs");
+        });
+    }
+    waziupCheckUpdateApp(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return wazigate.get("update/" + id);
+        });
+    }
+    waziupUpdateApp(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return wazigate.set("update/" + id, {});
+        });
+    }
+    /*---------------*/
+    uStatusLoop() {
+        if (!this._isMounted ||
+            (this.state.update.status && this.state.update.status.done))
+            return;
+        console.log("update Logs is called");
+        this.getAppiLogs(this.props.id).then((res) => {
+            this.setState({
+                update: {
+                    modal: this.state.update.modal,
+                    loading: this.state.update.loading,
+                    status: res,
+                    btnTxt: this.state.update.btnTxt,
+                    modalMsg: this.state.update.modalMsg,
+                    newUpdate: this.state.update.newUpdate,
+                },
+            });
+            setTimeout(() => {
+                this.uStatusLoop();
+            }, 1000); // Check every second
+        }, (error) => {
+            // Notify(error);
         });
     }
     /*---------------*/
@@ -98516,8 +99160,9 @@ class AppItem extends react_1.default.Component {
             return react_1.default.createElement("span", null);
         }
         /*-------*/
+        var isSysApp = this.props.id == "waziup.wazigate-system";
         // console.log(this.state.apps);
-        var isRunning = this.state.data.state && this.state.data.state.Running == true;
+        var isRunning = this.state.data.state && this.state.data.state.running == true;
         return (react_1.default.createElement(mdbreact_1.MDBCol, { sm: "4" },
             react_1.default.createElement(mdbreact_1.MDBCard, { style: { width: "22rem" }, className: "mt-3" },
                 react_1.default.createElement(mdbreact_1.MDBCardBody, null,
@@ -98530,7 +99175,7 @@ class AppItem extends react_1.default.Component {
                         "Status:",
                         " ",
                         this.state.data.state
-                            ? this.state.data.state.Status
+                            ? this.state.data.state.status
                             : "Disabled"),
                     react_1.default.createElement("a", { href: this.state.data.homepage, target: "_blank", style: { display: this.state.data.homepage ? "" : "none" } },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "external-link-square-alt" }),
@@ -98538,7 +99183,10 @@ class AppItem extends react_1.default.Component {
                     react_1.default.createElement("br", null),
                     react_1.default.createElement(mdbreact_1.MDBBtn, { onClick: this.toggleModalHP },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "cogs" }),
-                        " Setting"))),
+                        " Setting"),
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { onClick: this.updateModal, color: this.state.update.newUpdate ? "orange" : "default" },
+                        react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "sync", spin: this.state.update.loading }),
+                        " Update"))),
             react_1.default.createElement(mdbreact_1.MDBModal, { isOpen: this.state.modalHP, toggle: this.toggleModalHP, centered: true, size: "lg" },
                 react_1.default.createElement(mdbreact_1.MDBModalHeader, { toggle: this.toggleModalHP },
                     this.state.data.name ? this.state.data.name : "unknown",
@@ -98549,56 +99197,56 @@ class AppItem extends react_1.default.Component {
                         " Author:",
                         " ",
                         react_1.default.createElement("b", { className: "text-capitalize" }, this.state.data.author.name))) : (""),
-                    this.state.data.state && this.state.data.state.Health ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "success" },
+                    this.state.data.state && this.state.data.state.health ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "success" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "briefcase-medical" }),
                         " Health:",
                         " ",
-                        react_1.default.createElement("b", { className: "text-capitalize" }, this.state.data.state.Health))) : (""),
+                        react_1.default.createElement("b", { className: "text-capitalize" }, this.state.data.state.health))) : (""),
                     react_1.default.createElement(mdbreact_1.MDBAlert, { color: isRunning ? "info" : "warning" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "tachometer-alt" }),
                         " Status:",
                         " ",
                         react_1.default.createElement("b", { className: "text-capitalize" },
                             this.state.data.state
-                                ? this.state.data.state.Status
+                                ? this.state.data.state.status
                                 : "Disabled",
                             " ")),
                     isRunning &&
                         this.state.data.state &&
-                        this.state.data.state.StartedAt ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
+                        this.state.data.state.startedAt ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "stopwatch" }),
                         " Started:",
                         " ",
                         react_1.default.createElement("b", null,
-                            react_1.default.createElement(Time_1.TimeComp, { time: new Date(this.state.data.state.StartedAt) })))) : (""),
+                            react_1.default.createElement(Time_1.TimeComp, { time: new Date(this.state.data.state.startedAt) })))) : (""),
                     !isRunning &&
                         this.state.data.state &&
-                        this.state.data.state.FinishedAt ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
+                        this.state.data.state.finishedAt ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "history" }),
                         " Finished:",
                         " ",
                         react_1.default.createElement("b", null,
-                            react_1.default.createElement(Time_1.TimeComp, { time: new Date(this.state.data.state.FinishedAt) })))) : (""),
-                    this.state.data.state && this.state.data.state.Error ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "warning" },
+                            react_1.default.createElement(Time_1.TimeComp, { time: new Date(this.state.data.state.finishedAt) })))) : (""),
+                    this.state.data.state && this.state.data.state.error ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "warning" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "exclamation-triangle" }),
                         " Error:",
                         " ",
-                        react_1.default.createElement("b", null, this.state.data.state.Error))) : (""),
+                        react_1.default.createElement("b", null, this.state.data.state.error))) : (""),
                     this.state.data.state &&
-                        this.state.data.state.RestartPolicy !== null ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
+                        this.state.data.state.restartPolicy !== null ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "caret-square-right" }),
                         " Restart policy:",
                         " ",
-                        react_1.default.createElement("b", { className: "text-capitalize" }, this.state.data.state.RestartPolicy))) : (""),
+                        react_1.default.createElement("b", { className: "text-capitalize" }, this.state.data.state.restartPolicy))) : (""),
                     react_1.default.createElement("a", { href: this.state.data.homepage, target: "_blank", style: { display: this.state.data.homepage ? "" : "none" } },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "external-link-square-alt" }),
                         " Home page"),
                     this.state.modalMsg != "" ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: this.state.error ? "warning" : "info", dismiss: true }, this.state.modalMsg)) : ("")),
                 react_1.default.createElement(mdbreact_1.MDBModalFooter, { className: "p-0" },
                     this.state.data.state ? (react_1.default.createElement(mdbreact_1.MDBDropdown, null,
-                        react_1.default.createElement(mdbreact_1.MDBDropdownToggle, { caret: true, color: "default", title: "Change the restart policy" },
+                        react_1.default.createElement(mdbreact_1.MDBDropdownToggle, { caret: true, color: "default", title: "Change the restart policy", disabled: isSysApp },
                             react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "cog", spin: true, style: {
-                                    display: this.state.setRestartLoading ? "" : "none"
+                                    display: this.state.setRestartLoading ? "" : "none",
                                 } }),
                             " ",
                             "Restart Policy"),
@@ -98607,25 +99255,49 @@ class AppItem extends react_1.default.Component {
                             react_1.default.createElement(mdbreact_1.MDBDropdownItem, { onClick: this.restartPolicyClick, className: "text-capitalize" }, "on-failure"),
                             react_1.default.createElement(mdbreact_1.MDBDropdownItem, { onClick: this.restartPolicyClick, className: "text-capitalize" }, "unless-stopped"),
                             react_1.default.createElement(mdbreact_1.MDBDropdownItem, { onClick: this.restartPolicyClick, className: "text-capitalize" }, "no")))) : (""),
-                    react_1.default.createElement(mdbreact_1.MDBBtn, { title: "Uninstall, but keep config and data files", onClick: () => this.uninstallAppModal(true), color: "deep-orange" },
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { title: "Uninstall, but keep config and data files", onClick: () => this.uninstallAppModal(true), color: "deep-orange", disabled: isSysApp },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.setRemoveLoading && this.state.uninstallKeepConfig
                                 ? "cog"
                                 : "trash-alt", spin: this.state.setRemoveLoading && this.state.uninstallKeepConfig }),
                         " ",
                         "Uninstall"),
-                    react_1.default.createElement(mdbreact_1.MDBBtn, { title: "Remove completely", onClick: () => this.uninstallAppModal(false), color: "danger" },
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { title: "Remove completely", onClick: () => this.uninstallAppModal(false), color: "danger", disabled: isSysApp },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.setRemoveLoading && !this.state.uninstallKeepConfig
                                 ? "cog"
                                 : "minus-circle", spin: this.state.setRemoveLoading && !this.state.uninstallKeepConfig }),
                         " ",
                         "Remove completely"),
-                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: !isRunning, title: "Stop", onClick: () => this.postAppAction("stop"), color: "elegant" },
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: isSysApp || !isRunning, title: "Stop", onClick: () => this.postAppAction("stop"), color: "elegant" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.setStopLoading ? "cog" : "stop", spin: this.state.setStopLoading })),
-                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: isRunning, title: this.state.data.state && this.state.data.state.StartedAt != ""
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: isRunning, title: this.state.data.state && this.state.data.state.startedAt != ""
                             ? "Start"
-                            : "First Launch", onClick: () => this.postAppAction(this.state.data.state && this.state.data.state.StartedAt != ""
+                            : "First Launch", onClick: () => this.postAppAction(this.state.data.state && this.state.data.state.startedAt != ""
                             ? "start"
                             : "first-start"), color: "elegant" },
+                        react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.setStartLoading ? "cog" : "play", spin: this.state.setStartLoading })))),
+            react_1.default.createElement(mdbreact_1.MDBModal, { isOpen: this.state.update.modal, toggle: this.updateModal, centered: true, size: "lg" },
+                react_1.default.createElement(mdbreact_1.MDBModalHeader, { toggle: this.updateModal, title: this.props.id },
+                    "Update ",
+                    this.state.data.name),
+                react_1.default.createElement(mdbreact_1.MDBModalBody, null,
+                    react_1.default.createElement(mdbreact_1.MDBAlert, { color: "info" },
+                        "Current Version:",
+                        " ",
+                        react_1.default.createElement("b", null, this.state.data.version ? this.state.data.version : "---")),
+                    react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
+                        // spellCheck={false}
+                        // contentEditable={false}
+                        readOnly: true, value: this.state.update.status ? this.state.update.status.log : "---", hidden: this.state.update.status == null }),
+                    this.state.update.modalMsg != "" ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: "dark", dismiss: true }, this.state.update.modalMsg)) : ("")),
+                react_1.default.createElement(mdbreact_1.MDBModalFooter, { className: "p-0" },
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: this.state.update.loading, onClick: this.updateApp, color: "orange" },
+                        react_1.default.createElement(mdbreact_1.MDBIcon, { icon: "sync", spin: this.state.update.loading }),
+                        "  " + this.state.update.btnTxt),
+                    react_1.default.createElement(mdbreact_1.MDBBtn, { disabled: isRunning || this.state.update.loading, title: this.state.data.state && this.state.data.state.startedAt != ""
+                            ? "Start"
+                            : "First Launch", onClick: () => this.postAppAction(this.state.data.state && this.state.data.state.startedAt != ""
+                            ? "start"
+                            : "first-start"), color: "primary" },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.setStartLoading ? "cog" : "play", spin: this.state.setStartLoading })))),
             react_1.default.createElement(mdbreact_1.MDBModal, { isOpen: this.state.modalCnfrm, toggle: this.toggleModalCnfrm },
                 react_1.default.createElement(mdbreact_1.MDBModalHeader, { toggle: this.toggleModalCnfrm }, "Uninstall confirmation"),
@@ -98673,14 +99345,14 @@ class AppItem extends react_1.default.Component {
         /*---------------*/
         this.startApp = () => {
             this.setState({ setStartLoading: true });
-            wazigate.setAppConfig(this.props.id, { action: "first-start" }).then(res => {
+            wazigate.setAppConfig(this.props.id, { action: "first-start" }).then((res) => {
                 this.setState({ setStartLoading: false });
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
-            }, error => {
+            }, (error) => {
                 this.setState({
-                    setStartLoading: false
+                    setStartLoading: false,
                 });
             });
         };
@@ -98690,26 +99362,26 @@ class AppItem extends react_1.default.Component {
                 return;
             this.setState({ installLoading: true, installStatus: { log: "" } });
             this.iStatusLoop();
-            wazigate.installApp(this.props.appInfo.image).then(res => {
+            wazigate.installApp(this.props.appInfo.image).then((res) => {
                 this.setState({
                     installLoading: false,
                     modalMsg: res,
                     error: false,
-                    installSuccess: true
+                    installSuccess: true,
                 });
                 this.load();
-            }, error => {
+            }, (error) => {
                 this.setState({
                     installLoading: false,
                     modalMsg: error,
-                    error: true
+                    error: true,
                 });
             });
         };
         /*---------------*/
         this.toggleModalHP = () => {
             this.setState({
-                modalHP: !this.state.modalHP
+                modalHP: !this.state.modalHP,
             });
         };
         this.state = {
@@ -98721,7 +99393,7 @@ class AppItem extends react_1.default.Component {
             installLoading: false,
             installStatus: null,
             setStartLoading: false,
-            installSuccess: false
+            installSuccess: false,
         };
     }
     componentDidMount() {
@@ -98736,12 +99408,12 @@ class AppItem extends react_1.default.Component {
         if (!this._isMounted)
             return;
         this.setState({ loading: true });
-        wazigate.getApp(this.props.id).then(res => {
+        wazigate.getApp(this.props.id).then((res) => {
             this.setState({
                 data: res,
-                loading: false
+                loading: false,
             });
-        }, error => {
+        }, (error) => {
             // Notify(error);
             this.setState({ loading: false });
         });
@@ -98763,14 +99435,14 @@ class AppItem extends react_1.default.Component {
         if (!this._isMounted ||
             (this.state.installStatus && this.state.installStatus.done))
             return;
-        this.getAppiLogs(this.props.id).then(res => {
+        this.getAppiLogs(this.props.id).then((res) => {
             this.setState({
-                installStatus: res
+                installStatus: res,
             });
             setTimeout(() => {
                 this.iStatusLoop();
             }, 1000); // Check every second
-        }, error => {
+        }, (error) => {
             // Notify(error);
         });
     }
@@ -98794,13 +99466,13 @@ class AppItem extends react_1.default.Component {
                         ? this.state.data.name
                         : this.props.appInfo.id),
                     this.state.data &&
-                        Object.getOwnPropertyNames(this.state.data).length != 0 ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: this.state.data.state && this.state.data.state.Running
+                        Object.getOwnPropertyNames(this.state.data).length != 0 ? (react_1.default.createElement(mdbreact_1.MDBAlert, { color: this.state.data.state && this.state.data.state.running
                             ? "info"
                             : "warning" },
                         "Status:",
                         " ",
                         this.state.data.state
-                            ? this.state.data.state.Status
+                            ? this.state.data.state.status
                             : "Disabled")) : (react_1.default.createElement(mdbreact_1.MDBBtn, { onClick: this.toggleModalHP },
                         react_1.default.createElement(mdbreact_1.MDBIcon, { icon: this.state.installLoading ? "cog" : "puzzle-piece", spin: this.state.installLoading }),
                         "Install")))),
@@ -100394,6 +101066,19 @@ window["MaterialUI"] = MaterialUI;
 
 /***/ }),
 
+/***/ "./src/img/error.svg":
+/*!***************************!*\
+  !*** ./src/img/error.svg ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("img/d35eb642261d171b5704a5bef095381e.svg");
+
+/***/ }),
+
 /***/ "./src/img/ontologies.svg":
 /*!********************************!*\
   !*** ./src/img/ontologies.svg ***!
@@ -100446,6 +101131,9 @@ const waziup = __importStar(__webpack_require__(/*! waziup */ "./node_modules/wa
 __webpack_require__(/*! ./external */ "./src/external.ts");
 const version_1 = __webpack_require__(/*! ./version */ "./src/version.ts");
 __webpack_require__(/*! ./HookRegistry */ "./src/HookRegistry.ts");
+// Not sure if we should keep this here,
+// but without this the styles I wrote into index.scss file do not work
+__webpack_require__(/*! ./style/index.scss */ "./src/style/index.scss");
 const Dashboard_1 = __webpack_require__(/*! ./components/Dashboard */ "./src/components/Dashboard.tsx");
 console.log("Welcome to Wazigate! This is a %s build. %s", version_1.branch, version_1.version);
 const search = new URLSearchParams(window.location.search);
@@ -100490,6 +101178,35 @@ module.exports = JSON.parse("{\"sensingDevices\":{\"Accelerometer\":{\"label\":\
 
 /***/ }),
 
+/***/ "./src/style/index.scss":
+/*!******************************!*\
+  !*** ./src/style/index.scss ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./index.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/style/index.scss");
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+
+
+module.exports = content.locals || {};
+
+/***/ }),
+
 /***/ "./src/version.ts":
 /*!************************!*\
   !*** ./src/version.ts ***!
@@ -100502,7 +101219,7 @@ module.exports = JSON.parse("{\"sensingDevices\":{\"Accelerometer\":{\"label\":\
 Object.defineProperty(exports, "__esModule", { value: true });
 // Autogenerated by webpack.config.js
 exports.version = "1.0.0";
-exports.branch = "test-material";
+exports.branch = "master";
 
 
 /***/ }),
