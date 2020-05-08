@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
-import { AppsPageComp } from "./Apps";
+import AppsPage  from "./Apps";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
@@ -368,9 +368,9 @@ export const DashboardComp = () => {
     } else if (page === "#/sync") {
       body = <SyncPage handleDrawerToggle={handleDrawerToggle} />;
     } else if (page === "#/apps") {
-      body = <AppsPageComp filter="installed" />;
+      body = <AppsPage filter="installed" handleDrawerToggle={handleDrawerToggle} />;
     } else if (page === "#/apps/new") {
-      body = <AppsPageComp filter="available" />;
+      body = <AppsPage filter="available" handleDrawerToggle={handleDrawerToggle} />;
     } else if ((match = page.match(sensorRegExp))) {
       body = (
         <SensorPage

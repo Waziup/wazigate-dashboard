@@ -36,12 +36,9 @@
 		"webpack-cli": "^3.3.11"
 	},
 	"dependencies": {
-		"bootstrap": "^4.4.1",
-		"mdbreact": "^4.26.0",
 		"mqtt": "^3.0.0",
 		"node-fetch": "^2.6.0",
 		"react": "^16.13.1",
-		"react-bootstrap": "^1.0.1",
 		"react-dom": "^16.13.1",
 		"url-loader": "^4.1.0"
 	}

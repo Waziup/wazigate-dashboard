@@ -1,141 +1,192 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import waziup from "waziup";
-import App from "./apps/App";
-import NewApp from "./apps/NewApp";
-import {
-  MDBIcon,
-  MDBAlert,
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-  MDBBtn,
-} from "mdbreact";
+import MarketplaceApp from "./apps/MarketplaceApp";
+import ErrorView from "./Error";
 
 import AddIcon from "@material-ui/icons/Add";
 import SettingsIcon from "@material-ui/icons/Settings";
+import MenuIcon from '@material-ui/icons/Menu';
+
 
 import {
-  Fab,
-  // AppBar,
-  // IconButton,
-  // Toolbar,
-  // Typography,
-  // makeStyles,
-} from "@material-ui/core";
+    AppBar,
+    IconButton,
+    Toolbar,
+    Typography,
+    makeStyles,
+    Fab,
+    LinearProgress,
+    Grow,
+    useTheme,
+    Zoom,
+} from '@material-ui/core';
+import InstalledApp from "./apps/InstalledApp";
 
-/*---------------*/
-
-export interface Props {
-  filter?: "installed" | "available";
+interface Props {
+    filter?: "installed" | "available";
+    handleDrawerToggle: () => void;
 }
 
-export interface State {
-  apps: waziup.App[];
-  loading: boolean;
-  filter: string;
-}
+const drawerWidth = 240;
 
-export class AppsPageComp extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+const useStyles = makeStyles((theme) => ({
+    page: {
+        marginTop: 64,
+        marginBottom: 64,
+    },
+    fab: {
+        background: "#f35e19",
+        color: "white",
+        outline: "none",
+        position: "fixed",
+        right: 16,
+        bottom: 16,
+        "&:hover": {
+            background: "#f38c5c",
+        },
+    },
+    appBar: {
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        background: "#f1f1f1",
+        color: "unset",
+        boxShadow: "0 0 2px #f1f1f1",
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(3),
+    },
+    loading: {
+        position: "fixed",
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: drawerWidth,
+        },
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1200,
+    },
+    name: {
+        flexGrow: 1,
+    },
+    appBarInner: {
+        padding: "0",
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
+    },
+    body: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    app: {
+        margin: theme.spacing(1),
+        textAlign: "left",
+        width: 400,
+        maxWidth: "calc(100% - 16px)",
+        display: "inline-block",
+    },
+}));
 
-    this.state = {
-      apps: null,
-      loading: true,
-      filter: this.props.filter,
+export default function AppsPage({ filter, handleDrawerToggle }: Props) {
+    const classes = useStyles();
+    const theme = useTheme();
+
+    const transitionDuration = {
+        enter: theme.transitions.duration.enteringScreen,
+        exit: theme.transitions.duration.leavingScreen,
     };
-  }
 
-  /*---------------*/
+    const [apps, setApps] = useState(null as waziup.App[]);
+    const [error, setError] = useState(null as Error);
 
-  componentDidMount() {
-    this.load();
-  }
+    var [filter, setFilter] = useState(filter)
 
-  /*---------------*/
+    useEffect(() => {
+        if (filter == "available") {
+            wazigate.get<any>("apps?available").then(setApps, setError);
+        } else {
+            wazigate.getApps().then(setApps, setError);
+        }
+    }, [filter]);
 
-  async load(filter: string = null) {
-    if (!filter) filter = this.state.filter;
-    this.setState({ loading: true, filter: filter });
+    var body: JSX.Element | JSX.Element[];
 
-    var apps;
-
-    if (filter == "available") {
-      apps = await wazigate.get<any>("apps?available"); // Later we will change this when we fix the wazi-lib
+    if (error !== null) {
+        body = <ErrorView error={error} />;
+    } else if (apps === null) {
+        body = <span>Loading, please wait...</span>;
+    } else if (apps.length === 0) {
+        body = (
+            <span>"There are not apps installed. Click '+' to add new apps."</span>
+        );
+    } else if (filter == "available") {
+        body = apps.map((app) => (
+            <MarketplaceApp key={app.id} app={app} className={classes.app} />
+        ));
     } else {
-      apps = await wazigate.getApps();
-    }
-
-    this.setState({
-      apps: apps,
-      loading: false,
-    });
-  }
-
-  /*---------------*/
-
-  render() {
-    if (this.state.loading) {
-      return (
-        <div className="center p-lg-5">
-          Loading <MDBIcon spin icon="cog" />
-        </div>
-      );
-    }
-
-    /*-------*/
-
-    var results;
-    if (this.state.apps) {
-      if (this.state.filter == "available") {
-        results = this.state.apps.map((res, index) => (
-          <MDBCol key={index} sm="4">
-            <NewApp id={res.id} appInfo={res} />
-          </MDBCol>
+        body = apps.map((app) => (
+            <InstalledApp key={app.id} app={app} className={classes.app} />
         ));
-      } else {
-        results = this.state.apps.map((res, index) => (
-          <App key={index} id={res.id} />
-        ));
-      }
     }
 
-    if (!results || results.length == 0) {
-      results = (
-        <MDBAlert color="info" className="m-3">
-          <MDBIcon icon="exclamation-circle" />
-          <span className=""> There are no Apps.</span>
-        </MDBAlert>
-      );
-    }
-
-    var manageApps = this.state.filter == "installed";
+    const manageApps = filter == "installed";
 
     return (
-      <MDBContainer>
-        <MDBRow>{results}</MDBRow>
-        <span className="MuiFab-root">
-          {manageApps ? (
-            <Fab
-              className="wazigate-fabAdd"
-              onClick={() => this.load("available")}
-              aria-label="add"
-              title="Install a new App"
+        <div className={classes.page}>
+            {apps === null ? <LinearProgress className={classes.loading} /> : null}
+            <AppBar position="fixed" className={classes.appBar}>
+                <Toolbar className={classes.appBarInner}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className={classes.menuButton}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap className={classes.name}>Apps</Typography>
+                </Toolbar>
+            </AppBar>
+            <div className={classes.body}>{body}</div>
+            <Zoom
+                in={filter == "available"}
+                timeout={transitionDuration}
+                style={{
+                    transitionDelay: `${filter == "available" ? transitionDuration.exit : 0}ms`,
+                }}
+                unmountOnExit
             >
-              <AddIcon />
-            </Fab>
-          ) : (
-            <Fab
-              className="wazigate-fabSetting"
-              onClick={() => this.load("installed")}
-              aria-label="edit"
-              title="Manage installed Apps"
+                <Fab
+                    className={classes.fab}
+                    onClick={() => setFilter("installed")}
+                    aria-label="edit"
+                    title="Manage installed Apps"
+                >
+                    <SettingsIcon />
+                </Fab>
+            </Zoom>
+            <Zoom
+                in={filter == "installed"}
+                timeout={transitionDuration}
+                style={{
+                    transitionDelay: `${filter == "installed" ? transitionDuration.exit : 0}ms`,
+                }}
+                unmountOnExit
             >
-              <SettingsIcon />
-            </Fab>
-          )}
-        </span>
-      </MDBContainer>
+                <Fab
+                    className={classes.fab}
+                    onClick={() => setFilter("available")}
+                    aria-label="add"
+                    title="Install a new App"
+                >
+                    <AddIcon />
+                </Fab>
+            </Zoom>
+        </div>
     );
-  }
 }
