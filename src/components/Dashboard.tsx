@@ -1,20 +1,25 @@
 import React, { useState, Fragment, useEffect } from "react";
-import AppsPage  from "./Apps";
+import AppsPage from "./Apps";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
 import waziup, { MenuHook, App } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
-import SyncIcon from '@material-ui/icons/Sync';
-import WifiIcon from '@material-ui/icons/Wifi';
-import RouterIcon from '@material-ui/icons/Router';
-import AppsIcon from '@material-ui/icons/Apps';
-import LinkIcon from '@material-ui/icons/Link';
-import LinkOffIcon from '@material-ui/icons/LinkOff';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import SyncIcon from "@material-ui/icons/Sync";
+import WifiIcon from "@material-ui/icons/Wifi";
+import RouterIcon from "@material-ui/icons/Router";
+import AppsIcon from "@material-ui/icons/Apps";
+import LinkIcon from "@material-ui/icons/Link";
+import LinkOffIcon from "@material-ui/icons/LinkOff";
+import SettingsIcon from "@material-ui/icons/Settings";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import {
+  makeStyles,
+  useTheme,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 import wazigateImage from "../img/wazigate.svg";
 import clsx from "clsx";
 
@@ -28,11 +33,11 @@ import {
   Drawer,
   Hidden,
   List,
-  Button
-} from '@material-ui/core';
+  Button,
+} from "@material-ui/core";
 
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import SyncPage from "./pages/Sync";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -130,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) =>
     a: {
       "&:hover": {
         color: "unset !important",
-      }
+      },
     },
     menu: {
       flexGrow: 1,
@@ -151,20 +156,28 @@ const useStyles = makeStyles((theme: Theme) =>
     statusError: {
       background: "#f35e18",
     },
-  }),
+  })
 );
 
-hooks.setMenuHook("dashboard", {
-  primary: "Dashboard",
-  icon: <DashboardIcon />,
-  href: "#",
-  target: "",
-}, 20);
-hooks.setMenuHook("sync", {
-  primary: "Sync",
-  icon: <SyncIcon />,
-  href: "#/sync",
-}, 40);
+hooks.setMenuHook(
+  "dashboard",
+  {
+    primary: "Dashboard",
+    icon: <DashboardIcon />,
+    href: "#",
+    target: "",
+  },
+  20
+);
+hooks.setMenuHook(
+  "sync",
+  {
+    primary: "Sync",
+    icon: <SyncIcon />,
+    href: "#/sync",
+  },
+  40
+);
 // hooks.setMenuHook("settings", {
 //   primary: "Settings",
 //   icon: <SettingsIcon />,
@@ -175,11 +188,15 @@ hooks.setMenuHook("sync", {
 //   icon: <WifiIcon />,
 //   href: "#/settings",
 // });
-hooks.setMenuHook("apps", {
-  primary: "Apps",
-  icon: <AppsIcon />,
-  href: "#/apps",
-}, 80);
+hooks.setMenuHook(
+  "apps",
+  {
+    primary: "Apps",
+    icon: <AppsIcon />,
+    href: "#/apps",
+  },
+  80
+);
 
 type MQTTState = "disconnected" | "connecting" | "connected" | "error";
 
@@ -190,18 +207,21 @@ export const DashboardComp = () => {
   const [mqttState, setMQTTState] = useState<MQTTState>("connecting");
 
   useEffect(() => {
-    wazigate.connectMQTT(() => {
-      console.log("MQTT Connected.");
-      setMQTTState("connected");
-    }, (err: Error) => {
-      console.error("MQTT Err", err);
-      setMQTTState("error");
-    })
+    wazigate.connectMQTT(
+      () => {
+        console.log("MQTT Connected.");
+        setMQTTState("connected");
+      },
+      (err: Error) => {
+        console.error("MQTT Err", err);
+        setMQTTState("error");
+      }
+    );
     return () => {
       wazigate.disconnectMQTT(() => {
         console.log("MQTT Disconnected.");
-      })
-    }
+      });
+    };
   }, []);
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -224,19 +244,22 @@ export const DashboardComp = () => {
         console.error("The server reported no apps.");
         setApps([]);
       } else {
-        Promise.allSettled(apps.map((app, i) => {
-          const menu = app.waziapp?.menu;
-          if (menu) {
-            for (const id in menu) {
-              const item = menu[id];
-              if (item.iconSrc) item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
-              hooks.setMenuHook(id, item, item.prio);
+        Promise.allSettled(
+          apps.map((app, i) => {
+            const menu = app.waziapp?.menu;
+            if (menu) {
+              for (const id in menu) {
+                const item = menu[id];
+                if (item.iconSrc)
+                  item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
+                hooks.setMenuHook(id, item, item.prio);
+              }
             }
-          }
-          const hook = app.waziapp?.hook;
-          if (!hook) return Promise.resolve(null);
-          return hooks.load(wazigate.toProxyURL(app.id, hook));
-        })).then(pen => {
+            const hook = app.waziapp?.hook;
+            if (!hook) return Promise.resolve(null);
+            return hooks.load(wazigate.toProxyURL(app.id, hook));
+          })
+        ).then((pen) => {
           console.log("Apps loaded:", pen);
           setApps(apps);
         });
@@ -286,11 +309,24 @@ export const DashboardComp = () => {
   //     const item = hooks.get(id)[0] as MenuItem;
   //     const subItems = menuItems(id);
   //   }
+  const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
+    event.target.src = "img/default-icon.svg";
+  };
 
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
-    const icon = item.icon ? item.icon : item.iconSrc ? <img className={classes.menuIcon} src={item.iconSrc} /> : null;
+    const icon = item.icon ? (
+      item.icon
+    ) : item.iconSrc ? (
+      <img
+        src={item.iconSrc}
+        className={classes.menuIcon}
+        onError={getDefaultAppIcon}
+      />
+    ) : (
+      <img src="img/default-icon.svg" className={classes.menuIcon} />
+    );
     return (
       <Fragment key={id}>
         <ListItem
@@ -298,28 +334,33 @@ export const DashboardComp = () => {
           button
           key={id}
           href={item.href}
-          onClick={subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null}
-          className={`${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}`}
+          onClick={
+            subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null
+          }
+          className={`${classes.a} ${
+            hooks.depth(id) >= 2 ? classes.nested : ""
+          }`}
         >
-          <ListItemIcon className={classes.drawerIcon}>
-            {icon}
-          </ListItemIcon>
+          <ListItemIcon className={classes.drawerIcon}>{icon}</ListItemIcon>
           <ListItemText primary={item.primary} />
-          {subItems.length !== 0 ? (open ?
-            <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} /> :
-            <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
+          {subItems.length !== 0 ? (
+            open ? (
+              <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} />
+            ) : (
+              <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
+            )
           ) : null}
         </ListItem>
-        {subItems.length != 0 ?
+        {subItems.length != 0 ? (
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {subItems.map(([id, item]) => menuItem(id, item))}
             </List>
           </Collapse>
-          : null}
+        ) : null}
       </Fragment>
     );
-  }
+  };
 
   var mqttStateName: string;
   var mqttStateClass: string = "";
@@ -368,9 +409,13 @@ export const DashboardComp = () => {
     } else if (page === "#/sync") {
       body = <SyncPage handleDrawerToggle={handleDrawerToggle} />;
     } else if (page === "#/apps") {
-      body = <AppsPage filter="installed" handleDrawerToggle={handleDrawerToggle} />;
+      body = (
+        <AppsPage filter="installed" handleDrawerToggle={handleDrawerToggle} />
+      );
     } else if (page === "#/apps/new") {
-      body = <AppsPage filter="available" handleDrawerToggle={handleDrawerToggle} />;
+      body = (
+        <AppsPage filter="available" handleDrawerToggle={handleDrawerToggle} />
+      );
     } else if ((match = page.match(sensorRegExp))) {
       body = (
         <SensorPage
