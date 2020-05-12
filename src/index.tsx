@@ -21,9 +21,9 @@ const isDemo = search.has("demo");
 
 // basic UI styles, platform dependant
 if (navigator.platform.indexOf("Win") == 0)
-  document.body.classList.add("windows");
+    document.body.classList.add("windows");
 else if (navigator.platform.indexOf("Mac") == 0)
-  document.body.classList.add("mac");
+    document.body.classList.add("mac");
 else if (navigator.platform.indexOf("Linux") != -1)
     document.body.classList.add("linux");
 
@@ -41,14 +41,24 @@ waziup.connect().then(wazigate => {
         wazigate.toProxyURL = (name: string, path: string) => `demo/apps/${name}/${path}`;
         wazigate.set = (path: string, val: any) => Promise.resolve(null);
         wazigate.connectMQTT = (onConnect: () => void) => setTimeout(onConnect);
-        wazigate.reconnectMQTT = () => {};
+        wazigate.reconnectMQTT = () => { };
         wazigate.disconnectMQTT = (onDisconnect: () => void) => setTimeout(onDisconnect);
-        wazigate.subscribe = (path: string) => {};
-        wazigate.unsubscribe = (path: string) => {};
+        wazigate.subscribe = (path: string) => { };
+        wazigate.unsubscribe = (path: string) => { };
+        wazigate.on = (event: string, cb: Function) => { };
+        wazigate.off = (event: string, cb: Function) => { };
     }
-    
+
+    wazigate.connectMQTT(() => {
+        console.log("MQTT Connected.");
+    }, (err: Error) => {
+        console.error("MQTT Err", err);
+    }, {
+        reconnectPeriod: 0,
+    });
+
     ReactDOM.render(
-        <DashboardComp/>,
+        <DashboardComp />,
         document.getElementById("dashboard")
     );
 })

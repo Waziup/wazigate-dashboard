@@ -8,7 +8,7 @@
       "menu": {
         "settings.lora": {
           "primary": "LoRaWAN",
-          "iconSrc": "img/LoRaWAN.svg",
+          "icon": "img/LoRaWAN.svg",
           "prio": 120
         }
       },
@@ -34,13 +34,13 @@
       "menu": {
         "settings": {
           "primary": "Settings",
-          "iconSrc": "ui/src/img/settings.svg",
+          "icon": "ui/src/img/settings.svg",
           "href": "#/apps/waziup.wazigate-system/ui/",
           "prio": 60
         },
         "settings.wifi": {
           "primary": "Wifi",
-          "iconSrc": "ui/src/img/wifi.svg",
+          "icon": "ui/src/img/wifi.svg",
           "href": "#/apps/waziup.wazigate-system/ui/#/internet"
         }
       }

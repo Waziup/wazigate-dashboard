@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     device: {
         margin: theme.spacing(2),
         textAlign: "left",
+        [theme.breakpoints.down('sm')]: {
+            margin: theme.spacing(1),
+            width: `calc(100% - ${theme.spacing(2)}px)`,
+        }
     },
     fab: {
         background: "#f35e19",

@@ -36720,6 +36720,35 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/icons/CloudOutlined.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/CloudOutlined.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6m0-2C9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96C18.67 6.59 15.64 4 12 4z"
+}), 'CloudOutlined');
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/icons/Dashboard.js":
 /*!******************************************************!*\
   !*** ./node_modules/@material-ui/icons/Dashboard.js ***!
@@ -36831,6 +36860,35 @@ var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/crea
 var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
   d: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
 }), 'Error');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/ErrorOutline.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/ErrorOutline.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+}), 'ErrorOutline');
 
 exports.default = _default;
 
@@ -73450,35 +73508,43 @@ class Waziup {
     toURL(path) {
         return `${this.host}/${path}`;
     }
-    connectMQTT(onConnect, onError = null) {
+    connectMQTT(onConnect, onError = null, opt = {}) {
         if (this.client !== null) {
             throw "The Waziup MQTT client is already connected. Use .disconnectMQTT() or .reconnectMQTT().";
         }
         this.client = mqtt.connect("ws://" + location.host, {
             clientId: this.clientID,
+            ...opt
         });
+        console.log("Connecting to mqtt...");
         this.client.on("connect", onConnect);
         this.client.on("message", (topic, pl, pkt) => {
             const plString = pl.toString();
-            if (topic in this.topics) {
-                var msg;
-                try {
-                    msg = JSON.parse(plString);
-                }
-                catch (err) {
-                    console.error("MQTT: Invalid message payload on topic '%s': %o", topic, plString);
-                    return;
-                }
-                for (let l of this.topics[topic]) {
-                    try {
-                        l(msg);
-                    }
-                    catch (err) {
-                        console.error("MQTT: Message listener '%s' %o:\n%o", topic, l, plString);
+            var msg;
+            try {
+                msg = JSON.parse(plString);
+            }
+            catch (err) {
+                console.error("MQTT: Invalid message payload on topic '%s': %o", topic, plString);
+                return;
+            }
+            var listeners = new Set();
+            for (var t in this.topics) {
+                if (matchTopic(topic, t)) {
+                    for (let l of this.topics[topic]) {
+                        if (listeners.has(l))
+                            continue;
+                        listeners.add(l);
+                        try {
+                            l(msg);
+                        }
+                        catch (err) {
+                            console.error("MQTT: Message listener '%s' %o:\n%o", topic, l, plString);
+                        }
                     }
                 }
             }
-            else {
+            if (listeners.size === 0) {
                 console.warn("MQTT: Received Message without listeners on topic '%s': %o", topic, plString);
             }
         });
@@ -73495,10 +73561,10 @@ class Waziup {
     on(event, cb) {
         switch (event) {
             case "connect":
-                this.connectMQTT(cb);
-                break;
             case "message":
+            case "reconnect":
             case "error":
+            case "close":
                 if (this.client === null) {
                     throw "The Waziup MQTT client is disconnected. Use .connectMQTT() first.";
                 }
@@ -73510,6 +73576,8 @@ class Waziup {
             case "message":
             case "error":
             case "connect":
+            case "reconnect":
+            case "close":
                 if (this.client !== null) {
                     this.client.off(event, cb);
                 }
@@ -73629,6 +73697,24 @@ function polishCloudStatus(status) {
         stat.status.remote = new Date(stat.status.remote);
         stat.status.wakeup = new Date(stat.status.wakeup);
     }
+}
+function matchTopic(template, topic) {
+    if (template == topic)
+        return true;
+    const templateElm = template.split("/");
+    const topicElm = topic.split("/");
+    for (var i = 0; i < templateElm.length; i++) {
+        const elm = templateElm[i];
+        if (elm === "#")
+            return true;
+        if (i >= topic.length)
+            return false;
+        if (elm === "+")
+            continue;
+        if (elm != topicElm[i])
+            return false;
+    }
+    return topicElm.length === templateElm.length;
 }
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../process/browser.js */ "./node_modules/process/browser.js")))
@@ -74361,16 +74447,14 @@ const Error_1 = __importDefault(__webpack_require__(/*! ./pages/Error */ "./src/
 const AppsProxy_1 = __webpack_require__(/*! ./AppsProxy */ "./src/components/AppsProxy.tsx");
 const Sync_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Sync */ "./node_modules/@material-ui/icons/Sync.js"));
 const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps */ "./node_modules/@material-ui/icons/Apps.js"));
-const Link_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Link */ "./node_modules/@material-ui/icons/Link.js"));
-const LinkOff_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LinkOff */ "./node_modules/@material-ui/icons/LinkOff.js"));
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
-const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const ExpandLess_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandLess */ "./node_modules/@material-ui/icons/ExpandLess.js"));
 const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
 const Sync_2 = __importDefault(__webpack_require__(/*! ./pages/Sync */ "./src/components/pages/Sync.tsx"));
+const MQTTIndicator_1 = __webpack_require__(/*! ./MQTTIndicator */ "./src/components/MQTTIndicator.tsx");
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
@@ -74449,7 +74533,7 @@ const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
     a: {
         "&:hover": {
             color: "unset !important",
-        }
+        },
     },
     menu: {
         flexGrow: 1,
@@ -74500,21 +74584,6 @@ hooks.setMenuHook("apps", {
 exports.DashboardComp = () => {
     const classes = useStyles();
     const theme = styles_1.useTheme();
-    const [mqttState, setMQTTState] = react_1.useState("connecting");
-    react_1.useEffect(() => {
-        wazigate.connectMQTT(() => {
-            console.log("MQTT Connected.");
-            setMQTTState("connected");
-        }, (err) => {
-            console.error("MQTT Err", err);
-            setMQTTState("error");
-        });
-        return () => {
-            wazigate.disconnectMQTT(() => {
-                console.log("MQTT Disconnected.");
-            });
-        };
-    }, []);
     const [mobileOpen, setMobileOpen] = react_1.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -74538,16 +74607,15 @@ exports.DashboardComp = () => {
                     if (menu) {
                         for (const id in menu) {
                             const item = menu[id];
-                            if (item.iconSrc)
-                                item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
-                            hooks.setMenuHook(id, item, item.prio);
+                            const hook = Object.assign(Object.assign({}, item), { icon: item.icon ? react_1.default.createElement("img", { className: classes.menuIcon, src: wazigate.toProxyURL(app.id, item.icon) }) : null });
+                            hooks.setMenuHook(id, hook, item.prio);
                         }
                     }
                     const hook = (_b = app.waziapp) === null || _b === void 0 ? void 0 : _b.hook;
                     if (!hook)
                         return Promise.resolve(null);
                     return hooks.load(wazigate.toProxyURL(app.id, hook));
-                })).then(pen => {
+                })).then((pen) => {
                     console.log("Apps loaded:", pen);
                     setApps(apps);
                 });
@@ -74590,45 +74658,27 @@ exports.DashboardComp = () => {
     //     const item = hooks.get(id)[0] as MenuItem;
     //     const subItems = menuItems(id);
     //   }
+    const getDefaultAppIcon = (event) => {
+        event.target.src = "img/default-icon.svg";
+    };
     const menuItem = (id, item) => {
         const open = openMenues.has(id);
         const subItems = hooks.getAtPrio(id);
-        const icon = item.icon ? item.icon : item.iconSrc ? react_1.default.createElement("img", { className: classes.menuIcon, src: item.iconSrc }) : null;
+        const icon = item.icon || react_1.default.createElement("img", { src: "img/default-icon.svg", className: classes.menuIcon });
         return (react_1.default.createElement(react_1.Fragment, { key: id },
             react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: id, href: item.href, onClick: subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null, className: `${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}` },
                 react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, icon),
                 react_1.default.createElement(core_1.ListItemText, { primary: item.primary }),
-                subItems.length !== 0 ? (open ?
-                    react_1.default.createElement(ExpandLess_1.default, { onClick: handleMenuCloserClick.bind(null, id) }) :
-                    react_1.default.createElement(ExpandMore_1.default, { onClick: handleMenuOpenerClick.bind(null, id) })) : null),
-            subItems.length != 0 ?
-                react_1.default.createElement(core_1.Collapse, { in: open, timeout: "auto", unmountOnExit: true },
-                    react_1.default.createElement(core_1.List, { component: "div", disablePadding: true }, subItems.map(([id, item]) => menuItem(id, item))))
-                : null));
+                subItems.length !== 0 ? (open ? (react_1.default.createElement(ExpandLess_1.default, { onClick: handleMenuCloserClick.bind(null, id) })) : (react_1.default.createElement(ExpandMore_1.default, { onClick: handleMenuOpenerClick.bind(null, id) }))) : null),
+            subItems.length != 0 ? (react_1.default.createElement(core_1.Collapse, { in: open, timeout: "auto", unmountOnExit: true },
+                react_1.default.createElement(core_1.List, { component: "div", disablePadding: true }, subItems.map(([id, item]) => menuItem(id, item))))) : null));
     };
-    var mqttStateName;
-    var mqttStateClass = "";
-    switch (mqttState) {
-        case "connected":
-            mqttStateName = "Connected";
-            mqttStateClass = classes.statusConnected;
-            break;
-        case "connecting":
-            mqttStateName = "Connecting ...";
-            break;
-        case "disconnected":
-            mqttStateName = "Disconnected";
-            break;
-        case "error":
-            mqttStateName = "Error";
-            mqttStateClass = classes.statusError;
-            break;
-    }
     const drawer = (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement("div", { className: classes.toolbar }),
         react_1.default.createElement(core_1.Divider, null),
         react_1.default.createElement(core_1.List, { className: classes.menu }, hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item))),
-        react_1.default.createElement(core_1.Button, { size: "small", className: clsx_1.default(classes.status, mqttStateClass), startIcon: mqttState === "connected" ? react_1.default.createElement(Link_1.default, null) : react_1.default.createElement(LinkOff_1.default, null) }, mqttStateName)));
+        react_1.default.createElement("div", null,
+            react_1.default.createElement(MQTTIndicator_1.MQTTIndicator, null))));
     var body;
     var match;
     if (apps === null) {
@@ -74642,10 +74692,10 @@ exports.DashboardComp = () => {
             body = react_1.default.createElement(Sync_2.default, { handleDrawerToggle: handleDrawerToggle });
         }
         else if (page === "#/apps") {
-            body = react_1.default.createElement(Apps_1.default, { filter: "installed", handleDrawerToggle: handleDrawerToggle });
+            body = (react_1.default.createElement(Apps_1.default, { filter: "installed", handleDrawerToggle: handleDrawerToggle }));
         }
         else if (page === "#/apps/new") {
-            body = react_1.default.createElement(Apps_1.default, { filter: "available", handleDrawerToggle: handleDrawerToggle });
+            body = (react_1.default.createElement(Apps_1.default, { filter: "available", handleDrawerToggle: handleDrawerToggle }));
         }
         else if ((match = page.match(sensorRegExp))) {
             body = (react_1.default.createElement(Sensor_1.default, { deviceID: match[1], sensorID: match[2], handleDrawerToggle: handleDrawerToggle }));
@@ -74862,6 +74912,129 @@ function Error(props) {
         react_1.default.createElement(Error_1.default, { className: classes.backgroundIcon })));
 }
 exports.default = Error;
+
+
+/***/ }),
+
+/***/ "./src/components/MQTTIndicator.tsx":
+/*!******************************************!*\
+  !*** ./src/components/MQTTIndicator.tsx ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const Link_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Link */ "./node_modules/@material-ui/icons/Link.js"));
+const LinkOff_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LinkOff */ "./node_modules/@material-ui/icons/LinkOff.js"));
+const useStyles = core_1.makeStyles((theme) => core_1.createStyles({
+    normal: {
+        color: "inherit",
+    },
+    error: {
+        color: "orange",
+    },
+    root: { // badge root
+    },
+    menuIcon: {
+        fontSize: "2rem",
+        color: "inherit",
+    },
+    menuText: {
+        margin: 8,
+        marginLeft: 60,
+        whiteSpace: "pre-line",
+        minHeight: 48,
+        minWidth: 240,
+    },
+    menu: {
+        background: "#34425a",
+        color: "#dee1e4",
+        width: 400,
+    },
+    menuError: {
+        background: "#f35e19",
+        color: "#1f0c03",
+        width: 400,
+    },
+    button: {
+        marginLeft: 52,
+    },
+    wrapper: {
+        margin: 14,
+        float: "left",
+        position: 'relative',
+    },
+    progress: {
+        color: "#583d36",
+        position: "absolute",
+        top: -7,
+        left: -7,
+        zIndex: 1,
+    }
+}));
+function MQTTIndicator() {
+    const classes = useStyles();
+    const [err, setErr] = react_1.useState(null);
+    const [menuAnchor, setMenuAchor] = react_1.default.useState(null);
+    const handleMQTTErr = (err) => {
+        setErr(err);
+    };
+    const handleMQTTReconnect = () => { };
+    const handleMQTTConnect = () => {
+        setErr(null);
+    };
+    const handleMQTTClose = () => {
+        setErr(new Error("The remote unexpectedly closed the connection."));
+    };
+    const [reconnectDisabled, setReconnectDisabled] = react_1.useState(false);
+    const doReconnect = () => {
+        setReconnectDisabled(true);
+        wazigate.reconnectMQTT();
+        setTimeout(() => setReconnectDisabled(false), 2000);
+    };
+    react_1.useEffect(() => {
+        wazigate.on("error", handleMQTTErr);
+        wazigate.on("reconnect", handleMQTTReconnect);
+        wazigate.on("connect", handleMQTTConnect);
+        wazigate.on("close", handleMQTTClose);
+        return () => {
+            wazigate.off("error", handleMQTTErr);
+            wazigate.off("reconnect", handleMQTTReconnect);
+            wazigate.off("connect", handleMQTTConnect);
+            wazigate.off("close", handleMQTTClose);
+        };
+    });
+    const handleMenuOpen = (event) => {
+        setMenuAchor(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setMenuAchor(null);
+    };
+    return (react_1.default.createElement(react_1.Fragment, null,
+        react_1.default.createElement(core_1.IconButton, { "aria-label": "link", "aria-controls": "mqtt-indicator-menu", "aria-haspopup": "true", className: err ? classes.error : classes.normal, onClick: handleMenuOpen }, err ? react_1.default.createElement(LinkOff_1.default, { fontSize: "small" }) : react_1.default.createElement(Link_1.default, { fontSize: "small" })),
+        react_1.default.createElement(core_1.Menu, { id: "mqtt-indicator-menu", anchorEl: menuAnchor, keepMounted: true, classes: err ? { paper: classes.menuError } : { paper: classes.menu }, open: !!menuAnchor, onClose: handleMenuClose },
+            react_1.default.createElement("div", { className: classes.wrapper },
+                err ? react_1.default.createElement(LinkOff_1.default, { className: classes.menuIcon }) : react_1.default.createElement(Link_1.default, { className: classes.menuIcon }),
+                reconnectDisabled && react_1.default.createElement(core_1.CircularProgress, { size: 46, className: classes.progress })),
+            react_1.default.createElement(core_1.Typography, { className: classes.menuText, variant: "body1", gutterBottom: true }, reconnectDisabled ? "Reconnecting...\nPlease wait..." :
+                (err ? `${err}` : "Your Dashboard is connected with the WaziGate via a MQTT connection.")),
+            err ? react_1.default.createElement(core_1.Button, { className: classes.button, onClick: doReconnect, disabled: reconnectDisabled }, "Reconnect Now") : null)));
+}
+exports.MQTTIndicator = MQTTIndicator;
 
 
 /***/ }),
@@ -75632,6 +75805,10 @@ const useStyles = core_1.makeStyles((theme) => ({
     device: {
         margin: theme.spacing(2),
         textAlign: "left",
+        [theme.breakpoints.down('sm')]: {
+            margin: theme.spacing(1),
+            width: `calc(100% - ${theme.spacing(2)}px)`,
+        }
     },
     fab: {
         background: "#f35e19",
@@ -75829,7 +76006,9 @@ const Save_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Save *
 const Close_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js"));
 const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
 const MoreVert_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/MoreVert */ "./node_modules/@material-ui/icons/MoreVert.js"));
+const CloudOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/CloudOutlined */ "./node_modules/@material-ui/icons/CloudOutlined.js"));
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
+const ErrorOutline_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ErrorOutline */ "./node_modules/@material-ui/icons/ErrorOutline.js"));
 const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const drawerWidth = 240;
@@ -75948,6 +76127,15 @@ const useStyles = core_1.makeStyles((theme) => ({
     submitChanges: {
         width: 180,
         margin: theme.spacing(1),
+    },
+    syncOK: {
+        color: "green",
+    },
+    syncPending: {
+        color: "#dca708",
+    },
+    syncError: {
+        color: "red",
     }
 }));
 const defaultKindIcon = "meter";
@@ -75987,6 +76175,15 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
             setSensor(sensor);
             setRemoteSensor(sensor);
         }, setError);
+        const cb = (status) => {
+            console.log("Status update:", status);
+        };
+        console.log("subscribed clouds/+/status");
+        wazigate.subscribe("clouds/+/status", cb);
+        return () => {
+            console.log("unsubscribed clouds/+/status");
+            wazigate.unsubscribe("clouds/+/status", cb);
+        };
     }, []);
     const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
     const handleMenuClick = (event) => {
@@ -76220,6 +76417,12 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                 react_1.default.createElement(core_1.IconButton, { color: "inherit", "aria-label": "open drawer", edge: "start", onClick: handleDrawerToggle, className: classes.menuButton },
                     react_1.default.createElement(Menu_1.default, null)),
                 react_1.default.createElement(core_1.Typography, { variant: "h6", noWrap: true, className: classes.name }, error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...")),
+                react_1.default.createElement(core_1.Badge, { overlap: "circle", classes: { badge: classes.syncError }, badgeContent: 
+                    // <DoneIcon fontSize="small" />
+                    // <HourglassIcon fontSize="small" />
+                    react_1.default.createElement(ErrorOutline_1.default, { fontSize: "small" }) },
+                    react_1.default.createElement(core_1.IconButton, { "aria-label": "syn", "aria-controls": "sync-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
+                        react_1.default.createElement(CloudOutlined_1.default, null))),
                 react_1.default.createElement(core_1.IconButton, { "aria-label": "settings", "aria-controls": "device-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
                     react_1.default.createElement(MoreVert_1.default, null)))),
         react_1.default.createElement(core_1.Menu, { id: "sensor-menu", anchorEl: menuAnchorEl, keepMounted: true, open: Boolean(menuAnchorEl), onClose: handleMenuClose },
@@ -76504,6 +76707,11 @@ const useStyles = core_1.makeStyles((theme) => ({
             "text-decoration": "underline",
         },
     },
+    id: {
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+    },
     icon: {
         width: "40px",
         height: "40px",
@@ -76523,6 +76731,7 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
     value: {
         float: "right",
+        whiteSpace: "nowrap",
         flexGrow: 0,
         marginLeft: "1.5em",
     },
@@ -76597,7 +76806,7 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
             react_1.default.createElement(core_1.ListItem, { component: "a", button: true, href: `#/devices/${device.id}` },
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(core_1.Avatar, { "aria-label": "recipe", className: classes.avatar, style: { background: colorFromRune(deviceName[0]) } }, deviceName[0])),
-                react_1.default.createElement(core_1.ListItemText, { primary: deviceName, secondary: `ID ${device.id}` }),
+                react_1.default.createElement(core_1.ListItemText, { primary: deviceName, classes: { secondary: classes.id }, secondary: `ID ${device.id}` }),
                 react_1.default.createElement(core_1.IconButton, { className: classes.value, "aria-label": "settings", "aria-controls": "device-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
                     react_1.default.createElement(MoreVert_1.default, null)))),
         react_1.default.createElement(Menu_1.default, { id: "device-menu", anchorEl: menuAnchorEl, keepMounted: true, open: Boolean(menuAnchorEl), onClose: handleMenuClose },
@@ -76958,7 +77167,16 @@ waziup.connect().then(wazigate => {
         wazigate.disconnectMQTT = (onDisconnect) => setTimeout(onDisconnect);
         wazigate.subscribe = (path) => { };
         wazigate.unsubscribe = (path) => { };
+        wazigate.on = (event, cb) => { };
+        wazigate.off = (event, cb) => { };
     }
+    wazigate.connectMQTT(() => {
+        console.log("MQTT Connected.");
+    }, (err) => {
+        console.error("MQTT Err", err);
+    }, {
+        reconnectPeriod: 0,
+    });
     react_dom_1.default.render(react_1.default.createElement(Dashboard_1.DashboardComp, null), document.getElementById("dashboard"));
 });
 

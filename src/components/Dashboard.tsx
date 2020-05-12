@@ -39,6 +39,7 @@ import {
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import SyncPage from "./pages/Sync";
+import { MQTTIndicator } from "./MQTTIndicator";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap-css-only/css/bootstrap.min.css";
@@ -198,31 +199,9 @@ hooks.setMenuHook(
   80
 );
 
-type MQTTState = "disconnected" | "connecting" | "connected" | "error";
-
 export const DashboardComp = () => {
   const classes = useStyles();
   const theme = useTheme();
-
-  const [mqttState, setMQTTState] = useState<MQTTState>("connecting");
-
-  useEffect(() => {
-    wazigate.connectMQTT(
-      () => {
-        console.log("MQTT Connected.");
-        setMQTTState("connected");
-      },
-      (err: Error) => {
-        console.error("MQTT Err", err);
-        setMQTTState("error");
-      }
-    );
-    return () => {
-      wazigate.disconnectMQTT(() => {
-        console.log("MQTT Disconnected.");
-      });
-    };
-  }, []);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
@@ -250,9 +229,11 @@ export const DashboardComp = () => {
             if (menu) {
               for (const id in menu) {
                 const item = menu[id];
-                if (item.iconSrc)
-                  item.iconSrc = wazigate.toProxyURL(app.id, item.iconSrc);
-                hooks.setMenuHook(id, item, item.prio);
+                const hook: MenuHook = {
+                  ...item,
+                  icon: item.icon ? <img className={classes.menuIcon} src={wazigate.toProxyURL(app.id, item.icon)} /> : null
+                }
+                hooks.setMenuHook(id, hook, item.prio);
               }
             }
             const hook = app.waziapp?.hook;
@@ -316,17 +297,7 @@ export const DashboardComp = () => {
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
-    const icon = item.icon ? (
-      item.icon
-    ) : item.iconSrc ? (
-      <img
-        src={item.iconSrc}
-        className={classes.menuIcon}
-        onError={getDefaultAppIcon}
-      />
-    ) : (
-      <img src="img/default-icon.svg" className={classes.menuIcon} />
-    );
+    const icon = item.icon || <img src="img/default-icon.svg" className={classes.menuIcon} />;
     return (
       <Fragment key={id}>
         <ListItem
@@ -362,25 +333,6 @@ export const DashboardComp = () => {
     );
   };
 
-  var mqttStateName: string;
-  var mqttStateClass: string = "";
-  switch (mqttState) {
-    case "connected":
-      mqttStateName = "Connected";
-      mqttStateClass = classes.statusConnected;
-      break;
-    case "connecting":
-      mqttStateName = "Connecting ...";
-      break;
-    case "disconnected":
-      mqttStateName = "Disconnected";
-      break;
-    case "error":
-      mqttStateName = "Error";
-      mqttStateClass = classes.statusError;
-      break;
-  }
-
   const drawer = (
     <Fragment>
       <div className={classes.toolbar} />
@@ -388,13 +340,9 @@ export const DashboardComp = () => {
       <List className={classes.menu}>
         {hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item))}
       </List>
-      <Button
-        size="small"
-        className={clsx(classes.status, mqttStateClass)}
-        startIcon={mqttState === "connected" ? <LinkIcon /> : <LinkOffIcon />}
-      >
-        {mqttStateName}
-      </Button>
+      <div>
+        <MQTTIndicator />
+      </div>
     </Fragment>
   );
 

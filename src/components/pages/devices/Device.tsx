@@ -42,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
             "text-decoration": "underline",
         },
     },
+    id: {
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+    },
     icon: {
         width: "40px",
         height: "40px",
@@ -61,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
     },
     value: {
         float: "right",
+        whiteSpace: "nowrap",
         flexGrow: 0,
         marginLeft: "1.5em",
     },
@@ -150,6 +156,7 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                     </ListItemIcon>
                     <ListItemText
                         primary={deviceName}
+                        classes={{secondary: classes.id}}
                         secondary={`ID ${device.id}`}
                     />
                     <IconButton
