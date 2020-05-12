@@ -7,12 +7,12 @@ import ErrorPage from "./pages/Error";
 import waziup, { MenuHook, App } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
 import SyncIcon from "@material-ui/icons/Sync";
-import WifiIcon from "@material-ui/icons/Wifi";
-import RouterIcon from "@material-ui/icons/Router";
+// import WifiIcon from "@material-ui/icons/Wifi";
+// import RouterIcon from "@material-ui/icons/Router";
 import AppsIcon from "@material-ui/icons/Apps";
-import LinkIcon from "@material-ui/icons/Link";
-import LinkOffIcon from "@material-ui/icons/LinkOff";
-import SettingsIcon from "@material-ui/icons/Settings";
+// import LinkIcon from "@material-ui/icons/Link";
+// import LinkOffIcon from "@material-ui/icons/LinkOff";
+// import SettingsIcon from "@material-ui/icons/Settings";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import {
   makeStyles,
@@ -212,6 +212,10 @@ export const DashboardComp = () => {
 
   const [apps, setApps] = useState(null);
 
+  const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
+    event.target.src = "img/default-icon.svg";
+  };
+
   useEffect(() => {
     window.addEventListener("hashchange", () => {
       setPage(location.hash);
@@ -231,8 +235,14 @@ export const DashboardComp = () => {
                 const item = menu[id];
                 const hook: MenuHook = {
                   ...item,
-                  icon: item.icon ? <img className={classes.menuIcon} src={wazigate.toProxyURL(app.id, item.icon)} /> : null
-                }
+                  icon: item.icon ? (
+                    <img
+                      className={classes.menuIcon}
+                      src={wazigate.toProxyURL(app.id, item.icon)}
+                      onError={getDefaultAppIcon}
+                    />
+                  ) : null,
+                };
                 hooks.setMenuHook(id, hook, item.prio);
               }
             }
@@ -290,14 +300,13 @@ export const DashboardComp = () => {
   //     const item = hooks.get(id)[0] as MenuItem;
   //     const subItems = menuItems(id);
   //   }
-  const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-    event.target.src = "img/default-icon.svg";
-  };
 
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
-    const icon = item.icon || <img src="img/default-icon.svg" className={classes.menuIcon} />;
+    const icon = item.icon || (
+      <img src="img/default-icon.svg" className={classes.menuIcon} />
+    );
     return (
       <Fragment key={id}>
         <ListItem
