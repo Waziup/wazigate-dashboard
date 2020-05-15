@@ -477,7 +477,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                   ? ""
                   : "none",
             }}
-            value={updateStatus?.logs || "N/A"}
+            value={updateStatus?.logs || "."}
           ></textarea>
           {updateStatus?.isChecking && (
             <CircularProgress size={34} className={classes.buttonProgress} />

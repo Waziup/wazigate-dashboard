@@ -48627,7 +48627,7 @@ exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
 // Module
-exports.push([module.i, "html {\n  height: 100%; }\n\nbody {\n  margin: 0;\n  background-color: #f1f1f1;\n  font-size: 16px;\n  line-height: 1.25em;\n  font-family: \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\",\r sans-serif;\n  position: relative;\n  cursor: default;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  box-sizing: border-box; }\n  body .code {\n    font-family: \"monospace\"; }\n  body.windows {\n    font-family: \"Segoe UI\", Tahoma, sans-serif; }\n    body.windows .code {\n      font-family: Consolas, Lucida Console, Courier New, monospace; }\n  body.linux {\n    font-family: Roboto, Ubuntu, Arial, sans-serif; }\n    body.linux .code {\n      font-family: \"dejavu sans mono, monospace\"; }\n  body.mac {\n    font-family: \".SFNSDisplay-Regular\", \"Helvetica Neue\", \"Lucida Grande\",\r sans-serif; }\n    body.mac .code {\n      font-family: Menlo, monospace; }\n\n#dashboard {\n  height: 100%; }\n\nh1,\nh2,\nh3,\nh4 {\n  font-weight: normal;\n  margin: 0;\n  line-height: initial; }\n\na {\n  color: unset;\n  text-decoration: unset; }\n\npre {\n  margin: 0; }\n\n.error {\n  background-color: #ffb294;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 90px 90px;\n  background-position: top right;\n  background-repeat: no-repeat;\n  padding: 20px 40px;\n  margin: 20px 0; }\n\n.title {\n  padding: 0 20px;\n  margin: 40px 0 20px 0; }\n\n#menu {\n  position: fixed;\n  left: 0;\n  bottom: 1.25em;\n  top: 0;\n  width: 240px;\n  background-color: #34425a;\n  padding-top: 60px;\n  color: #f1f1f1; }\n  #menu:before {\n    content: \"\";\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n    background-size: 120px 78px;\n    position: absolute;\n    bottom: 10px;\n    left: 60px;\n    width: 120px;\n    height: 78px; }\n  #menu .menu-item {\n    display: block;\n    line-height: 32px;\n    font-size: 20px;\n    padding: 4px 12px;\n    cursor: pointer; }\n    #menu .menu-item:hover {\n      background: #2a3548; }\n  #menu .item-icon {\n    width: 24px;\n    height: 24px;\n    vertical-align: sub; }\n  #menu .item-name {\n    margin-left: 12px; }\n\n#statusbar {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 1.25em;\n  background: #303846; }\n\n.devices {\n  padding: 0 20px; }\n  .devices .devices-device {\n    border: 1px solid #b9b9b9;\n    border-radius: 8px;\n    width: 300px;\n    margin: 10px;\n    display: inline-block;\n    vertical-align: top; }\n  .devices .device-name {\n    padding: 5px 10px;\n    cursor: text; }\n    .devices .device-name:hover {\n      text-decoration: underline; }\n  .devices .device-id {\n    font-size: 0.75em;\n    line-height: 1.75em;\n    padding: 0 10px;\n    background: #dedede;\n    color: #a0a0a0;\n    letter-spacing: 1px;\n    border-radius: 0 0 8px 8px; }\n  .devices .device-ent {\n    display: contents; }\n  .devices .ent-preview {\n    text-align: center;\n    max-width: 108px;\n    padding: 5px;\n    min-width: 60px;\n    margin: 5px 0 5px 5px;\n    display: inline-block;\n    cursor: pointer;\n    vertical-align: top;\n    border-radius: 4px; }\n    .devices .ent-preview.open {\n      background: #e8e7e7; }\n    .devices .ent-preview:hover {\n      background: #dedede; }\n  .devices .ent-name {\n    text-overflow: ellipsis;\n    overflow: hidden; }\n  .devices .ent-icon {\n    width: 36px;\n    height: 36px; }\n  .devices .ent-details {\n    float: right;\n    width: 100%;\n    background: #e8e8e8;\n    border-top: 1px solid #dadada;\n    border-bottom: 1px solid #dadada;\n    color: #808080; }\n  .devices .details-name {\n    min-width: 68px;\n    padding: 0 4px 0 8px;\n    line-height: 1.75em;\n    display: inline-block; }\n  .devices .ent-detail {\n    padding: 0 8px; }\n  .devices .details-field {\n    display: flex;\n    flex-wrap: wrap; }\n  .devices .details-value {\n    flex-grow: 1;\n    line-height: 1.75em;\n    padding: 0 8px;\n    display: block; }\n  .devices .ent-value {\n    width: 100px; }\n  .devices .ent-kind {\n    line-height: 1.75em; }\n  .devices .kind-label {\n    display: inline-block;\n    cursor: pointer;\n    padding: 0 4px 0 0; }\n    .devices .kind-label:hover {\n      background: #d8d8d8; }\n  .devices .kind-icon {\n    width: 24px;\n    height: 24px;\n    margin: 2px;\n    vertical-align: bottom; }\n  .devices .kind-unit {\n    font-size: 10px;\n    padding: 0px 4px;\n    line-height: 16px;\n    border: 1px solid #b9b9b9;\n    margin: 0 4px;\n    display: inline-block;\n    border-radius: 2px;\n    cursor: pointer; }\n    .devices .kind-unit:hover {\n      background: #d8d8d8; }\n  .devices .meta-name {\n    padding: 0 8px;\n    font-size: 12px;\n    letter-spacing: 1px;\n    background: #dadada;\n    line-height: 15px; }\n\ninput,\nselect {\n  background: unset;\n  height: 1.75em;\n  line-height: 1.75em;\n  font: unset;\n  padding: 0 4px;\n  border: none;\n  color: unset; }\n\n.meta-lora {\n  background: #c6e2ec; }\n  .meta-lora .meta-name {\n    background: #b3d0da; }\n  .meta-lora .lora-id {\n    width: 100%;\n    padding: 0.25em 12px;\n    line-height: 1.25em;\n    height: 1.75em;\n    box-sizing: border-box;\n    font-size: 12px;\n    letter-spacing: 1.5px;\n    background: #bdd7e0;\n    color: #636d71; }\n\n.app {\n  width: 100%;\n  height: 100%;\n  border: none; }\n\n.MuiFab-root.wazigate-fabAdd {\n  background: #f35e19;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabAdd:hover {\n    background: #f38c5c; }\n\n.MuiFab-root.wazigate-fabSetting {\n  background: #66c;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabSetting:hover {\n    background: #a6c; }\n", ""]);
+exports.push([module.i, "html {\n  height: 100%; }\n\nbody {\n  margin: 0;\n  background-color: #f1f1f1;\n  font-size: 16px;\n  line-height: 1.25em;\n  font-family: \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif;\n  position: relative;\n  cursor: default;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  box-sizing: border-box; }\n  body .code {\n    font-family: \"monospace\"; }\n  body.windows {\n    font-family: \"Segoe UI\", Tahoma, sans-serif; }\n    body.windows .code {\n      font-family: Consolas, Lucida Console, Courier New, monospace; }\n  body.linux {\n    font-family: Roboto, Ubuntu, Arial, sans-serif; }\n    body.linux .code {\n      font-family: \"dejavu sans mono, monospace\"; }\n  body.mac {\n    font-family: \".SFNSDisplay-Regular\", \"Helvetica Neue\", \"Lucida Grande\", sans-serif; }\n    body.mac .code {\n      font-family: Menlo, monospace; }\n\n#dashboard {\n  height: 100%; }\n\nh1,\nh2,\nh3,\nh4 {\n  font-weight: normal;\n  margin: 0;\n  line-height: initial; }\n\na {\n  color: unset;\n  text-decoration: unset; }\n\npre {\n  margin: 0; }\n\n.error {\n  background-color: #ffb294;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 90px 90px;\n  background-position: top right;\n  background-repeat: no-repeat;\n  padding: 20px 40px;\n  margin: 20px 0; }\n\n.title {\n  padding: 0 20px;\n  margin: 40px 0 20px 0; }\n\n#menu {\n  position: fixed;\n  left: 0;\n  bottom: 1.25em;\n  top: 0;\n  width: 240px;\n  background-color: #34425a;\n  padding-top: 60px;\n  color: #f1f1f1; }\n  #menu:before {\n    content: \"\";\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n    background-size: 120px 78px;\n    position: absolute;\n    bottom: 10px;\n    left: 60px;\n    width: 120px;\n    height: 78px; }\n  #menu .menu-item {\n    display: block;\n    line-height: 32px;\n    font-size: 20px;\n    padding: 4px 12px;\n    cursor: pointer; }\n    #menu .menu-item:hover {\n      background: #2a3548; }\n  #menu .item-icon {\n    width: 24px;\n    height: 24px;\n    vertical-align: sub; }\n  #menu .item-name {\n    margin-left: 12px; }\n\n#statusbar {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 1.25em;\n  background: #303846; }\n\n.devices {\n  padding: 0 20px; }\n  .devices .devices-device {\n    border: 1px solid #b9b9b9;\n    border-radius: 8px;\n    width: 300px;\n    margin: 10px;\n    display: inline-block;\n    vertical-align: top; }\n  .devices .device-name {\n    padding: 5px 10px;\n    cursor: text; }\n    .devices .device-name:hover {\n      text-decoration: underline; }\n  .devices .device-id {\n    font-size: 0.75em;\n    line-height: 1.75em;\n    padding: 0 10px;\n    background: #dedede;\n    color: #a0a0a0;\n    letter-spacing: 1px;\n    border-radius: 0 0 8px 8px; }\n  .devices .device-ent {\n    display: contents; }\n  .devices .ent-preview {\n    text-align: center;\n    max-width: 108px;\n    padding: 5px;\n    min-width: 60px;\n    margin: 5px 0 5px 5px;\n    display: inline-block;\n    cursor: pointer;\n    vertical-align: top;\n    border-radius: 4px; }\n    .devices .ent-preview.open {\n      background: #e8e7e7; }\n    .devices .ent-preview:hover {\n      background: #dedede; }\n  .devices .ent-name {\n    text-overflow: ellipsis;\n    overflow: hidden; }\n  .devices .ent-icon {\n    width: 36px;\n    height: 36px; }\n  .devices .ent-details {\n    float: right;\n    width: 100%;\n    background: #e8e8e8;\n    border-top: 1px solid #dadada;\n    border-bottom: 1px solid #dadada;\n    color: #808080; }\n  .devices .details-name {\n    min-width: 68px;\n    padding: 0 4px 0 8px;\n    line-height: 1.75em;\n    display: inline-block; }\n  .devices .ent-detail {\n    padding: 0 8px; }\n  .devices .details-field {\n    display: flex;\n    flex-wrap: wrap; }\n  .devices .details-value {\n    flex-grow: 1;\n    line-height: 1.75em;\n    padding: 0 8px;\n    display: block; }\n  .devices .ent-value {\n    width: 100px; }\n  .devices .ent-kind {\n    line-height: 1.75em; }\n  .devices .kind-label {\n    display: inline-block;\n    cursor: pointer;\n    padding: 0 4px 0 0; }\n    .devices .kind-label:hover {\n      background: #d8d8d8; }\n  .devices .kind-icon {\n    width: 24px;\n    height: 24px;\n    margin: 2px;\n    vertical-align: bottom; }\n  .devices .kind-unit {\n    font-size: 10px;\n    padding: 0px 4px;\n    line-height: 16px;\n    border: 1px solid #b9b9b9;\n    margin: 0 4px;\n    display: inline-block;\n    border-radius: 2px;\n    cursor: pointer; }\n    .devices .kind-unit:hover {\n      background: #d8d8d8; }\n  .devices .meta-name {\n    padding: 0 8px;\n    font-size: 12px;\n    letter-spacing: 1px;\n    background: #dadada;\n    line-height: 15px; }\n\ninput,\nselect {\n  background: unset;\n  height: 1.75em;\n  line-height: 1.75em;\n  font: unset;\n  padding: 0 4px;\n  border: none;\n  color: unset; }\n\n.meta-lora {\n  background: #c6e2ec; }\n  .meta-lora .meta-name {\n    background: #b3d0da; }\n  .meta-lora .lora-id {\n    width: 100%;\n    padding: 0.25em 12px;\n    line-height: 1.25em;\n    height: 1.75em;\n    box-sizing: border-box;\n    font-size: 12px;\n    letter-spacing: 1.5px;\n    background: #bdd7e0;\n    color: #636d71; }\n\n.app {\n  width: 100%;\n  height: 100vh;\n  border: none; }\n\n.MuiFab-root.wazigate-fabAdd {\n  background: #f35e19;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabAdd:hover {\n    background: #f38c5c; }\n\n.MuiFab-root.wazigate-fabSetting {\n  background: #66c;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabSetting:hover {\n    background: #a6c; }\n\n@keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n.animate-flicker {\n  -webkit-animation: flickerAnimation 1s infinite;\n  -moz-animation: flickerAnimation 1s infinite;\n  -o-animation: flickerAnimation 1s infinite;\n  animation: flickerAnimation 1s infinite; }\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -74383,7 +74383,7 @@ const useStyles = core_1.makeStyles((theme) => ({
         },
     },
     appBar: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
@@ -74395,7 +74395,7 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
     loading: {
         position: "fixed",
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             marginLeft: drawerWidth,
         },
         top: 0,
@@ -74411,8 +74411,8 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
-            display: 'none',
+        [theme.breakpoints.up("sm")]: {
+            display: "none",
         },
     },
     body: {
@@ -74456,10 +74456,10 @@ function AppsPage({ filter, handleDrawerToggle }) {
         body = (react_1.default.createElement("span", null, "\"There are not apps installed. Click '+' to add new apps.\""));
     }
     else if (filter == "available") {
-        body = apps.map((app) => (react_1.default.createElement(MarketplaceApp_1.default, { key: app.id, app: app, className: classes.app })));
+        body = apps.map((app) => (react_1.default.createElement(MarketplaceApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
     }
     else {
-        body = apps.map((app) => (react_1.default.createElement(InstalledApp_1.default, { key: app.id, app: app, className: classes.app })));
+        body = apps.map((app) => (react_1.default.createElement(InstalledApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
     }
     const manageApps = filter == "installed";
     return (react_1.default.createElement("div", { className: classes.page },
@@ -75610,8 +75610,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
-const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
-const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const MenuItem_1 = __importDefault(__webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js"));
+const Select_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js"));
+// import _wazigateLogo from "../../img/wazigate.svg";
+// const wazigateLogo = `dist/${_wazigateLogo}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
@@ -75646,10 +75648,27 @@ const useStyles = core_1.makeStyles((theme) => ({
         height: "2rem",
         marginRight: 16,
     },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
 }));
-function InstalledApp({ app, className }) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+function InstalledApp({ appInfo, className }) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     const classes = useStyles();
+    /*------------ */
+    // Run stuff on load
+    react_1.useEffect(() => {
+        checkUpdates(false);
+    }, [] /* This makes it to run only once*/);
+    /*------------ */
+    const [app, setApp] = react_1.useState(appInfo);
+    const load = () => {
+        wazigate.getApp(app.id).then(setApp, (error) => {
+            alert("There was an error loading the app info:\n" + error);
+        });
+    };
+    /*------------ */
     const [uninstallModal, setUninstallModal] = react_1.useState(null);
     const showModalUninstall = () => {
         setUninstallModal({
@@ -75664,7 +75683,7 @@ function InstalledApp({ app, className }) {
             keepConfig: event.target.checked,
         });
     };
-    //
+    /*------------ */
     const [updateModal, setUpdateModal] = react_1.useState(null);
     const showModalUpdate = () => {
         setUpdateModal({
@@ -75676,42 +75695,42 @@ function InstalledApp({ app, className }) {
         setUpdateModal(null);
     };
     const [updateStatus, setUpdateStatus] = react_1.useState(null);
-    //
+    /*------------ */
     const [settingsModal, setSettingsModal] = react_1.useState(null);
     const showModalSettings = () => {
         setSettingsModal({
+            /// ?
             keepConfig: false,
         });
     };
     const hideModalSettings = () => {
         setSettingsModal(null);
     };
-    //
+    /*------------ */
+    const [isUninstalling, setUninstLoader] = react_1.useState(false);
     const uninstall = () => {
-        if (confirm("Do you wan tot uninstall the App?"))
-            wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then((res) => {
-                alert("The app has been uninstalled.");
-                hideModalUninstall();
-                // this.setState({
-                //     setRemoveLoading: false,
-                //     // modalMsg: res as any,
-                //     modalMsg: "The App is uninstalled",
-                //     error: false,
-                // });
-                // setTimeout(() => {
-                //     this.setState({ redirect: true });
-                // }, 2000);
-            }, (error) => {
-                alert("There was an error uninstalling the app:\n" + error);
-                // this.setState({
-                //     setRemoveLoading: false,
-                //     modalMsg: error as any,
-                //     error: true,
-                // });
-            });
+        if (!confirm("Do you wan tot uninstall the App?"))
+            return;
+        setUninstLoader(true);
+        wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then((res) => {
+            setUninstLoader(false);
+            load();
+            alert("The app has been uninstalled.");
+            hideModalUninstall();
+        }, (error) => {
+            setUninstLoader(false);
+            alert("There was an error uninstalling the app:\n" + error);
+        });
     };
-    //
-    const checkUpdates = () => {
+    /*------------ */
+    const checkUpdates = (showAlert = true) => {
+        setUpdateStatus({
+            logs: null,
+            isChecking: true,
+            hasCheckedUpdates: false,
+            hasUpdate: false,
+            newVersion: null,
+        });
         wazigate.get(`update/${app.id}`).then((res) => {
             if (res.newUpdate) {
                 setUpdateStatus((status) => ({
@@ -75730,16 +75749,18 @@ function InstalledApp({ app, className }) {
                     hasUpdate: false,
                     newVersion: null,
                 }));
-                alert("The latest version is already installed.");
+                if (showAlert)
+                    alert("The latest version is already installed.");
             }
         }, (error) => {
-            alert("There was an error checking for updates:\n" + error);
+            if (showAlert)
+                alert("There was an error checking for updates:\n" + error);
         });
     };
     const update = () => {
         setUpdateStatus({
             logs: "Please wait...",
-            isChecking: false,
+            isChecking: true,
             hasCheckedUpdates: false,
             hasUpdate: false,
             newVersion: null,
@@ -75756,16 +75777,11 @@ function InstalledApp({ app, className }) {
         };
         var timeout = setTimeout(pollStatus, 1000);
         wazigate.set("update/" + app.id, {}).then(() => {
-            setUpdateStatus((status) => ({
-                logs: status.logs,
-                isChecking: false,
-                hasCheckedUpdates: false,
-                hasUpdate: false,
-                newVersion: null,
-            }));
+            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
             clearTimeout(timeout);
             timeout = null;
         }, (error) => {
+            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
             alert("There was an error updating the app:\n" + error);
             clearTimeout(timeout);
             timeout = null;
@@ -75777,6 +75793,7 @@ function InstalledApp({ app, className }) {
         setStopping(true);
         wazigate.setAppConfig(app.id, { action: "stop" }).then((res) => {
             setStopping(false);
+            load();
         }, (error) => {
             setStopping(false);
             alert("Can not perform action:\n" + error);
@@ -75787,16 +75804,41 @@ function InstalledApp({ app, className }) {
         setStarting(true);
         wazigate.setAppConfig(app.id, { action: "start" }).then((res) => {
             setStarting(false);
+            load();
         }, (error) => {
             setStarting(false);
             alert("Can not perform action:\n" + error);
         });
     };
-    const running = !!((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.running);
+    /*----------*/
+    const [rePolicyChaing, setResPolicyLoader] = react_1.default.useState(false);
+    const restartPolicyChange = (event) => {
+        if (rePolicyChaing)
+            return; // Already on progress
+        var newPolicy = event.target.value;
+        if (!newPolicy || newPolicy == "0")
+            return;
+        setResPolicyLoader(true);
+        wazigate.setAppConfig(app.id, { restart: newPolicy }).then((res) => {
+            setResPolicyLoader(false);
+            load();
+        }, (error) => {
+            setResPolicyLoader(false);
+        });
+    };
+    /*----------*/
     const getDefaultAppIcon = (event) => {
         event.target.src = "img/default-app-icon.svg";
     };
-    const isSysApp = app.id == "wazigate-edge" || app.id == "waziup.wazigate-system";
+    /*----------*/
+    // If I get uninstalled, I hide myself ;)
+    if (!app) {
+        return react_1.default.createElement("span", null);
+    }
+    /*----------*/
+    const running = !!((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.running);
+    const isSysApp = (app === null || app === void 0 ? void 0 : app.id) == "wazigate-edge" || (app === null || app === void 0 ? void 0 : app.id) == "waziup.wazigate-system";
+    /*----------*/
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
             react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: app.id == "wazigate-edge"
@@ -75804,11 +75846,13 @@ function InstalledApp({ app, className }) {
                         "https://hub.docker.com/r/" + app.id.replace(".", "/"), target: "_blank" }, app.id) }),
             react_1.default.createElement(core_1.CardContent, null,
                 app.state ? (react_1.default.createElement("span", { className: "text-capitalize" },
-                    "Status: ",
-                    app.state.status || "Disabled")) : null,
-                react_1.default.createElement("p", null, `${((_f = app) === null || _f === void 0 ? void 0 : _f.description) || react_1.default.createElement("br", null)}`)),
+                    "Status:",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, app.state.status || "Disabled"))) : null,
+                react_1.default.createElement("p", null, `${((_f = app) === null || _f === void 0 ? void 0 : _f.description) || "."}`)),
             react_1.default.createElement(core_1.CardActions, null,
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
+                react_1.default.createElement(core_1.Button, { className: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "orange"
+                        : (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) ? "animate-flicker"
+                            : "", title: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "New update available" : "", startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Settings_1.default, null), onClick: showModalSettings }, "Settings"),
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall }, "Uninstall"))),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, open: uninstallModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
@@ -75817,22 +75861,29 @@ function InstalledApp({ app, className }) {
                 app.name),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
                 react_1.default.createElement(core_1.FormGroup, null,
-                    react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
+                    react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" })),
+                isUninstalling && react_1.default.createElement(core_1.LinearProgress, null)),
             react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"))),
+                react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"))),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: updateModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
             react_1.default.createElement(core_1.DialogTitle, null,
                 "Update ", app === null || app === void 0 ? void 0 :
                 app.name),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                "Current Version: ", app === null || app === void 0 ? void 0 :
-                app.version,
+                "Current Version:",
+                " ",
+                react_1.default.createElement("span", { className: "font-weight-bold" }, app === null || app === void 0 ? void 0 : app.version),
                 react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
                     // spellCheck={false}
                     // contentEditable={false}
-                    readOnly: true, value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "N/A" })),
+                    readOnly: true, style: {
+                        display: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasCheckedUpdates) || (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking)
+                            ? ""
+                            : "none",
+                    }, value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "." }),
+                (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) && (react_1.default.createElement(core_1.CircularProgress, { size: 34, className: classes.buttonProgress }))),
             react_1.default.createElement(core_1.DialogActions, null,
-                !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: checkUpdates, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Check for Updates")) : null,
+                !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: () => checkUpdates(), color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Check for Updates")) : null,
                 (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update Now")) : null)),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: settingsModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
             react_1.default.createElement(core_1.DialogTitle, null,
@@ -75841,19 +75892,35 @@ function InstalledApp({ app, className }) {
                 " ]"),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
                 react_1.default.createElement("p", { className: "text-capitalize" },
-                    "Status: ",
-                    `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.status) || "Unknown"}`),
+                    "Status:",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.status) || "Unknown"}`)),
                 react_1.default.createElement("p", null,
-                    "Current Version: ",
-                    `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`),
+                    "Current Version:",
+                    " ",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`)),
                 react_1.default.createElement("p", null,
-                    "Author: ",
-                    `${(app === null || app === void 0 ? void 0 : app.author) || "Unknown"}`),
+                    "Author:",
+                    " ",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.author) || "Unknown"}`)),
                 react_1.default.createElement("p", null,
-                    "Health: ",
-                    `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.health) || "Unknown"}`),
-                react_1.default.createElement("p", null, `${((_j = app) === null || _j === void 0 ? void 0 : _j.description) || ""}`)),
+                    "Health:",
+                    " ",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.health) || "Unknown"}`)),
+                react_1.default.createElement("p", { className: "text-capitalize" },
+                    "Restart policy:",
+                    " ",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_j = app === null || app === void 0 ? void 0 : app.state) === null || _j === void 0 ? void 0 : _j.restartPolicy) || "Unknown"}`)),
+                react_1.default.createElement("p", null, `${((_k = app) === null || _k === void 0 ? void 0 : _k.description) || ""}`)),
             react_1.default.createElement(core_1.DialogActions, null,
+                react_1.default.createElement(Select_1.default, { disabled: isSysApp, 
+                    // labelId="restartPolicy"
+                    id: "select-restart-policy", value: ((_l = app === null || app === void 0 ? void 0 : app.state) === null || _l === void 0 ? void 0 : _l.restartPolicy) || "0", onChange: restartPolicyChange, color: "primary" },
+                    react_1.default.createElement(MenuItem_1.default, { value: "0" }, "Restart Policy"),
+                    react_1.default.createElement(MenuItem_1.default, { value: "always" }, "Always"),
+                    react_1.default.createElement(MenuItem_1.default, { value: "on-failure" }, "On-Failure"),
+                    react_1.default.createElement(MenuItem_1.default, { value: "unless-stopped" }, "Unless-Stopped"),
+                    react_1.default.createElement(MenuItem_1.default, { value: "no" }, "No")),
+                rePolicyChaing && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })),
                 react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
                 react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
                 react_1.default.createElement("div", { className: classes.wrapper },
@@ -75907,24 +75974,33 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
     buttonProgress: {
         color: colors_1.green[500],
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
+        position: "absolute",
+        top: "50%",
+        left: "50%",
         marginTop: -12,
         marginLeft: -12,
     },
     wrapper: {
         margin: theme.spacing(1),
-        position: 'relative',
+        position: "relative",
     },
     logo: {
         display: "inline-flex",
         height: "2rem",
         marginRight: 16,
-    }
+    },
 }));
-function MarketplaceApp({ app, className }) {
+function MarketplaceApp({ appInfo, className }) {
+    var _a, _b, _c;
     const classes = useStyles();
+    /*------------ */
+    const [app, setApp] = react_1.useState(appInfo);
+    const load = () => {
+        wazigate.getApp(app.id).then(setApp, (error) => {
+            alert("There was an error loading the app info:\n" + error);
+        });
+    };
+    /*------------ */
     const [installStatus, setInstallStatus] = react_1.useState(null);
     const [modal, setModal] = react_1.useState(false);
     const toggleModal = () => setModal(!modal);
@@ -75933,27 +76009,18 @@ function MarketplaceApp({ app, className }) {
     const [installLoading, setInstallLoading] = react_1.useState(false);
     const [installSuccess, setInstallSuccess] = react_1.useState(false);
     const [startLoading, setStartLoading] = react_1.useState(false);
-    const pollStatus = () => {
-        if (!this._isMounted ||
-            (this.state.installStatus && this.state.installStatus.done))
-            return;
-        wazigate.get(`"apps/${app.id}?install_logs`).then((res) => {
-            setInstallStatus(res);
-            setTimeout(pollStatus, 1000);
-        }, (error) => {
-            alert("There was an error getting the install status:\n" + error);
-        });
-    };
     const install = () => {
         setInstallLoading(true);
-        setInstallStatus({ log: "..." });
+        setInstallStatus({ log: "...", done: false });
         const pollStatus = () => {
             wazigate.get(`"apps/${app.id}?install_logs`).then((res) => {
                 setInstallStatus(res);
+                setInstallLoading(false);
                 if (timeout !== null) {
                     timeout = setTimeout(pollStatus, 1000);
                 }
             }, (error) => {
+                setInstallLoading(false);
                 alert("There was an error getting the install status:\n" + error);
             });
         };
@@ -75985,12 +76052,11 @@ function MarketplaceApp({ app, className }) {
     };
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
-            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }), title: "App Name Here", subheader: react_1.default.createElement("a", { href: app.homepage || ("https://hub.docker.com/r/" + app.id.replace(".", "/")), target: "_blank" }, app.id) }),
+            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }), title: app === null || app === void 0 ? void 0 : app.id, subheader: react_1.default.createElement("a", { href: app.homepage ||
+                        "https://hub.docker.com/r/" + ((_a = app === null || app === void 0 ? void 0 : app.id) === null || _a === void 0 ? void 0 : _a.replace(".", "/")), target: "_blank" }, app === null || app === void 0 ? void 0 : app.id) }),
             react_1.default.createElement(core_1.CardContent, null,
-                app.state ? (react_1.default.createElement("span", null,
-                    "Status: ",
-                    app.state.status || "Disabled")) : null,
-                "App Description Here"),
+                react_1.default.createElement("p", null, `${((_b = app) === null || _b === void 0 ? void 0 : _b.description) || "."}`),
+                react_1.default.createElement("p", null, (_c = app) === null || _c === void 0 ? void 0 : _c.image)),
             react_1.default.createElement(core_1.CardActions, null,
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal }, "Install"))),
         react_1.default.createElement(core_1.Dialog, { onClose: toggleModal, open: modal, fullWidth: true, maxWidth: "xl", className: classes.modal },
@@ -76001,14 +76067,14 @@ function MarketplaceApp({ app, className }) {
                 react_1.default.createElement(core_1.FormGroup, { row: true },
                     react_1.default.createElement("div", { className: classes.wrapper },
                         react_1.default.createElement(core_1.Button, { autoFocus: true, onClick: install, color: "primary", variant: "contained", startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Download and Install"),
-                        installLoading && react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                        installLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))),
                 react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
                     // spellCheck={false}
                     // contentEditable={false}
-                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || "N/A", hidden: !!installStatus }),
+                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || ".", hidden: installLoading || !installStatus }),
                 modalMsg ? (react_1.default.createElement(Alert_1.default, { severity: error ? "error" : "warning", onClose: () => { } }, modalMsg)) : null),
             react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App")))));
+                react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", disabled: !(installStatus === null || installStatus === void 0 ? void 0 : installStatus.done), startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App")))));
 }
 exports.default = MarketplaceApp;
 
