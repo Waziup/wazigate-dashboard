@@ -4,7 +4,7 @@ import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
-import waziup, { MenuHook, App } from "waziup";
+import waziup, { MenuHook, App, Cloud } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
 import SyncIcon from "@material-ui/icons/Sync";
 // import WifiIcon from "@material-ui/icons/Wifi";
@@ -81,8 +81,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+      flexDirection: "column",
       minHeight: "100%",
       background: "#f1f1f1",
+      [theme.breakpoints.up("sm")]: {
+        paddingLeft: drawerWidth,
+      }
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
@@ -212,15 +216,25 @@ export const DashboardComp = () => {
 
   const [apps, setApps] = useState(null);
 
+  const [clouds, setClouds] = useState(null as Cloud[])
+
   const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
     event.target.src = "img/default-icon.svg";
   };
+
 
   useEffect(() => {
     window.addEventListener("hashchange", () => {
       setPage(location.hash);
       setMobileOpen(false);
     });
+
+    wazigate.getClouds().then((clouds) => {
+      setClouds(Object.values(clouds));
+    }, (err: Error) => {
+      console.error("There was an error loading the cloads:", err);
+      setClouds([]);
+    })
 
     wazigate.getApps().then((apps) => {
       if (apps === null) {
@@ -255,6 +269,9 @@ export const DashboardComp = () => {
           setApps(apps);
         });
       }
+    }, (err: Error) => {
+      console.error("There was an error loading the apps:", err);
+      setApps([]);
     });
   }, []);
 
@@ -287,20 +304,6 @@ export const DashboardComp = () => {
     });
   };
 
-  //   const inflateMenuItem(id: string) {
-
-  //   }
-
-  //   const menuItem = (id: string) => {
-  //     const item = hooks.get(id)[0] as MenuItem;
-  //     const subItems = menuItems(id);
-  //   }
-
-  //   const menuItem = (id: string) => {
-  //     const item = hooks.get(id)[0] as MenuItem;
-  //     const subItems = menuItems(id);
-  //   }
-
   const menuItem = (id: string, item: MenuHook) => {
     const open = openMenues.has(id);
     const subItems = hooks.getAtPrio(id);
@@ -319,7 +322,7 @@ export const DashboardComp = () => {
           }
           className={`${classes.a} ${
             hooks.depth(id) >= 2 ? classes.nested : ""
-          }`}
+            }`}
         >
           <ListItemIcon className={classes.drawerIcon}>{icon}</ListItemIcon>
           <ListItemText primary={item.primary} />
@@ -327,8 +330,8 @@ export const DashboardComp = () => {
             open ? (
               <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} />
             ) : (
-              <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
-            )
+                <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
+              )
           ) : null}
         </ListItem>
         {subItems.length != 0 ? (
@@ -378,6 +381,7 @@ export const DashboardComp = () => {
         <SensorPage
           deviceID={match[1]}
           sensorID={match[2]}
+          clouds={clouds}
           handleDrawerToggle={handleDrawerToggle}
         />
       );

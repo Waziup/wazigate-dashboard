@@ -36807,6 +36807,64 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/icons/Done.js":
+/*!*************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Done.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+}), 'Done');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/DoneAll.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@material-ui/icons/DoneAll.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z"
+}), 'DoneAll');
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/icons/Edit.js":
 /*!*************************************************!*\
   !*** ./node_modules/@material-ui/icons/Edit.js ***!
@@ -36976,6 +37034,35 @@ var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/crea
 var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
   d: "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
 }), 'GetApp');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/HelpOutline.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/HelpOutline.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+}), 'HelpOutline');
 
 exports.default = _default;
 
@@ -73529,14 +73616,14 @@ class Waziup {
                 return;
             }
             var listeners = new Set();
-            for (var t in this.topics) {
-                if (matchTopic(topic, t)) {
-                    for (let l of this.topics[topic]) {
+            for (var templ in this.topics) {
+                if (matchTopic(templ, topic)) {
+                    for (let l of this.topics[templ]) {
                         if (listeners.has(l))
                             continue;
                         listeners.add(l);
                         try {
-                            l(msg);
+                            l(msg, topic);
                         }
                         catch (err) {
                             console.error("MQTT: Message listener '%s' %o:\n%o", topic, l, plString);
@@ -74446,7 +74533,12 @@ const Devices_1 = __importDefault(__webpack_require__(/*! ./pages/Devices */ "./
 const Error_1 = __importDefault(__webpack_require__(/*! ./pages/Error */ "./src/components/pages/Error.tsx"));
 const AppsProxy_1 = __webpack_require__(/*! ./AppsProxy */ "./src/components/AppsProxy.tsx");
 const Sync_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Sync */ "./node_modules/@material-ui/icons/Sync.js"));
+// import WifiIcon from "@material-ui/icons/Wifi";
+// import RouterIcon from "@material-ui/icons/Router";
 const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps */ "./node_modules/@material-ui/icons/Apps.js"));
+// import LinkIcon from "@material-ui/icons/Link";
+// import LinkOffIcon from "@material-ui/icons/LinkOff";
+// import SettingsIcon from "@material-ui/icons/Settings";
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
@@ -74479,8 +74571,12 @@ const drawerWidth = 240;
 const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
     root: {
         display: "flex",
+        flexDirection: "column",
         minHeight: "100%",
         background: "#f1f1f1",
+        [theme.breakpoints.up("sm")]: {
+            paddingLeft: drawerWidth,
+        }
     },
     drawer: {
         [theme.breakpoints.up("sm")]: {
@@ -74590,10 +74686,20 @@ exports.DashboardComp = () => {
     };
     const [page, setPage] = react_1.useState(location.hash);
     const [apps, setApps] = react_1.useState(null);
+    const [clouds, setClouds] = react_1.useState(null);
+    const getDefaultAppIcon = (event) => {
+        event.target.src = "img/default-icon.svg";
+    };
     react_1.useEffect(() => {
         window.addEventListener("hashchange", () => {
             setPage(location.hash);
             setMobileOpen(false);
+        });
+        wazigate.getClouds().then((clouds) => {
+            setClouds(Object.values(clouds));
+        }, (err) => {
+            console.error("There was an error loading the cloads:", err);
+            setClouds([]);
         });
         wazigate.getApps().then((apps) => {
             if (apps === null) {
@@ -74607,7 +74713,7 @@ exports.DashboardComp = () => {
                     if (menu) {
                         for (const id in menu) {
                             const item = menu[id];
-                            const hook = Object.assign(Object.assign({}, item), { icon: item.icon ? react_1.default.createElement("img", { className: classes.menuIcon, src: wazigate.toProxyURL(app.id, item.icon) }) : null });
+                            const hook = Object.assign(Object.assign({}, item), { icon: item.icon ? (react_1.default.createElement("img", { className: classes.menuIcon, src: wazigate.toProxyURL(app.id, item.icon), onError: getDefaultAppIcon })) : null });
                             hooks.setMenuHook(id, hook, item.prio);
                         }
                     }
@@ -74620,6 +74726,9 @@ exports.DashboardComp = () => {
                     setApps(apps);
                 });
             }
+        }, (err) => {
+            console.error("There was an error loading the apps:", err);
+            setApps([]);
         });
     }, []);
     const [openMenues, setOpenMenues] = react_1.useState(new Set());
@@ -74648,23 +74757,10 @@ exports.DashboardComp = () => {
             return new Set(openMenues);
         });
     };
-    //   const inflateMenuItem(id: string) {
-    //   }
-    //   const menuItem = (id: string) => {
-    //     const item = hooks.get(id)[0] as MenuItem;
-    //     const subItems = menuItems(id);
-    //   }
-    //   const menuItem = (id: string) => {
-    //     const item = hooks.get(id)[0] as MenuItem;
-    //     const subItems = menuItems(id);
-    //   }
-    const getDefaultAppIcon = (event) => {
-        event.target.src = "img/default-icon.svg";
-    };
     const menuItem = (id, item) => {
         const open = openMenues.has(id);
         const subItems = hooks.getAtPrio(id);
-        const icon = item.icon || react_1.default.createElement("img", { src: "img/default-icon.svg", className: classes.menuIcon });
+        const icon = item.icon || (react_1.default.createElement("img", { src: "img/default-icon.svg", className: classes.menuIcon }));
         return (react_1.default.createElement(react_1.Fragment, { key: id },
             react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: id, href: item.href, onClick: subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null, className: `${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}` },
                 react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, icon),
@@ -74698,7 +74794,7 @@ exports.DashboardComp = () => {
             body = (react_1.default.createElement(Apps_1.default, { filter: "available", handleDrawerToggle: handleDrawerToggle }));
         }
         else if ((match = page.match(sensorRegExp))) {
-            body = (react_1.default.createElement(Sensor_1.default, { deviceID: match[1], sensorID: match[2], handleDrawerToggle: handleDrawerToggle }));
+            body = (react_1.default.createElement(Sensor_1.default, { deviceID: match[1], sensorID: match[2], clouds: clouds, handleDrawerToggle: handleDrawerToggle }));
         }
         else if ((match = page.match(deviceRegExp))) {
             body = (react_1.default.createElement(Device_1.default, { deviceID: match[1], handleDrawerToggle: handleDrawerToggle }));
@@ -75039,6 +75135,131 @@ exports.MQTTIndicator = MQTTIndicator;
 
 /***/ }),
 
+/***/ "./src/components/OntologyKindInput.tsx":
+/*!**********************************************!*\
+  !*** ./src/components/OntologyKindInput.tsx ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const SVGSpriteIcon_1 = __importDefault(__webpack_require__(/*! ./SVGSpriteIcon */ "./src/components/SVGSpriteIcon.tsx"));
+const Autocomplete_1 = __importStar(__webpack_require__(/*! @material-ui/lab/Autocomplete/Autocomplete */ "./node_modules/@material-ui/lab/Autocomplete/Autocomplete.js"));
+const ontologies_json_1 = __importDefault(__webpack_require__(/*! ../ontologies.json */ "./src/ontologies.json"));
+const ontologies_svg_1 = __importDefault(__webpack_require__(/*! ../img/ontologies.svg */ "./src/img/ontologies.svg"));
+const defaultKindIcon = "meter";
+const useStyles = core_1.makeStyles((theme) => ({
+    root: {
+        [theme.breakpoints.up('sm')]: {
+            width: "340px",
+        },
+        width: "calc(100% - 18px)",
+        verticalAlign: "top",
+        display: "inline-block",
+        margin: theme.spacing(1),
+    },
+    input: {
+        paddingTop: "6px !important",
+        paddingBottom: "6px !important",
+    },
+    kindIcon: {
+        width: "1.5em",
+        height: "1.5em",
+        marginLeft: ".5em",
+    },
+    icon: {
+        width: "24px",
+        height: "24px",
+        marginRight: "10px",
+    }
+}));
+const filter = Autocomplete_1.createFilterOptions();
+function OntologyKindInput(props) {
+    const classes = useStyles();
+    const { value, onChange } = props;
+    const ontology = ontologies_json_1.default.sensingDevices;
+    return (react_1.default.createElement(Autocomplete_1.default, { value: value, className: classes.root, id: "kind-select", options: Object.keys(ontology), onChange: (event, newValue) => {
+            if (typeof newValue === "string") {
+                onChange(event, newValue);
+            }
+            else {
+                onChange(event, "");
+            }
+        }, filterOptions: (options, params) => {
+            const filtered = filter(options, params);
+            if (params.inputValue !== '') {
+                filtered.push(params.inputValue);
+            }
+            return filtered;
+        }, getOptionLabel: (kind) => {
+            if (typeof kind === "string") {
+                if (kind in ontologies_json_1.default.sensingDevices) {
+                    return ontologies_json_1.default.sensingDevices[kind].label;
+                }
+                return kind;
+            }
+            return "";
+        }, renderOption: (kind) => {
+            var icon;
+            var label;
+            if (typeof kind === "string") {
+                if (kind in ontologies_json_1.default.sensingDevices) {
+                    icon = ontologies_json_1.default.sensingDevices[kind].icon;
+                    label = ontologies_json_1.default.sensingDevices[kind].label;
+                }
+                else {
+                    icon = defaultKindIcon;
+                    label = `Use \"${kind}\"`;
+                }
+            }
+            else {
+                icon = defaultKindIcon;
+                label = "null value option";
+            }
+            return (react_1.default.createElement(react_1.Fragment, null,
+                react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` }),
+                label));
+        }, 
+        // filterSelectedOptions
+        freeSolo: true, renderInput: (params) => {
+            var icon;
+            var label;
+            if (value in ontologies_json_1.default.sensingDevices) {
+                icon = ontologies_json_1.default.sensingDevices[value].icon;
+                label = ontologies_json_1.default.sensingDevices[value].label;
+            }
+            else {
+                icon = defaultKindIcon;
+                label = value;
+            }
+            params.InputProps.startAdornment = (react_1.default.createElement(react_1.Fragment, null,
+                params.InputProps.startAdornment || null,
+                react_1.default.createElement(core_1.InputAdornment, { position: "start" },
+                    react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.kindIcon, src: `dist/${ontologies_svg_1.default}#${icon}` }))));
+            params.inputProps["className"] = `${params.inputProps["className"]} ${classes.input}`;
+            return (react_1.default.createElement(react_1.Fragment, null,
+                react_1.default.createElement(core_1.TextField, Object.assign({}, params, { label: "Sensor Kind", placeholder: "no sensor kind" }))));
+        } }));
+}
+exports.OntologyKindInput = OntologyKindInput;
+
+
+/***/ }),
+
 /***/ "./src/components/SVGSpriteIcon.tsx":
 /*!******************************************!*\
   !*** ./src/components/SVGSpriteIcon.tsx ***!
@@ -75058,6 +75279,312 @@ function SVGSpriteIcon({ src, className }) {
         react_1.default.createElement("use", { xlinkHref: src })));
 }
 exports.default = SVGSpriteIcon;
+
+
+/***/ }),
+
+/***/ "./src/components/SyncIntervalInput.tsx":
+/*!**********************************************!*\
+  !*** ./src/components/SyncIntervalInput.tsx ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const react_1 = __importDefault(__webpack_require__(/*! react */ "react"));
+const HelpOutline_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/HelpOutline */ "./node_modules/@material-ui/icons/HelpOutline.js"));
+const useStyles = core_1.makeStyles((theme) => core_1.createStyles({
+    root: {
+        padding: theme.spacing(2),
+        width: 600,
+        maxWidth: "100%",
+    },
+    title: {
+        lineHeight: "31px",
+    },
+    slider: {},
+    helpBtn: {
+        marginLeft: theme.spacing(2),
+        verticalAlign: "top",
+    }
+}));
+const labels = ["0s", "5s", "10s", "20s", "30s", "1m", "2m", "5m", "10m", "15m", "30m", "1h", "2h", "4h", "12h", "1D", "2D", "10D"];
+const marks = ["instant", "", "", "20s", "", "1m", "", "5m", "", "15m", "", "1h", "", "4h", "", "1D", "", "10D"];
+function valuetext(value) {
+    return labels[value];
+}
+function valueLabelFormat(value) {
+    return labels[value];
+}
+function SyncIntervalInput(props) {
+    const { value, onChange } = props;
+    const classes = useStyles();
+    const handleChange = (event, newValue) => {
+        onChange(event, labels[newValue]);
+    };
+    return (react_1.default.createElement("div", { className: classes.root },
+        react_1.default.createElement(core_1.Typography, { id: "sync-interval-input", gutterBottom: true, className: classes.title },
+            "Sync Interval",
+            react_1.default.createElement(core_1.IconButton, { "aria-label": "help", className: classes.helpBtn, size: "small", component: "a", target: "_blank", href: "https://www.waziup.io/documentation/wazigate/#sync-interval" },
+                react_1.default.createElement(HelpOutline_1.default, null))),
+        react_1.default.createElement(core_1.Slider, { className: classes.slider, defaultValue: 4, valueLabelFormat: valueLabelFormat, getAriaValueText: valuetext, value: labels.indexOf(value), "aria-labelledby": "sync-interval-input", step: null, max: marks.length - 1, onChange: handleChange, valueLabelDisplay: "auto", marks: marks.map((label, value) => ({ value, label })) })));
+}
+exports.default = SyncIntervalInput;
+
+
+/***/ }),
+
+/***/ "./src/components/SyncStatusIndicator.tsx":
+/*!************************************************!*\
+  !*** ./src/components/SyncStatusIndicator.tsx ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const Done_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Done */ "./node_modules/@material-ui/icons/Done.js"));
+const DoneAll_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/DoneAll */ "./node_modules/@material-ui/icons/DoneAll.js"));
+const ErrorOutline_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ErrorOutline */ "./node_modules/@material-ui/icons/ErrorOutline.js"));
+const CloudOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/CloudOutlined */ "./node_modules/@material-ui/icons/CloudOutlined.js"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const useStyles = core_1.makeStyles(() => ({
+    done: {
+        color: "#186dbf",
+    },
+    allDone: {
+        color: "#186dbf",
+    },
+    pending: {
+        color: "#dca708",
+    },
+    error: {
+        color: "red",
+    },
+    menu: {
+        // padding: "8px 16px",
+        background: "#bfe0ff",
+    },
+    menuList: {
+        padding: 0
+    },
+    menuIcon: {
+        fontSize: "2rem",
+        color: "inherit",
+        float: "left",
+    },
+    menuText: {
+        margin: 8,
+        marginLeft: 44,
+        whiteSpace: "pre-line",
+        minHeight: 48,
+        minWidth: 240,
+    },
+    cloudIcon: {
+        width: "32px",
+        height: "32px",
+    }
+}));
+const useCloudStatStyles = core_1.makeStyles(() => ({
+    icon: {
+        width: "32px",
+        height: "32px",
+    }
+}));
+const Second = 1e9; // Microseconds
+const SmallSyncInterval = 5 * 60 * Second; // 5min
+function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+}
+function Clock({ value }) {
+    const now = new Date();
+    if (sameDay(now, value)) {
+        return react_1.default.createElement("span", null, value.toLocaleTimeString());
+    }
+    return react_1.default.createElement("span", null, value.toLocaleString());
+}
+function Countdown({ value }) {
+    const [_, setNow] = react_1.useState(new Date());
+    react_1.useEffect(() => {
+        const updateNow = () => setNow(new Date());
+        const interval = setInterval(updateNow, 1000);
+        return () => clearInterval(interval);
+    }, []);
+    const d = (value - new Date()) / 1000;
+    if (d < 0)
+        return react_1.default.createElement("span", null, "a few seconds");
+    if (d < 60)
+        return react_1.default.createElement("span", null,
+            Math.floor(d),
+            "s");
+    if (d < 60 * 60)
+        return react_1.default.createElement("span", null,
+            Math.floor(d / 60),
+            "m ",
+            Math.floor(d % 60),
+            "s");
+    if (d < 60 * 60 * 24)
+        return react_1.default.createElement("span", null,
+            Math.floor(d / 60 / 60),
+            "h ",
+            Math.floor((d / 60) % 60),
+            "m");
+    return react_1.default.createElement("span", null,
+        Math.floor(d / 60 / 60 / 24),
+        "d ",
+        Math.floor((d / 60 / 60) % 24),
+        "h");
+}
+function CloudStat(props) {
+    const { cloud, status } = props;
+    const classes = useCloudStatStyles();
+    var badgeContent;
+    var secondary;
+    if (status === null) {
+        badgeContent = react_1.default.createElement(DoneAll_1.default, null);
+        secondary = (react_1.default.createElement("div", null,
+            "The sensor is synchronized with the cloud.",
+            react_1.default.createElement("br", null),
+            "All values are uploaded. Yes! \uD83D\uDE03"));
+    }
+    else if (status.action.includes("error")) {
+        badgeContent = react_1.default.createElement(ErrorOutline_1.default, null);
+        // TODO: add custom error message
+        secondary = (react_1.default.createElement("div", null, "Oh no!"));
+    }
+    else {
+        badgeContent = react_1.default.createElement(Done_1.default, null);
+        // TODO: add "Sync Now" button
+        secondary = (react_1.default.createElement("div", null,
+            status.sleep > SmallSyncInterval ? (react_1.default.createElement("div", null,
+                "Values will be buffered until ",
+                react_1.default.createElement(Clock, { value: new Date(status.wakeup) }),
+                ".")) : (react_1.default.createElement("div", null, "Values will be buffered until the next synchronization.")),
+            react_1.default.createElement("div", null,
+                "Next sync in ",
+                react_1.default.createElement(Countdown, { value: new Date(status.wakeup) }),
+                " \u231B")));
+    }
+    return (react_1.default.createElement(core_1.ListItem, { key: cloud.id },
+        react_1.default.createElement(core_1.ListItemAvatar, null,
+            react_1.default.createElement(core_1.Badge, { badgeContent: badgeContent },
+                react_1.default.createElement("img", { className: classes.icon, src: wazigateLogo }))),
+        react_1.default.createElement(core_1.ListItemText, { primary: cloud.name || cloud.id, secondary: secondary })));
+}
+function SyncStatusIndicator(props) {
+    const { deviceID, sensorID, doNotSync, clouds } = props;
+    const classes = useStyles();
+    const [status, setStatus] = react_1.useState(clouds
+        .map(cloud => cloud.id)
+        .reduce((status, id) => {
+        status[id] = null;
+        return status;
+    }, {}));
+    react_1.useEffect(() => {
+        const cb = (cs, topic) => {
+            const id = topic.split("/")[1];
+            if (cs.entity.device === deviceID && cs.entity.sensor == sensorID) {
+                var s = cs.status;
+                setStatus(Object.assign(Object.assign({}, status), { [id]: s }));
+            }
+        };
+        wazigate.subscribe("clouds/+/status", cb);
+        for (let cloud of clouds) {
+            wazigate.getCloudStatus(cloud.id).then((css) => {
+                for (const cs of css) {
+                    if (cs.entity.device === deviceID && cs.entity.sensor == sensorID) {
+                        setStatus(Object.assign(Object.assign({}, status), { [cloud.id]: cs.status }));
+                        break;
+                    }
+                }
+            });
+        }
+        return () => {
+            wazigate.unsubscribe("clouds/+/status", cb);
+        };
+    }, []);
+    const [menuAnchor, setSyncMenuAnchor] = react_1.useState(null);
+    const handleMenuClick = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setSyncMenuAnchor(event.currentTarget);
+    };
+    const handleMenuClose = () => {
+        setSyncMenuAnchor(null);
+    };
+    const handleMenuMouseDown = (event) => {
+        event.stopPropagation();
+    };
+    const [tooltipOpen, setTooltipOpen] = react_1.default.useState(false);
+    const handleTooltipClose = () => {
+        setTooltipOpen(false);
+    };
+    const allCloudsPaused = !clouds.find(cloud => cloud.paused != true);
+    const disabled = allCloudsPaused || doNotSync;
+    const handleTooltipOpen = () => {
+        if (disabled)
+            setTooltipOpen(true);
+    };
+    var icon;
+    var content;
+    if (disabled) {
+        icon = null;
+        content = null;
+    }
+    else {
+        content = clouds.map(cloud => react_1.default.createElement(CloudStat, { key: cloud.id, cloud: cloud, status: status[cloud.id] }));
+        if (!!Object.values(status).find(s => s === null || s === void 0 ? void 0 : s.action.includes("error"))) {
+            icon = react_1.default.createElement(ErrorOutline_1.default, { fontSize: "small", className: classes.error });
+        }
+        if (!Object.values(status).find(s => (s === null || s === void 0 ? void 0 : s.action) !== null)) {
+            icon = react_1.default.createElement(DoneAll_1.default, { fontSize: "small", className: classes.allDone });
+        }
+        else {
+            icon = react_1.default.createElement(Done_1.default, { fontSize: "small", className: classes.done });
+        }
+    }
+    var tooltipText = null;
+    if (allCloudsPaused) {
+        tooltipText = (react_1.default.createElement(react_1.Fragment, null,
+            "There is no cloud activated.",
+            react_1.default.createElement("br", null),
+            "Go to \"\uD83D\uDDD8 Sync\" an enable at least one cloud."));
+    }
+    else if (doNotSync) {
+        tooltipText = "Sync is disabled for this sensor.";
+    }
+    return (react_1.default.createElement(react_1.Fragment, null,
+        react_1.default.createElement(core_1.Badge, { overlap: "circle", badgeContent: icon },
+            react_1.default.createElement(core_1.Tooltip, { title: tooltipText, open: tooltipOpen, onClose: handleTooltipClose, onOpen: handleTooltipOpen },
+                react_1.default.createElement("span", null,
+                    " ",
+                    react_1.default.createElement(core_1.IconButton, { "aria-label": "syn", "aria-controls": "sync-menu", "aria-haspopup": "true", disabled: disabled, onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
+                        react_1.default.createElement(CloudOutlined_1.default, null))))),
+        react_1.default.createElement(core_1.Menu, { id: "sync-menu", anchorEl: menuAnchor, keepMounted: true, open: !!menuAnchor, onClose: handleMenuClose, classes: { paper: classes.menu, list: classes.menuList } }, content)));
+}
+exports.default = SyncStatusIndicator;
 
 
 /***/ }),
@@ -75104,29 +75631,29 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
     buttonProgress: {
         color: colors_1.green[500],
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
+        position: "absolute",
+        top: "50%",
+        left: "50%",
         marginTop: -12,
         marginLeft: -12,
     },
     wrapper: {
         margin: theme.spacing(1),
-        position: 'relative',
+        position: "relative",
     },
     logo: {
         display: "inline-flex",
         height: "2rem",
         marginRight: 16,
-    }
+    },
 }));
 function InstalledApp({ app, className }) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const classes = useStyles();
     const [uninstallModal, setUninstallModal] = react_1.useState(null);
     const showModalUninstall = () => {
         setUninstallModal({
-            keepConfig: false
+            keepConfig: false,
         });
     };
     const hideModalUninstall = () => {
@@ -75134,14 +75661,14 @@ function InstalledApp({ app, className }) {
     };
     const handleKeepConfigChange = (event) => {
         setUninstallModal({
-            keepConfig: event.target.checked
+            keepConfig: event.target.checked,
         });
     };
     //
     const [updateModal, setUpdateModal] = react_1.useState(null);
     const showModalUpdate = () => {
         setUpdateModal({
-            keepConfig: false
+            keepConfig: false,
         });
         hideModalSettings();
     };
@@ -75153,7 +75680,7 @@ function InstalledApp({ app, className }) {
     const [settingsModal, setSettingsModal] = react_1.useState(null);
     const showModalSettings = () => {
         setSettingsModal({
-            keepConfig: false
+            keepConfig: false,
         });
     };
     const hideModalSettings = () => {
@@ -75192,7 +75719,7 @@ function InstalledApp({ app, className }) {
                     isChecking: false,
                     hasCheckedUpdates: true,
                     hasUpdate: true,
-                    newVersion: res.newUpdate
+                    newVersion: res.newUpdate,
                 }));
             }
             else {
@@ -75201,7 +75728,7 @@ function InstalledApp({ app, className }) {
                     isChecking: false,
                     hasCheckedUpdates: true,
                     hasUpdate: false,
-                    newVersion: null
+                    newVersion: null,
                 }));
                 alert("The latest version is already installed.");
             }
@@ -75215,7 +75742,7 @@ function InstalledApp({ app, className }) {
             isChecking: false,
             hasCheckedUpdates: false,
             hasUpdate: false,
-            newVersion: null
+            newVersion: null,
         });
         const pollStatus = () => {
             wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
@@ -75234,7 +75761,7 @@ function InstalledApp({ app, className }) {
                 isChecking: false,
                 hasCheckedUpdates: false,
                 hasUpdate: false,
-                newVersion: null
+                newVersion: null,
             }));
             clearTimeout(timeout);
             timeout = null;
@@ -75266,31 +75793,37 @@ function InstalledApp({ app, className }) {
         });
     };
     const running = !!((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.running);
+    const getDefaultAppIcon = (event) => {
+        event.target.src = "img/default-app-icon.svg";
+    };
+    const isSysApp = app.id == "wazigate-edge" || app.id == "waziup.wazigate-system";
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
-            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }), title: "App Name Here", subheader: react_1.default.createElement("a", { href: app.homepage || ("https://hub.docker.com/r/" + app.id.replace(".", "/")), target: "_blank" }, app.id) }),
+            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: app.id == "wazigate-edge"
+                        ? (_c = (_b = app) === null || _b === void 0 ? void 0 : _b.waziapp) === null || _c === void 0 ? void 0 : _c.icon : wazigate.toProxyURL(app.id, (_e = (_d = app) === null || _d === void 0 ? void 0 : _d.waziapp) === null || _e === void 0 ? void 0 : _e.icon), onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.name, subheader: react_1.default.createElement("a", { href: app.homepage ||
+                        "https://hub.docker.com/r/" + app.id.replace(".", "/"), target: "_blank" }, app.id) }),
             react_1.default.createElement(core_1.CardContent, null,
-                app.state ? (react_1.default.createElement("span", null,
+                app.state ? (react_1.default.createElement("span", { className: "text-capitalize" },
                     "Status: ",
                     app.state.status || "Disabled")) : null,
-                "App Description Here"),
+                react_1.default.createElement("p", null, `${((_f = app) === null || _f === void 0 ? void 0 : _f.description) || react_1.default.createElement("br", null)}`)),
             react_1.default.createElement(core_1.CardActions, null,
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Settings_1.default, null), onClick: showModalSettings }, "Settings"),
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), onClick: showModalUninstall }, "Uninstall"))),
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall }, "Uninstall"))),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, open: uninstallModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
             react_1.default.createElement(core_1.DialogTitle, null,
-                "Uninstall ",
-                app.id),
+                "Uninstall ", app === null || app === void 0 ? void 0 :
+                app.name),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
                 react_1.default.createElement(core_1.FormGroup, null,
                     react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
             react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"))),
+                react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"))),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: updateModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
             react_1.default.createElement(core_1.DialogTitle, null,
-                "Update ",
-                app.id),
+                "Update ", app === null || app === void 0 ? void 0 :
+                app.name),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
                 "Current Version: ", app === null || app === void 0 ? void 0 :
                 app.version,
@@ -75302,11 +75835,14 @@ function InstalledApp({ app, className }) {
                 !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: checkUpdates, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Check for Updates")) : null,
                 (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update Now")) : null)),
         react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: settingsModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, null, "Settings"),
+            react_1.default.createElement(core_1.DialogTitle, null,
+                "Settings [ ", app === null || app === void 0 ? void 0 :
+                app.name,
+                " ]"),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                react_1.default.createElement("p", null,
+                react_1.default.createElement("p", { className: "text-capitalize" },
                     "Status: ",
-                    running ? "Running" : "Stopped"),
+                    `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.status) || "Unknown"}`),
                 react_1.default.createElement("p", null,
                     "Current Version: ",
                     `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`),
@@ -75315,20 +75851,17 @@ function InstalledApp({ app, className }) {
                     `${(app === null || app === void 0 ? void 0 : app.author) || "Unknown"}`),
                 react_1.default.createElement("p", null,
                     "Health: ",
-                    `${((_b = app === null || app === void 0 ? void 0 : app.state) === null || _b === void 0 ? void 0 : _b.health) || "Unknown"}`),
-                react_1.default.createElement("p", null,
-                    "Status: ",
-                    `${((_c = app === null || app === void 0 ? void 0 : app.state) === null || _c === void 0 ? void 0 : _c.status) || "Unknown"}`),
-                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || ""}`)),
+                    `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.health) || "Unknown"}`),
+                react_1.default.createElement("p", null, `${((_j = app) === null || _j === void 0 ? void 0 : _j.description) || ""}`)),
             react_1.default.createElement(core_1.DialogActions, null,
                 react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
-                react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
+                react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
                 react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
-                    stopping && react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })),
+                    react_1.default.createElement(core_1.Button, { disabled: stopping || !running || isSysApp, onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
+                    stopping && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
                 react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
-                    starting && react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))))));
+                    react_1.default.createElement(core_1.Button, { disabled: starting || running, onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
+                    starting && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))));
 }
 exports.default = InstalledApp;
 
@@ -75997,24 +76530,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 const Error_1 = __importDefault(__webpack_require__(/*! ../Error */ "./src/components/Error.tsx"));
-const Autocomplete_1 = __importStar(__webpack_require__(/*! @material-ui/lab/Autocomplete/Autocomplete */ "./node_modules/@material-ui/lab/Autocomplete/Autocomplete.js"));
 const ontologies_json_1 = __importDefault(__webpack_require__(/*! ../../ontologies.json */ "./src/ontologies.json"));
-const ontologies_svg_1 = __importDefault(__webpack_require__(/*! ../../img/ontologies.svg */ "./src/img/ontologies.svg"));
-const SVGSpriteIcon_1 = __importDefault(__webpack_require__(/*! ../SVGSpriteIcon */ "./src/components/SVGSpriteIcon.tsx"));
+const SyncStatusIndicator_1 = __importDefault(__webpack_require__(/*! ../SyncStatusIndicator */ "./src/components/SyncStatusIndicator.tsx"));
 const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js"));
 const Save_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Save */ "./node_modules/@material-ui/icons/Save.js"));
 const Close_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js"));
 const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
 const MoreVert_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/MoreVert */ "./node_modules/@material-ui/icons/MoreVert.js"));
-const CloudOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/CloudOutlined */ "./node_modules/@material-ui/icons/CloudOutlined.js"));
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
-const ErrorOutline_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ErrorOutline */ "./node_modules/@material-ui/icons/ErrorOutline.js"));
 const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const SyncIntervalInput_1 = __importDefault(__webpack_require__(/*! ../SyncIntervalInput */ "./src/components/SyncIntervalInput.tsx"));
+const OntologyKindInput_1 = __webpack_require__(/*! ../OntologyKindInput */ "./src/components/OntologyKindInput.tsx");
 const drawerWidth = 240;
 const useStyles = core_1.makeStyles((theme) => ({
     page: {
         marginTop: "64px",
+        display: "flex",
+        flexDirection: "column",
     },
     deviceHead: {
         margin: theme.spacing(3),
@@ -76125,21 +76658,16 @@ const useStyles = core_1.makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
     submitChanges: {
-        width: 180,
         margin: theme.spacing(1),
     },
-    syncOK: {
-        color: "green",
+    submitChangesBtn: {
+        marginRight: theme.spacing(2),
     },
-    syncPending: {
-        color: "#dca708",
-    },
-    syncError: {
-        color: "red",
+    tabPanel: {
+        display: "flex",
+        flexDirection: "column",
     }
 }));
-const defaultKindIcon = "meter";
-const filter = Autocomplete_1.createFilterOptions();
 function TabPanel(props) {
     const { children, value, index } = props, other = __rest(props, ["children", "value", "index"]);
     return (react_1.default.createElement(core_1.Paper, Object.assign({ square: true, role: "tabpanel", hidden: value !== index, id: `sensor-tabpanel-${index}`, "aria-labelledby": `sensor-tab-${index}` }, other), value === index && (react_1.default.createElement(core_1.Box, { p: 3 }, children))));
@@ -76165,40 +76693,42 @@ function tabProps(index) {
         'aria-controls': `sensor-tabpanel-${index}`,
     };
 }
-function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
+function SensorPage(props) {
+    const { sensorID, deviceID, handleDrawerToggle, clouds } = props;
     const classes = useStyles();
     const [rSensor, setRemoteSensor] = react_1.useState(null);
     const [sensor, setSensor] = react_1.useState(null);
     const [error, setError] = react_1.useState(null);
+    const [status, setStatus] = react_1.useState(null);
     react_1.useEffect(() => {
         wazigate.getSensor(deviceID, sensorID).then(sensor => {
             setSensor(sensor);
             setRemoteSensor(sensor);
         }, setError);
         const cb = (status) => {
-            console.log("Status update:", status);
+            if (status.entity.device === deviceID && status.entity.sensor == sensorID) {
+                setStatus(status.status);
+            }
         };
-        console.log("subscribed clouds/+/status");
         wazigate.subscribe("clouds/+/status", cb);
         return () => {
-            console.log("unsubscribed clouds/+/status");
             wazigate.unsubscribe("clouds/+/status", cb);
         };
     }, []);
-    const [menuAnchorEl, setMenuAnchorEl] = react_1.useState(null);
-    const handleMenuClick = (event) => {
+    const [sensorMenuAnchor, setSensorMenuAnchor] = react_1.useState(null);
+    const handleSensorMenuClick = (event) => {
         event.stopPropagation();
         event.preventDefault();
-        setMenuAnchorEl(event.currentTarget);
+        setSensorMenuAnchor(event.currentTarget);
     };
     const handleMenuMouseDown = (event) => {
         event.stopPropagation();
     };
-    const handleMenuClose = () => {
-        setMenuAnchorEl(null);
+    const handleSensorMenuClose = () => {
+        setSensorMenuAnchor(null);
     };
     const handleRenameClick = () => {
-        handleMenuClose();
+        handleSensorMenuClose();
         const oldSensorName = sensor.name;
         const newSensorName = prompt("New sensor name:", oldSensorName);
         if (newSensorName) {
@@ -76214,7 +76744,7 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         }
     };
     const handleDeleteClick = () => {
-        handleMenuClose();
+        handleSensorMenuClose();
         if (confirm(`Delete sensor '${sensorID}'?\nThis will delete the sensor and all sensor values.\n\nThis cannot be undone!`)) {
             wazigate.deleteSensor(deviceID, sensorID).then(() => {
                 location.href = `#/devices/${deviceID}`;
@@ -76237,7 +76767,7 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
     const handleTabChange = (event, i) => {
         setTab(i);
     };
-    const submitDeviceHead = () => {
+    const submitOntology = () => {
         wazigate.setSensorMeta(deviceID, sensorID, {
             kind: kind || null,
             quantity: quantity || null,
@@ -76247,6 +76777,12 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         }, (err) => {
             alert("There was an error saving the metadata:\n" + err);
         });
+    };
+    const resetOntology = () => {
+        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: rSensor.meta.kind, quantity: rSensor.meta.quantity, unit: rSensor.meta.unit }) })));
+    };
+    const resetSync = () => {
+        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { syncInterval: rSensor.meta.syncInterval, doNotSync: rSensor.meta.doNotSync }) })));
     };
     const submitSync = () => {
         wazigate.setSensorMeta(deviceID, sensorID, {
@@ -76263,9 +76799,8 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         const doNotSync = enabled ? null : true;
         setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { doNotSync: doNotSync }) })));
     };
-    const handleSyncIntervalChange = (event) => {
-        const interval = event.target.value || null;
-        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { syncInterval: interval }) })));
+    const handleSyncIntervalChange = (event, value) => {
+        setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { syncInterval: value }) })));
     };
     var body;
     if (sensor === null && error === null) {
@@ -76275,83 +76810,22 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
         body = react_1.default.createElement(Error_1.default, { error: error });
     }
     else {
-        const ontology = ontologies_json_1.default.sensingDevices;
-        const kindInput = (react_1.default.createElement(Autocomplete_1.default, { value: kind, className: classes.kind, id: "kind-select", options: Object.keys(ontology), onChange: (event, kind) => {
-                if (typeof kind === "string") {
-                    if (kind in ontologies_json_1.default.sensingDevices) {
-                        const quantities = ontologies_json_1.default.sensingDevices[kind].quantities;
-                        if (!quantities.includes(quantity)) {
-                            quantity = quantities[0];
-                            if (quantity) {
-                                const units = ontologies_json_1.default.quantities[quantity].units;
-                                unit = units[0] || "";
-                            }
-                            else {
-                                quantity = "";
-                                unit = "";
-                            }
+        const kindInput = (react_1.default.createElement(OntologyKindInput_1.OntologyKindInput, { value: kind, onChange: (event, kind) => {
+                if (kind in ontologies_json_1.default.sensingDevices) {
+                    const quantities = ontologies_json_1.default.sensingDevices[kind].quantities;
+                    if (!quantities.includes(quantity)) {
+                        quantity = quantities[0];
+                        if (quantity) {
+                            const units = ontologies_json_1.default.quantities[quantity].units;
+                            unit = units[0] || "";
+                        }
+                        else {
+                            quantity = "";
+                            unit = "";
                         }
                     }
-                    setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: kind, quantity: quantity, unit: unit }) })));
                 }
-                else {
-                    setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: "" }) })));
-                }
-            }, filterOptions: (options, params) => {
-                const filtered = filter(options, params);
-                if (params.inputValue !== '') {
-                    filtered.push(params.inputValue);
-                }
-                return filtered;
-            }, getOptionLabel: (kind) => {
-                if (typeof kind === "string") {
-                    if (kind in ontologies_json_1.default.sensingDevices) {
-                        return ontologies_json_1.default.sensingDevices[kind].label;
-                    }
-                    return kind;
-                }
-                return "";
-            }, renderOption: (kind) => {
-                var icon;
-                var label;
-                if (typeof kind === "string") {
-                    if (kind in ontologies_json_1.default.sensingDevices) {
-                        icon = ontologies_json_1.default.sensingDevices[kind].icon;
-                        label = ontologies_json_1.default.sensingDevices[kind].label;
-                    }
-                    else {
-                        icon = defaultKindIcon;
-                        label = `Use \"${kind}\"`;
-                    }
-                }
-                else {
-                    icon = defaultKindIcon;
-                    label = "null value option";
-                }
-                return (react_1.default.createElement(react_1.Fragment, null,
-                    react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` }),
-                    label));
-            }, 
-            // filterSelectedOptions
-            freeSolo: true, renderInput: (params) => {
-                var icon;
-                var label;
-                if (kind in ontologies_json_1.default.sensingDevices) {
-                    icon = ontologies_json_1.default.sensingDevices[kind].icon;
-                    label = ontologies_json_1.default.sensingDevices[kind].label;
-                }
-                else {
-                    icon = defaultKindIcon;
-                    label = kind;
-                }
-                params.InputProps.startAdornment = (react_1.default.createElement(react_1.Fragment, null,
-                    params.InputProps.startAdornment || null,
-                    react_1.default.createElement(core_1.InputAdornment, { position: "start" },
-                        react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.kindIcon, src: `dist/${ontologies_svg_1.default}#${icon}` }))));
-                // params.InputProps.className = `${classes.kindInput} ${params.InputProps.className}`
-                params.inputProps["className"] = `${params.inputProps["className"]} ${classes.kindInput}`;
-                return (react_1.default.createElement(react_1.Fragment, null,
-                    react_1.default.createElement(core_1.TextField, Object.assign({}, params, { label: "Sensor Kind", placeholder: "no sensor kind" }))));
+                setSensor(sensor => (Object.assign(Object.assign({}, sensor), { meta: Object.assign(Object.assign({}, sensor.meta), { kind: kind, quantity: quantity, unit: unit }) })));
             } }));
         var quantities = [];
         if (kind in ontologies_json_1.default.sensingDevices) {
@@ -76392,18 +76866,24 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                             react_1.default.createElement(DirtyIndicator, { visible: hasUnsavedOntChanges }, "Ontology")) }, tabProps(0))),
                     react_1.default.createElement(core_1.Tab, Object.assign({ label: react_1.default.createElement(react_1.Fragment, null,
                             react_1.default.createElement(DirtyIndicator, { visible: hasUnsavedSyncChanges }, "Sync")) }, tabProps(1))))),
-            react_1.default.createElement(TabPanel, { value: tab, index: 0 },
+            react_1.default.createElement(TabPanel, { value: tab, index: 0, className: classes.tabPanel },
                 kindInput,
                 quantityInput,
                 unitInput,
-                hasUnsavedOntChanges ? (react_1.default.createElement("div", { className: classes.submitHeadWrapper },
-                    react_1.default.createElement(core_1.Button, { className: classes.submitHead, variant: "contained", color: "primary", onClick: submitDeviceHead, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save"))) : null),
+                react_1.default.createElement("div", { className: classes.submitChanges },
+                    react_1.default.createElement(core_1.Grow, { in: hasUnsavedOntChanges },
+                        react_1.default.createElement(core_1.Button, { className: classes.submitChangesBtn, variant: "contained", color: "primary", onClick: submitOntology, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save")),
+                    react_1.default.createElement(core_1.Grow, { in: hasUnsavedOntChanges, timeout: ({ enter: 500, exit: 200 }) },
+                        react_1.default.createElement(core_1.Button, { className: classes.submitChangesBtn, onClick: resetOntology }, "Reset")))),
             react_1.default.createElement(TabPanel, { value: tab, index: 1 },
                 react_1.default.createElement(core_1.FormGroup, null,
                     react_1.default.createElement(core_1.FormControlLabel, { className: classes.normalMargin, control: react_1.default.createElement(core_1.Switch, { checked: !sensor.meta.doNotSync, onChange: handleEnableSyncChange, name: "sensor-sync", color: "primary" }), label: "Sync Sensor" }),
-                    react_1.default.createElement(core_1.TextField, { id: "sensor-sync-interval", className: classes.smallInput, onChange: handleSyncIntervalChange, label: "Sync Interval", defaultValue: "2m" }),
-                    react_1.default.createElement(core_1.Grow, { in: hasUnsavedSyncChanges },
-                        react_1.default.createElement(core_1.Button, { className: classes.submitChanges, variant: "contained", color: "primary", onClick: submitSync, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save")))),
+                    react_1.default.createElement(SyncIntervalInput_1.default, { value: (sensor === null || sensor === void 0 ? void 0 : sensor.meta.syncInterval) || "5s", onChange: handleSyncIntervalChange }),
+                    react_1.default.createElement("div", { className: classes.submitChanges },
+                        react_1.default.createElement(core_1.Grow, { in: hasUnsavedSyncChanges },
+                            react_1.default.createElement(core_1.Button, { variant: "contained", color: "primary", className: classes.submitChangesBtn, onClick: submitSync, startIcon: react_1.default.createElement(Save_1.default, null) }, "Save")),
+                        react_1.default.createElement(core_1.Grow, { in: hasUnsavedSyncChanges, timeout: ({ enter: 500, exit: 200 }) },
+                            react_1.default.createElement(core_1.Button, { className: classes.submitChangesBtn, onClick: resetSync }, "Reset"))))),
             react_1.default.createElement(core_1.Snackbar, { anchorOrigin: {
                     vertical: 'bottom',
                     horizontal: 'right',
@@ -76411,21 +76891,17 @@ function SensorPage({ sensorID, deviceID, handleDrawerToggle }) {
                     react_1.default.createElement(core_1.IconButton, { size: "small", "aria-label": "close", color: "inherit", onClick: handleSnackbarClose },
                         react_1.default.createElement(Close_1.default, { fontSize: "small" }))) })));
     }
+    const doNotSync = !!(rSensor === null || rSensor === void 0 ? void 0 : rSensor.meta.doNotSync);
     return (react_1.default.createElement("div", { className: classes.page },
         react_1.default.createElement(core_1.AppBar, { position: "fixed", className: classes.appBar },
             react_1.default.createElement(core_1.Toolbar, { className: classes.appBarInner },
                 react_1.default.createElement(core_1.IconButton, { color: "inherit", "aria-label": "open drawer", edge: "start", onClick: handleDrawerToggle, className: classes.menuButton },
                     react_1.default.createElement(Menu_1.default, null)),
                 react_1.default.createElement(core_1.Typography, { variant: "h6", noWrap: true, className: classes.name }, error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...")),
-                react_1.default.createElement(core_1.Badge, { overlap: "circle", classes: { badge: classes.syncError }, badgeContent: 
-                    // <DoneIcon fontSize="small" />
-                    // <HourglassIcon fontSize="small" />
-                    react_1.default.createElement(ErrorOutline_1.default, { fontSize: "small" }) },
-                    react_1.default.createElement(core_1.IconButton, { "aria-label": "syn", "aria-controls": "sync-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
-                        react_1.default.createElement(CloudOutlined_1.default, null))),
-                react_1.default.createElement(core_1.IconButton, { "aria-label": "settings", "aria-controls": "device-menu", "aria-haspopup": "true", onClick: handleMenuClick, onMouseDown: handleMenuMouseDown },
+                react_1.default.createElement(SyncStatusIndicator_1.default, { doNotSync: rSensor ? !!rSensor.meta.doNotSync : true, sensorID: sensorID, deviceID: deviceID, clouds: clouds }),
+                react_1.default.createElement(core_1.IconButton, { "aria-label": "settings", "aria-controls": "device-menu", "aria-haspopup": "true", onClick: handleSensorMenuClick, onMouseDown: handleMenuMouseDown },
                     react_1.default.createElement(MoreVert_1.default, null)))),
-        react_1.default.createElement(core_1.Menu, { id: "sensor-menu", anchorEl: menuAnchorEl, keepMounted: true, open: Boolean(menuAnchorEl), onClose: handleMenuClose },
+        react_1.default.createElement(core_1.Menu, { id: "sensor-menu", anchorEl: sensorMenuAnchor, keepMounted: true, open: !!sensorMenuAnchor, onClose: handleSensorMenuClose },
             react_1.default.createElement(core_1.MenuItem, { onClick: handleRenameClick },
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Edit_1.default, { fontSize: "small" })),

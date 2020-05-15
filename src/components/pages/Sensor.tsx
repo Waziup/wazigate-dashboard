@@ -1,16 +1,22 @@
 import React, { Fragment, useState, MouseEvent, useEffect } from "react";
-import { Waziup, Sensor } from "waziup";
+import { Waziup, Sensor, CloudStatus, CloudAction, Cloud } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
 import ontologies from "../../ontologies.json";
 import ontologiesSprite from "../../img/ontologies.svg";
 import SVGSpriteIcon from "../SVGSpriteIcon";
+import SyncStatusIndicator from "../SyncStatusIndicator";
 import MenuIcon from '@material-ui/icons/Menu';
 import SaveIcon from '@material-ui/icons/Save';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CloudIcon from '@material-ui/icons/CloudOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import HourglassIcon from '@material-ui/icons/HourglassEmpty';
+import DoneIcon from '@material-ui/icons/Done';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import clsx from "clsx";
 
 import {
@@ -44,6 +50,8 @@ import {
     Grow,
     Badge
 } from '@material-ui/core';
+import SyncIntervalInput from "../SyncIntervalInput";
+import { OntologyKindInput } from "../OntologyKindInput";
 
 
 const drawerWidth = 240;
@@ -51,6 +59,8 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     page: {
         marginTop: "64px",
+        display: "flex",
+        flexDirection: "column",
     },
     deviceHead: {
         margin: theme.spacing(3),
@@ -161,8 +171,14 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
     submitChanges: {
-        width: 180,
         margin: theme.spacing(1),
+    },
+    submitChangesBtn: {
+        marginRight: theme.spacing(2),
+    },
+    tabPanel: {
+        display: "flex",
+        flexDirection: "column",
     }
 }));
 
@@ -170,18 +186,16 @@ type Props = {
     handleDrawerToggle: () => void;
     deviceID: string;
     sensorID: string;
+    clouds: Cloud[],
 };
-
-const defaultKindIcon = "meter";
 
 type Kind = string;
 type Unit = string;
 type Quantity = string;
 
-const filter = createFilterOptions<Kind>();
-
 interface TabPanelProps {
     children?: React.ReactNode;
+    className?: string;
     index: any;
     value: any;
 }
@@ -239,33 +253,53 @@ function tabProps(index: any) {
     };
 }
 
-export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: Props) {
+type EntityStatus = {
+    action: CloudAction[];
+    remote: Date;
+    sleep: number;
+    wakeup: Date;
+}
+
+export default function SensorPage(props: Props) {
+    const {sensorID, deviceID, handleDrawerToggle, clouds} = props;
     const classes = useStyles();
 
     const [rSensor, setRemoteSensor] = useState(null as Sensor);
     const [sensor, setSensor] = useState(null as Sensor);
     const [error, setError] = useState(null as Error);
+
+    const [status, setStatus] = useState(null as EntityStatus);
+
     useEffect(() => {
         wazigate.getSensor(deviceID, sensorID).then(sensor => {
             setSensor(sensor)
             setRemoteSensor(sensor);
         }, setError);
+        const cb = (status: CloudStatus) => {
+            if (status.entity.device === deviceID && status.entity.sensor == sensorID) {
+                setStatus(status.status);
+            }
+        };
+        wazigate.subscribe<CloudStatus>("clouds/+/status", cb);
+        return () => {
+            wazigate.unsubscribe("clouds/+/status", cb);
+        }
     }, []);
 
-    const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-    const handleMenuClick = (event: MouseEvent) => {
+    const [sensorMenuAnchor, setSensorMenuAnchor] = useState(null);
+    const handleSensorMenuClick = (event: MouseEvent) => {
         event.stopPropagation();
         event.preventDefault();
-        setMenuAnchorEl(event.currentTarget);
+        setSensorMenuAnchor(event.currentTarget);
     };
     const handleMenuMouseDown = (event: MouseEvent) => {
         event.stopPropagation();
     };
-    const handleMenuClose = () => {
-        setMenuAnchorEl(null);
+    const handleSensorMenuClose = () => {
+        setSensorMenuAnchor(null);
     };
     const handleRenameClick = () => {
-        handleMenuClose();
+        handleSensorMenuClose();
         const oldSensorName = sensor.name;
         const newSensorName = prompt("New sensor name:", oldSensorName);
         if (newSensorName) {
@@ -286,7 +320,7 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
         }
     }
     const handleDeleteClick = () => {
-        handleMenuClose();
+        handleSensorMenuClose();
         if (confirm(`Delete sensor '${sensorID}'?\nThis will delete the sensor and all sensor values.\n\nThis cannot be undone!`)) {
             wazigate.deleteSensor(deviceID, sensorID).then(() => {
                 location.href = `#/devices/${deviceID}`;
@@ -313,7 +347,7 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
         setTab(i);
     };
 
-    const submitDeviceHead = () => {
+    const submitOntology = () => {
         wazigate.setSensorMeta(deviceID, sensorID, {
             kind: kind || null,
             quantity: quantity || null,
@@ -331,6 +365,29 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
         }, (err: Error) => {
             alert("There was an error saving the metadata:\n" + err)
         });
+    }
+
+    const resetOntology = () => {
+        setSensor(sensor => ({
+            ...sensor,
+            meta: {
+                ...sensor.meta,
+                kind: rSensor.meta.kind,
+                quantity: rSensor.meta.quantity,
+                unit: rSensor.meta.unit,
+            }
+        }))
+    }
+
+    const resetSync = () => {
+        setSensor(sensor => ({
+            ...sensor,
+            meta: {
+                ...sensor.meta,
+                syncInterval: rSensor.meta.syncInterval,
+                doNotSync: rSensor.meta.doNotSync,
+            }
+        }))
     }
 
     const submitSync = () => {
@@ -362,13 +419,12 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
             }
         }));
     }
-    const handleSyncIntervalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const interval = event.target.value || null;
+    const handleSyncIntervalChange = (event: React.ChangeEvent<{}>, value: string) => {
         setSensor(sensor => ({
             ...sensor,
             meta: {
                 ...sensor.meta,
-                syncInterval: interval,
+                syncInterval: value,
             }
         }));
     }
@@ -379,133 +435,32 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
     } else if (error != null) {
         body = <Error error={error} />
     } else {
-        const ontology = ontologies.sensingDevices;
         const kindInput = (
-            <Autocomplete
+            <OntologyKindInput
                 value={kind}
-                className={classes.kind}
-                id="kind-select"
-                options={Object.keys(ontology) as Kind[]}
                 onChange={(event: any, kind: Kind) => {
-                    if (typeof kind === "string") {
-                        if (kind in ontologies.sensingDevices) {
-                            const quantities = ontologies.sensingDevices[kind].quantities;
-                            if (!quantities.includes(quantity)) {
-                                quantity = quantities[0];
-                                if (quantity) {
-                                    const units = ontologies.quantities[quantity].units
-                                    unit = units[0] || "";
-                                } else {
-                                    quantity = "";
-                                    unit = "";
-                                }
-                            }
-                        }
-                        setSensor(sensor => ({
-                            ...sensor,
-                            meta: {
-                                ...sensor.meta,
-                                kind: kind,
-                                quantity: quantity,
-                                unit: unit,
-                            }
-                        }));
-                    } else {
-                        setSensor(sensor => ({
-                            ...sensor,
-                            meta: {
-                                ...sensor.meta,
-                                kind: "",
-                            }
-                        }));
-                    }
-                }}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params) as Kind[];
-                    if (params.inputValue !== '') {
-                        filtered.push(params.inputValue);
-                    }
-                    return filtered;
-                }}
-                getOptionLabel={(kind: Kind) => {
-                    if (typeof kind === "string") {
-                        if (kind in ontologies.sensingDevices) {
-                            return ontologies.sensingDevices[kind].label;
-                        }
-                        return kind;
-                    }
-                    return "";
-                }}
-                renderOption={(kind: Kind) => {
-                    var icon: string;
-                    var label: string;
-                    if (typeof kind === "string") {
-                        if (kind in ontologies.sensingDevices) {
-                            icon = ontologies.sensingDevices[kind].icon;
-                            label = ontologies.sensingDevices[kind].label;
-                        } else {
-                            icon = defaultKindIcon;
-                            label = `Use \"${kind}\"`;
-                        }
-                    } else {
-                        icon = defaultKindIcon;
-                        label = "null value option";
-                    }
-                    return (
-                        <Fragment>
-                            <SVGSpriteIcon
-                                className={classes.icon}
-                                src={`dist/${ontologiesSprite}#${icon}`}
-                            />
-                            {label}
-                        </Fragment>
-                    );
-                }}
-                // filterSelectedOptions
-                freeSolo
-                renderInput={(params) => {
-                    var icon: string;
-                    var label: string;
                     if (kind in ontologies.sensingDevices) {
-                        icon = ontologies.sensingDevices[kind].icon;
-                        label = ontologies.sensingDevices[kind].label;
-                    } else {
-                        icon = defaultKindIcon;
-                        label = kind;
+                        const quantities = ontologies.sensingDevices[kind].quantities;
+                        if (!quantities.includes(quantity)) {
+                            quantity = quantities[0];
+                            if (quantity) {
+                                const units = ontologies.quantities[quantity].units
+                                unit = units[0] || "";
+                            } else {
+                                quantity = "";
+                                unit = "";
+                            }
+                        }
                     }
-                    params.InputProps.startAdornment = (
-                        <Fragment>
-                            {params.InputProps.startAdornment || null}
-                            <InputAdornment position="start">
-                                <SVGSpriteIcon
-                                    className={classes.kindIcon}
-                                    src={`dist/${ontologiesSprite}#${icon}`}
-                                />
-                            </InputAdornment>
-                        </Fragment>
-                    );
-                    // params.InputProps.className = `${classes.kindInput} ${params.InputProps.className}`
-                    (params.inputProps as any)["className"] = `${(params.inputProps as any)["className"]} ${classes.kindInput}`;
-                    return (
-                        <Fragment>
-                            {/* <SVGSpriteIcon
-                                className={classes.kindIcon}
-                                src={`dist/${ontologiesSprite}#${ont.icon}`}
-                            /> */}
-                            <TextField
-                                {...params}
-                                label="Sensor Kind"
-                                placeholder="no sensor kind"
-                            // InputProps={{
-                            //     startAdornment: (
-                            //         <InputAdornment position="start">
-                            //             <AccountCircle />
-                            //         </InputAdornment>
-                            //     ),
-                            // }}
-                            />
-                        </Fragment>
-                    )
+                    setSensor(sensor => ({
+                        ...sensor,
+                        meta: {
+                            ...sensor.meta,
+                            kind: kind,
+                            quantity: quantity,
+                            unit: unit,
+                        }
+                    }));
                 }}
             />
         )
@@ -582,7 +537,7 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
 
         const hasUnsavedSyncChanges = (
             (!!rSensor?.meta.doNotSync) !== (!!sensor?.meta.doNotSync) ||
-            (rSensor?.meta.syncInterval||null) !== (sensor?.meta.syncInterval||null)
+            (rSensor?.meta.syncInterval || null) !== (sensor?.meta.syncInterval || null)
         )
 
         body = (
@@ -596,29 +551,37 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
                         } {...tabProps(0)} />
                         <Tab label={
                             <Fragment>
-                            <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(1)} />
                     </Tabs>
                 </AppBar>
 
-                <TabPanel value={tab} index={0}>
+                <TabPanel value={tab} index={0} className={classes.tabPanel}>
                     {kindInput}
                     {quantityInput}
                     {unitInput}
-                    {hasUnsavedOntChanges ? (
-                        <div className={classes.submitHeadWrapper}>
+                    <div className={classes.submitChanges}>
+                        <Grow in={hasUnsavedOntChanges}>
                             <Button
-                                className={classes.submitHead}
+                                className={classes.submitChangesBtn}
                                 variant="contained"
                                 color="primary"
-                                onClick={submitDeviceHead}
+                                onClick={submitOntology}
                                 startIcon={<SaveIcon />}
                             >
                                 Save
                             </Button>
-                        </div>
-                    ) : null}
+                        </Grow>
+                        <Grow in={hasUnsavedOntChanges} timeout={({enter: 500, exit: 200})}>
+                            <Button
+                                className={classes.submitChangesBtn}
+                                onClick={resetOntology}
+                            >
+                                Reset
+                            </Button>
+                        </Grow>
+                    </div>
                 </TabPanel>
 
                 <TabPanel value={tab} index={1}>
@@ -635,24 +598,33 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
                             }
                             label="Sync Sensor"
                         />
-                        <TextField
-                            id="sensor-sync-interval"
-                            className={classes.smallInput}
+
+                        <SyncIntervalInput
+                            value={sensor?.meta.syncInterval || "5s"}
                             onChange={handleSyncIntervalChange}
-                            label="Sync Interval"
-                            defaultValue="2m"
                         />
-                        <Grow in={hasUnsavedSyncChanges}>
-                            <Button
-                                className={classes.submitChanges}
-                                variant="contained"
-                                color="primary"
-                                onClick={submitSync}
-                                startIcon={<SaveIcon />}
-                            >
-                                Save
-                            </Button>
-                        </Grow>
+
+                        <div className={classes.submitChanges}>
+                            <Grow in={hasUnsavedSyncChanges}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submitChangesBtn}
+                                    onClick={submitSync}
+                                    startIcon={<SaveIcon />}
+                                >
+                                    Save
+                                </Button>
+                            </Grow>
+                            <Grow in={hasUnsavedSyncChanges} timeout={({enter: 500, exit: 200})}>
+                                <Button
+                                    className={classes.submitChangesBtn}
+                                    onClick={resetSync}
+                                >
+                                    Reset
+                                </Button>
+                            </Grow>
+                        </div>
                     </FormGroup>
                 </TabPanel>
 
@@ -676,6 +648,8 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
         )
     }
 
+    const doNotSync = !!rSensor?.meta.doNotSync;
+
     return (
         <div className={classes.page}>
             <AppBar position="fixed" className={classes.appBar}>
@@ -692,23 +666,32 @@ export default function SensorPage({ sensorID, deviceID, handleDrawerToggle }: P
                     <Typography variant="h6" noWrap className={classes.name}>
                         {error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...")}
                     </Typography>
+
+                    <SyncStatusIndicator
+                        doNotSync={rSensor ? !!rSensor.meta.doNotSync : true}
+                        sensorID={sensorID}
+                        deviceID={deviceID}
+                        clouds={clouds}
+                    />
+
                     <IconButton
                         aria-label="settings"
                         aria-controls="device-menu"
                         aria-haspopup="true"
-                        onClick={handleMenuClick}
+                        onClick={handleSensorMenuClick}
                         onMouseDown={handleMenuMouseDown}
                     >
                         <MoreVertIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
+
             <Menu
                 id="sensor-menu"
-                anchorEl={menuAnchorEl}
+                anchorEl={sensorMenuAnchor}
                 keepMounted
-                open={Boolean(menuAnchorEl)}
-                onClose={handleMenuClose}
+                open={!!sensorMenuAnchor}
+                onClose={handleSensorMenuClose}
             >
                 <MenuItem onClick={handleRenameClick}>
                     <ListItemIcon>
