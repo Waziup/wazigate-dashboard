@@ -1,9 +1,12 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import waziup, { App } from "waziup";
-import { TimeComp } from "../Time";
+// import { TimeComp } from "../Time";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
-import _wazigateLogo from "../../img/wazigate.svg";
-const wazigateLogo = `dist/${_wazigateLogo}`;
+// import _wazigateLogo from "../../img/wazigate.svg";
+// const wazigateLogo = `dist/${_wazigateLogo}`;
 
 import {
   makeStyles,
@@ -21,6 +24,7 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  LinearProgress,
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 
@@ -36,7 +40,7 @@ export declare type AppConfig = {
 };
 
 interface Props {
-  app: App;
+  appInfo: App;
   className?: string;
 }
 
@@ -67,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
     height: "2rem",
     marginRight: 16,
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
 type UninstallConfig = {
@@ -85,8 +93,28 @@ type UpdateStatus = {
   newVersion: string;
 };
 
-export default function InstalledApp({ app, className }: Props) {
+export default function InstalledApp({ appInfo, className }: Props) {
   const classes = useStyles();
+
+  /*------------ */
+  // Run stuff on load
+  useEffect(
+    () => {
+      checkUpdates(false);
+    },
+    [] /* This makes it to run only once*/
+  );
+
+  /*------------ */
+
+  const [app, setApp] = useState<App>(appInfo);
+  const load = () => {
+    wazigate.getApp(app.id).then(setApp, (error) => {
+      alert("There was an error loading the app info:\n" + error);
+    });
+  };
+
+  /*------------ */
 
   const [uninstallModal, setUninstallModal] = useState<UninstallConfig>(null);
 
@@ -108,7 +136,7 @@ export default function InstalledApp({ app, className }: Props) {
     });
   };
 
-  //
+  /*------------ */
 
   const [updateModal, setUpdateModal] = useState<UpdateConfig>(null);
 
@@ -125,12 +153,13 @@ export default function InstalledApp({ app, className }: Props) {
 
   const [updateStatus, setUpdateStatus] = useState<UpdateStatus>(null);
 
-  //
+  /*------------ */
 
   const [settingsModal, setSettingsModal] = useState<SettingsConfig>(null);
 
   const showModalSettings = () => {
     setSettingsModal({
+      /// ?
       keepConfig: false,
     });
   };
@@ -139,43 +168,40 @@ export default function InstalledApp({ app, className }: Props) {
     setSettingsModal(null);
   };
 
-  //
+  /*------------ */
 
+  const [isUninstalling, setUninstLoader] = useState<boolean>(false);
   const uninstall = () => {
-    if (confirm("Do you wan tot uninstall the App?"))
-      wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then(
-        (res) => {
-          alert("The app has been uninstalled.");
-          hideModalUninstall();
-          // this.setState({
-          //     setRemoveLoading: false,
-          //     // modalMsg: res as any,
-          //     modalMsg: "The App is uninstalled",
-          //     error: false,
-          // });
-
-          // setTimeout(() => {
-          //     this.setState({ redirect: true });
-          // }, 2000);
-        },
-        (error) => {
-          alert("There was an error uninstalling the app:\n" + error);
-          // this.setState({
-          //     setRemoveLoading: false,
-          //     modalMsg: error as any,
-          //     error: true,
-          // });
-        }
-      );
+    if (!confirm("Do you wan tot uninstall the App?")) return;
+    setUninstLoader(true);
+    wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then(
+      (res) => {
+        setUninstLoader(false);
+        load();
+        alert("The app has been uninstalled.");
+        hideModalUninstall();
+      },
+      (error) => {
+        setUninstLoader(false);
+        alert("There was an error uninstalling the app:\n" + error);
+      }
+    );
   };
 
-  //
+  /*------------ */
 
-  const checkUpdates = () => {
+  const checkUpdates = (showAlert: boolean = true) => {
     // TODO : remove 'any' for this AppUpdate
     type AppUpdate = {
       newUpdate: string;
     };
+    setUpdateStatus({
+      logs: null,
+      isChecking: true,
+      hasCheckedUpdates: false,
+      hasUpdate: false,
+      newVersion: null,
+    });
     wazigate.get<AppUpdate>(`update/${app.id}`).then(
       (res) => {
         if (res.newUpdate) {
@@ -194,11 +220,12 @@ export default function InstalledApp({ app, className }: Props) {
             hasUpdate: false,
             newVersion: null,
           }));
-          alert("The latest version is already installed.");
+          if (showAlert) alert("The latest version is already installed.");
         }
       },
       (error) => {
-        alert("There was an error checking for updates:\n" + error);
+        if (showAlert)
+          alert("There was an error checking for updates:\n" + error);
       }
     );
   };
@@ -206,7 +233,7 @@ export default function InstalledApp({ app, className }: Props) {
   const update = () => {
     setUpdateStatus({
       logs: "Please wait...",
-      isChecking: false,
+      isChecking: true,
       hasCheckedUpdates: false,
       hasUpdate: false,
       newVersion: null,
@@ -234,16 +261,17 @@ export default function InstalledApp({ app, className }: Props) {
     wazigate.set<any>("update/" + app.id, {}).then(
       () => {
         setUpdateStatus((status) => ({
-          logs: status.logs,
+          ...status,
           isChecking: false,
-          hasCheckedUpdates: false,
-          hasUpdate: false,
-          newVersion: null,
         }));
         clearTimeout(timeout);
         timeout = null;
       },
       (error) => {
+        setUpdateStatus((status) => ({
+          ...status,
+          isChecking: false,
+        }));
         alert("There was an error updating the app:\n" + error);
         clearTimeout(timeout);
         timeout = null;
@@ -260,6 +288,7 @@ export default function InstalledApp({ app, className }: Props) {
     wazigate.setAppConfig(app.id, { action: "stop" } as AppConfig).then(
       (res) => {
         setStopping(false);
+        load();
       },
       (error) => {
         setStopping(false);
@@ -275,6 +304,7 @@ export default function InstalledApp({ app, className }: Props) {
     wazigate.setAppConfig(app.id, { action: "start" } as AppConfig).then(
       (res) => {
         setStarting(false);
+        load();
       },
       (error) => {
         setStarting(false);
@@ -283,14 +313,49 @@ export default function InstalledApp({ app, className }: Props) {
     );
   };
 
-  const running = !!app?.state?.running;
+  /*----------*/
+
+  const [rePolicyChaing, setResPolicyLoader] = React.useState(false);
+  const restartPolicyChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    if (rePolicyChaing) return; // Already on progress
+    var newPolicy = event.target.value as string;
+
+    if (!newPolicy || newPolicy == "0") return;
+
+    setResPolicyLoader(true);
+    wazigate.setAppConfig(app.id, { restart: newPolicy } as AppConfig).then(
+      (res) => {
+        setResPolicyLoader(false);
+        load();
+      },
+      (error) => {
+        setResPolicyLoader(false);
+      }
+    );
+  };
+
+  /*----------*/
 
   const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
     event.target.src = "img/default-app-icon.svg";
   };
 
+  /*----------*/
+
+  // If I get uninstalled, I hide myself ;)
+  if (!app) {
+    return <span></span>;
+  }
+
+  /*----------*/
+
+  const running = !!app?.state?.running;
   const isSysApp =
-    app.id == "wazigate-edge" || app.id == "waziup.wazigate-system";
+    app?.id == "wazigate-edge" || app?.id == "waziup.wazigate-system";
+
+  /*----------*/
 
   return (
     <Fragment>
@@ -323,13 +388,27 @@ export default function InstalledApp({ app, className }: Props) {
         <CardContent>
           {app.state ? (
             <span className="text-capitalize">
-              Status: {app.state.status || "Disabled"}
+              Status:
+              <span className="font-weight-bold">
+                {app.state.status || "Disabled"}
+              </span>
             </span>
           ) : null}
-          <p>{`${(app as any)?.description || <br />}`}</p>
+          <p>{`${(app as any)?.description || "."}`}</p>
         </CardContent>
         <CardActions>
-          <Button startIcon={<UpdateIcon />} onClick={showModalUpdate}>
+          <Button
+            className={
+              updateStatus?.hasUpdate
+                ? "orange"
+                : updateStatus?.isChecking
+                ? "animate-flicker"
+                : ""
+            }
+            title={updateStatus?.hasUpdate ? "New update available" : ""}
+            startIcon={<UpdateIcon />}
+            onClick={showModalUpdate}
+          >
             Update
           </Button>
           <Button startIcon={<SettingsIcon />} onClick={showModalSettings}>
@@ -361,12 +440,13 @@ export default function InstalledApp({ app, className }: Props) {
               label="Keep Config"
             />
           </FormGroup>
+          {isUninstalling && <LinearProgress />}
         </DialogContent>
         <DialogActions>
           <Button
             onClick={uninstall}
             color="primary"
-            disabled={isSysApp}
+            disabled={isSysApp || isUninstalling}
             startIcon={<DeleteIcon />}
           >
             Uninstall now
@@ -383,20 +463,30 @@ export default function InstalledApp({ app, className }: Props) {
       >
         <DialogTitle>Update {app?.name}</DialogTitle>
         <DialogContent dividers>
-          Current Version: {app?.version}
+          Current Version:{" "}
+          <span className="font-weight-bold">{app?.version}</span>
           <textarea
             rows={14}
             className="bg-dark text-light form-control form-rounded"
             // spellCheck={false}
             // contentEditable={false}
             readOnly={true}
+            style={{
+              display:
+                updateStatus?.hasCheckedUpdates || updateStatus?.isChecking
+                  ? ""
+                  : "none",
+            }}
             value={updateStatus?.logs || "N/A"}
           ></textarea>
+          {updateStatus?.isChecking && (
+            <CircularProgress size={34} className={classes.buttonProgress} />
+          )}
         </DialogContent>
         <DialogActions>
           {!updateStatus?.hasUpdate ? (
             <Button
-              onClick={checkUpdates}
+              onClick={() => checkUpdates()}
               color="primary"
               startIcon={<UpdateIcon />}
             >
@@ -422,14 +512,57 @@ export default function InstalledApp({ app, className }: Props) {
         <DialogContent dividers>
           {/* <p>Status: {running ? "Running" : "Stopped"}</p> */}
           <p className="text-capitalize">
-            Status: {`${app?.state?.status || "Unknown"}`}
+            Status:
+            <span className="font-weight-bold">
+              {`${app?.state?.status || "Unknown"}`}
+            </span>
           </p>
-          <p>Current Version: {`${app?.version || "Unknown"}`}</p>
-          <p>Author: {`${app?.author || "Unknown"}`}</p>
-          <p>Health: {`${app?.state?.health || "Unknown"}`}</p>
+          <p>
+            Current Version:{" "}
+            <span className="font-weight-bold">{`${
+              app?.version || "Unknown"
+            }`}</span>
+          </p>
+          <p>
+            Author:{" "}
+            <span className="font-weight-bold">{`${
+              app?.author || "Unknown"
+            }`}</span>
+          </p>
+          <p>
+            Health:{" "}
+            <span className="font-weight-bold">{`${
+              app?.state?.health || "Unknown"
+            }`}</span>
+          </p>
+          <p className="text-capitalize">
+            Restart policy:{" "}
+            <span className="font-weight-bold">{`${
+              app?.state?.restartPolicy || "Unknown"
+            }`}</span>
+          </p>
           <p>{`${(app as any)?.description || ""}`}</p>
         </DialogContent>
         <DialogActions>
+          {/* <InputLabel id="restartPolicy">Restart Policy</InputLabel> */}
+          <Select
+            disabled={isSysApp}
+            // labelId="restartPolicy"
+            id="select-restart-policy"
+            value={app?.state?.restartPolicy || "0"}
+            onChange={restartPolicyChange}
+            color="primary"
+          >
+            <MenuItem value="0">Restart Policy</MenuItem>
+            <MenuItem value="always">Always</MenuItem>
+            <MenuItem value="on-failure">On-Failure</MenuItem>
+            <MenuItem value="unless-stopped">Unless-Stopped</MenuItem>
+            <MenuItem value="no">No</MenuItem>
+          </Select>
+          {rePolicyChaing && (
+            <CircularProgress size={24} className={classes.buttonProgress} />
+          )}
+
           <Button
             onClick={showModalUpdate}
             color="primary"
