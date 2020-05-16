@@ -5,8 +5,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-// import _wazigateLogo from "../../img/wazigate.svg";
-// const wazigateLogo = `dist/${_wazigateLogo}`;
+import _wazigateLogo from "../../img/wazigate.svg";
+const wazigateLogo = `dist/${_wazigateLogo}`;
+
+import _defaultLogo from "../../img/default-app-logo.svg";
+const defaultLogo = `dist/${_defaultLogo}`;
 
 import {
   makeStyles,
@@ -21,10 +24,11 @@ import {
   FormGroup,
   CircularProgress,
   DialogActions,
-  Typography,
+  // Typography,
   FormControlLabel,
   Switch,
-  LinearProgress,
+  // LinearProgress,
+  Fade,
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 
@@ -158,6 +162,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
   const [settingsModal, setSettingsModal] = useState<SettingsConfig>(null);
 
   const showModalSettings = () => {
+    // console.log(app);
     setSettingsModal({
       /// ?
       keepConfig: false,
@@ -178,12 +183,19 @@ export default function InstalledApp({ appInfo, className }: Props) {
       (res) => {
         setUninstLoader(false);
         load();
-        alert("The app has been uninstalled.");
+        alert(
+          "The app [ " + (app?.name || app.id) + " ] has been uninstalled."
+        );
         hideModalUninstall();
       },
       (error) => {
         setUninstLoader(false);
-        alert("There was an error uninstalling the app:\n" + error);
+        alert(
+          "There was an error uninstalling the app [ " +
+            (app?.name || app.id) +
+            " ]:\n" +
+            error
+        );
       }
     );
   };
@@ -239,12 +251,17 @@ export default function InstalledApp({ appInfo, className }: Props) {
       newVersion: null,
     });
 
+    type InstallStatus = {
+      log: string;
+      done: boolean;
+    };
+
     const pollStatus = () => {
-      wazigate.get<string>(`apps/${app.id}?install_logs`).then(
+      wazigate.get<InstallStatus>(`apps/${app.id}?install_logs`).then(
         (res) => {
           setUpdateStatus((status) => ({
             ...status,
-            logs: res,
+            logs: res?.log,
           }));
           if (timeout !== null) {
             timeout = setTimeout(pollStatus, 1000);
@@ -297,11 +314,15 @@ export default function InstalledApp({ appInfo, className }: Props) {
     );
   };
 
+  /*----------*/
+
   const [starting, setStarting] = useState(false);
 
   const start = () => {
     setStarting(true);
-    wazigate.setAppConfig(app.id, { action: "start" } as AppConfig).then(
+
+    var startAction = app?.state?.startedAt == "" ? "first-start" : "start";
+    wazigate.setAppConfig(app.id, { action: startAction } as AppConfig).then(
       (res) => {
         setStarting(false);
         load();
@@ -338,8 +359,11 @@ export default function InstalledApp({ appInfo, className }: Props) {
 
   /*----------*/
 
+  var fallbackIcon = false;
   const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-    event.target.src = "img/default-app-icon.svg";
+    if (fallbackIcon) return;
+    event.target.src = defaultLogo;
+    fallbackIcon = true;
   };
 
   /*----------*/
@@ -366,7 +390,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
               className={classes.logo}
               src={
                 app.id == "wazigate-edge"
-                  ? (app as any)?.waziapp?.icon
+                  ? wazigateLogo
                   : wazigate.toProxyURL(app.id, (app as any)?.waziapp?.icon)
               }
               onError={getDefaultAppIcon}
@@ -418,194 +442,227 @@ export default function InstalledApp({ appInfo, className }: Props) {
             startIcon={<DeleteIcon />}
             disabled={isSysApp}
             onClick={showModalUninstall}
+            className={isUninstalling ? "animate-flicker" : ""}
           >
             Uninstall
           </Button>
         </CardActions>
       </Card>
 
-      <Dialog
-        onClose={hideModalUninstall}
-        open={uninstallModal !== null}
-        fullWidth={true}
-        maxWidth="xl"
-        className={classes.modal}
-      >
-        <DialogTitle>Uninstall {app?.name}</DialogTitle>
-        <DialogContent dividers>
-          <FormGroup>
-            <FormControlLabel
-              control={<Switch onChange={handleKeepConfigChange} />}
-              value={!!uninstallModal?.keepConfig}
-              label="Keep Config"
-            />
-          </FormGroup>
-          {isUninstalling && <LinearProgress />}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={uninstall}
-            color="primary"
-            disabled={isSysApp || isUninstalling}
-            startIcon={<DeleteIcon />}
-          >
-            Uninstall now
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Fade in={uninstallModal != null}>
+        <Dialog
+          onClose={hideModalUninstall}
+          // open={uninstallModal !== null}
+          open={true}
+          fullWidth={true}
+          maxWidth="xl"
+          className={classes.modal}
+        >
+          <DialogTitle>Uninstall {app?.name}</DialogTitle>
+          <DialogContent dividers>
+            <FormGroup>
+              <FormControlLabel
+                control={<Switch onChange={handleKeepConfigChange} />}
+                value={!!uninstallModal?.keepConfig}
+                label="Keep Config"
+              />
+            </FormGroup>
+            {/* {isUninstalling && <LinearProgress />} */}
+          </DialogContent>
+          <DialogActions>
+            <div className={classes.wrapper}>
+              <Button
+                onClick={uninstall}
+                color="primary"
+                disabled={isSysApp || isUninstalling}
+                startIcon={<DeleteIcon />}
+              >
+                Uninstall now
+              </Button>
+              {isUninstalling && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </DialogActions>
+        </Dialog>
+      </Fade>
 
-      <Dialog
-        onClose={hideModalUpdate}
-        open={updateModal !== null}
-        fullWidth={true}
-        maxWidth="xl"
-        className={classes.modal}
-      >
-        <DialogTitle>Update {app?.name}</DialogTitle>
-        <DialogContent dividers>
-          Current Version:{" "}
-          <span className="font-weight-bold">{app?.version}</span>
-          <textarea
-            rows={14}
-            className="bg-dark text-light form-control form-rounded"
-            // spellCheck={false}
-            // contentEditable={false}
-            readOnly={true}
-            style={{
-              display:
-                updateStatus?.hasCheckedUpdates || updateStatus?.isChecking
-                  ? ""
-                  : "none",
-            }}
-            value={updateStatus?.logs || "."}
-          ></textarea>
-          {updateStatus?.isChecking && (
-            <CircularProgress size={34} className={classes.buttonProgress} />
-          )}
-        </DialogContent>
-        <DialogActions>
-          {!updateStatus?.hasUpdate ? (
+      <Fade in={updateModal != null}>
+        <Dialog
+          onClose={hideModalUpdate}
+          open={true}
+          fullWidth={true}
+          maxWidth="xl"
+          className={classes.modal}
+        >
+          <DialogTitle>Update {app?.name}</DialogTitle>
+          <DialogContent dividers>
+            Current Version:{" "}
+            <span className="font-weight-bold">{app?.version}</span>
+            <textarea
+              rows={14}
+              className="bg-dark text-light form-control form-rounded"
+              // spellCheck={false}
+              // contentEditable={false}
+              readOnly={true}
+              hidden={!updateStatus?.logs}
+              value={updateStatus?.logs || "."}
+            ></textarea>
+          </DialogContent>
+          <DialogActions>
+            <div className={classes.wrapper}>
+              {!updateStatus?.hasUpdate ? (
+                <Button
+                  onClick={() => checkUpdates()}
+                  color="primary"
+                  startIcon={<UpdateIcon />}
+                  disabled={updateStatus?.isChecking}
+                >
+                  Check for Updates
+                </Button>
+              ) : null}
+              {updateStatus?.hasUpdate ? (
+                <Button
+                  onClick={update}
+                  color="primary"
+                  startIcon={<UpdateIcon />}
+                  disabled={updateStatus?.isChecking}
+                >
+                  Update Now
+                </Button>
+              ) : null}
+              {updateStatus?.isChecking && (
+                <CircularProgress
+                  size={34}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </DialogActions>
+        </Dialog>
+      </Fade>
+
+      <Fade in={settingsModal != null}>
+        <Dialog
+          onClose={hideModalSettings}
+          open={true}
+          fullWidth={true}
+          maxWidth="xl"
+          className={classes.modal}
+        >
+          <DialogTitle>Settings [ {app?.name} ]</DialogTitle>
+          <DialogContent dividers>
+            {/* <p>Status: {running ? "Running" : "Stopped"}</p> */}
+            <p className="text-capitalize">
+              Status:
+              <span className="font-weight-bold">
+                {`${app?.state?.status || "Unknown"}`}
+              </span>
+            </p>
+            <p>
+              Current Version:{" "}
+              <span className="font-weight-bold">{`${
+                app?.version || "Unknown"
+              }`}</span>
+            </p>
+            <p>
+              Author:{" "}
+              <span className="font-weight-bold">{`${
+                app?.author?.name || "Unknown"
+              }`}</span>
+            </p>
+            <p>
+              Health:{" "}
+              <span className="font-weight-bold">{`${
+                app?.state?.health || "Unknown"
+              }`}</span>
+            </p>
+            <p className="text-capitalize">
+              Restart policy:{" "}
+              <span className="font-weight-bold">{`${
+                app?.state?.restartPolicy || "Unknown"
+              }`}</span>
+            </p>
+            <p>{`${(app as any)?.description || ""}`}</p>
+          </DialogContent>
+          <DialogActions>
+            {/* <InputLabel id="restartPolicy">Restart Policy</InputLabel> */}
+            <div className={classes.wrapper}>
+              <Select
+                disabled={isSysApp}
+                // labelId="restartPolicy"
+                id="select-restart-policy"
+                value={app?.state?.restartPolicy || "0"}
+                onChange={restartPolicyChange}
+                color="primary"
+              >
+                <MenuItem value="0">Restart Policy</MenuItem>
+                <MenuItem value="always">Always</MenuItem>
+                <MenuItem value="on-failure">On-Failure</MenuItem>
+                <MenuItem value="unless-stopped">Unless-Stopped</MenuItem>
+                <MenuItem value="no">No</MenuItem>
+              </Select>
+              {rePolicyChaing && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+
             <Button
-              onClick={() => checkUpdates()}
+              onClick={showModalUpdate}
               color="primary"
               startIcon={<UpdateIcon />}
             >
-              Check for Updates
+              Update
             </Button>
-          ) : null}
-          {updateStatus?.hasUpdate ? (
-            <Button onClick={update} color="primary" startIcon={<UpdateIcon />}>
-              Update Now
-            </Button>
-          ) : null}
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        onClose={hideModalSettings}
-        open={settingsModal !== null}
-        fullWidth={true}
-        maxWidth="xl"
-        className={classes.modal}
-      >
-        <DialogTitle>Settings [ {app?.name} ]</DialogTitle>
-        <DialogContent dividers>
-          {/* <p>Status: {running ? "Running" : "Stopped"}</p> */}
-          <p className="text-capitalize">
-            Status:
-            <span className="font-weight-bold">
-              {`${app?.state?.status || "Unknown"}`}
-            </span>
-          </p>
-          <p>
-            Current Version:{" "}
-            <span className="font-weight-bold">{`${
-              app?.version || "Unknown"
-            }`}</span>
-          </p>
-          <p>
-            Author:{" "}
-            <span className="font-weight-bold">{`${
-              app?.author || "Unknown"
-            }`}</span>
-          </p>
-          <p>
-            Health:{" "}
-            <span className="font-weight-bold">{`${
-              app?.state?.health || "Unknown"
-            }`}</span>
-          </p>
-          <p className="text-capitalize">
-            Restart policy:{" "}
-            <span className="font-weight-bold">{`${
-              app?.state?.restartPolicy || "Unknown"
-            }`}</span>
-          </p>
-          <p>{`${(app as any)?.description || ""}`}</p>
-        </DialogContent>
-        <DialogActions>
-          {/* <InputLabel id="restartPolicy">Restart Policy</InputLabel> */}
-          <Select
-            disabled={isSysApp}
-            // labelId="restartPolicy"
-            id="select-restart-policy"
-            value={app?.state?.restartPolicy || "0"}
-            onChange={restartPolicyChange}
-            color="primary"
-          >
-            <MenuItem value="0">Restart Policy</MenuItem>
-            <MenuItem value="always">Always</MenuItem>
-            <MenuItem value="on-failure">On-Failure</MenuItem>
-            <MenuItem value="unless-stopped">Unless-Stopped</MenuItem>
-            <MenuItem value="no">No</MenuItem>
-          </Select>
-          {rePolicyChaing && (
-            <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
-
-          <Button
-            onClick={showModalUpdate}
-            color="primary"
-            startIcon={<UpdateIcon />}
-          >
-            Update
-          </Button>
-          <Button
-            onClick={showModalUninstall}
-            disabled={isSysApp}
-            color="primary"
-            startIcon={<DeleteIcon />}
-          >
-            Uninstall
-          </Button>
-          <div className={classes.wrapper}>
             <Button
-              disabled={stopping || !running || isSysApp}
-              onClick={stop}
+              onClick={showModalUninstall}
+              disabled={isSysApp}
               color="primary"
-              startIcon={<StopIcon />}
+              startIcon={<DeleteIcon />}
             >
-              Stop
+              Uninstall
             </Button>
-            {stopping && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-          <div className={classes.wrapper}>
-            <Button
-              disabled={starting || running}
-              onClick={start}
-              color="primary"
-              startIcon={<PlayArrowIcon />}
-            >
-              Start
-            </Button>
-            {starting && (
-              <CircularProgress size={24} className={classes.buttonProgress} />
-            )}
-          </div>
-        </DialogActions>
-      </Dialog>
+            <div className={classes.wrapper}>
+              <Button
+                disabled={stopping || !running || isSysApp}
+                onClick={stop}
+                color="primary"
+                startIcon={<StopIcon />}
+              >
+                Stop
+              </Button>
+              {stopping && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+            <div className={classes.wrapper}>
+              <Button
+                disabled={starting || running}
+                onClick={start}
+                color="primary"
+                startIcon={<PlayArrowIcon />}
+              >
+                Start
+              </Button>
+              {starting && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </DialogActions>
+        </Dialog>
+      </Fade>
     </Fragment>
   );
 }

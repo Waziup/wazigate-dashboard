@@ -5,6 +5,9 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import _wazigateLogo from "../../img/wazigate.svg";
 const wazigateLogo = `dist/${_wazigateLogo}`;
 
+import _defaultLogo from "../../img/default-app-logo.svg";
+const defaultLogo = `dist/${_defaultLogo}`;
+
 import {
   makeStyles,
   Dialog,
@@ -20,6 +23,7 @@ import {
   CardContent,
   CardActionArea,
   CardActions,
+  Fade,
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { green } from "@material-ui/core/colors";
@@ -78,8 +82,10 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
   /*------------ */
 
   const [installStatus, setInstallStatus] = useState(null as InstallStatus);
+
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
+
   const [modalMsg, setModalMsg] = useState("");
 
   const [error, setError] = useState(Error);
@@ -94,16 +100,14 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
     setInstallStatus({ log: "...", done: false });
 
     const pollStatus = () => {
-      wazigate.get<InstallStatus>(`"apps/${app.id}?install_logs`).then(
+      wazigate.get<InstallStatus>(`apps/${app.id}?install_logs`).then(
         (res) => {
           setInstallStatus(res);
-          setInstallLoading(false);
           if (timeout !== null) {
             timeout = setTimeout(pollStatus, 1000);
           }
         },
         (error) => {
-          setInstallLoading(false);
           alert("There was an error getting the install status:\n" + error);
         }
       );
@@ -111,7 +115,7 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
 
     var timeout = setTimeout(pollStatus, 1000);
 
-    wazigate.installApp(app.id).then(
+    wazigate.installApp((app as any)?.image).then(
       (res) => {
         setInstallLoading(false);
         setModalMsg(`${res}`);
@@ -130,11 +134,14 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
     );
   };
 
+  /*------------ */
+
   const start = () => {
     setStartLoading(true);
     wazigate.setAppConfig(app.id, { action: "first-start" } as any).then(
       (res) => {
         setStartLoading(false);
+        setModal(false);
         // TODO: navigate / reload
       },
       (error) => {
@@ -144,11 +151,33 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
     );
   };
 
+  /*----------*/
+
+  var fallbackIcon = false;
+  const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
+    if (fallbackIcon) return;
+    event.target.src = defaultLogo;
+    fallbackIcon = true;
+  };
+
+  /*----------*/
+
+  // Hide myself when install successfully
+  if (installSuccess && !modal) return <span></span>;
+
+  /*----------*/
+
   return (
     <Fragment>
       <Card className={className}>
         <CardHeader
-          avatar={<img className={classes.logo} src={wazigateLogo} />}
+          avatar={
+            <img
+              className={classes.logo}
+              src={(app as any)?.waziapp?.icon || wazigateLogo}
+              onError={getDefaultAppIcon}
+            />
+          }
           title={app?.id}
           subheader={
             <a
@@ -167,12 +196,17 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
           <p>{(app as any)?.image}</p>
         </CardContent>
         <CardActions>
-          <Button startIcon={<GetAppIcon />} onClick={toggleModal}>
+          <Button
+            startIcon={<GetAppIcon />}
+            onClick={toggleModal}
+            disabled={installSuccess}
+          >
             Install
           </Button>
         </CardActions>
       </Card>
 
+      {/* <Fade in={modal}> */}
       <Dialog
         onClose={toggleModal}
         open={modal}
@@ -182,25 +216,6 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
       >
         <DialogTitle>Install {app.id}</DialogTitle>
         <DialogContent dividers>
-          <FormGroup row>
-            <div className={classes.wrapper}>
-              <Button
-                autoFocus
-                onClick={install}
-                color="primary"
-                variant="contained"
-                startIcon={<GetAppIcon />}
-              >
-                Download and Install
-              </Button>
-              {installLoading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
-          </FormGroup>
           <textarea
             rows={14}
             className="bg-dark text-light form-control form-rounded"
@@ -208,25 +223,47 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
             // contentEditable={false}
             readOnly={true}
             value={installStatus?.log || "."}
-            hidden={installLoading || !installStatus}
+            hidden={!installStatus}
           ></textarea>
-          {modalMsg ? (
-            <Alert severity={error ? "error" : "warning"} onClose={() => {}}>
+          {modalMsg && (
+            <Alert severity={error ? "error" : "info"} onClose={() => {}}>
               {modalMsg}
             </Alert>
-          ) : null}
+          )}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={start}
-            color="primary"
-            disabled={!installStatus?.done}
-            startIcon={<GetAppIcon />}
-          >
-            Launch the App
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+              autoFocus
+              onClick={install}
+              color="primary"
+              variant="contained"
+              startIcon={<GetAppIcon />}
+              disabled={installLoading || installSuccess}
+            >
+              Download and Install
+            </Button>
+            {installLoading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
+
+          <div className={classes.wrapper}>
+            <Button
+              onClick={start}
+              color="primary"
+              disabled={!installSuccess || startLoading}
+              startIcon={<GetAppIcon />}
+            >
+              Launch the App
+            </Button>
+            {startLoading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
         </DialogActions>
       </Dialog>
+      {/* </Fade> */}
     </Fragment>
   );
 }

@@ -15,7 +15,6 @@ import {
   makeStyles,
   Fab,
   LinearProgress,
-  Grow,
   useTheme,
   Zoom,
 } from "@material-ui/core";
@@ -120,7 +119,9 @@ export default function AppsPage({ filter, handleDrawerToggle }: Props) {
     body = <span>Loading, please wait...</span>;
   } else if (apps.length === 0) {
     body = (
-      <span>"There are not apps installed. Click '+' to add new apps."</span>
+      <span>
+        <h3>"There is no App."</h3>
+      </span>
     );
   } else if (filter == "available") {
     body = apps.map((app) => (

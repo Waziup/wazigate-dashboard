@@ -23,6 +23,9 @@ import {
 import wazigateImage from "../img/wazigate.svg";
 import clsx from "clsx";
 
+import _defaultIcon from "../img/default-menu-icon.svg";
+const defaultIcon = `dist/${_defaultIcon}`;
+
 import {
   Collapse,
   ListItemText,
@@ -86,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: "#f1f1f1",
       [theme.breakpoints.up("sm")]: {
         paddingLeft: drawerWidth,
-      }
+      },
     },
     drawer: {
       [theme.breakpoints.up("sm")]: {
@@ -216,12 +219,7 @@ export const DashboardComp = () => {
 
   const [apps, setApps] = useState(null);
 
-  const [clouds, setClouds] = useState(null as Cloud[])
-
-  const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-    event.target.src = "img/default-icon.svg";
-  };
-
+  const [clouds, setClouds] = useState(null as Cloud[]);
 
   useEffect(() => {
     window.addEventListener("hashchange", () => {
@@ -229,50 +227,63 @@ export const DashboardComp = () => {
       setMobileOpen(false);
     });
 
-    wazigate.getClouds().then((clouds) => {
-      setClouds(Object.values(clouds));
-    }, (err: Error) => {
-      console.error("There was an error loading the cloads:", err);
-      setClouds([]);
-    })
-
-    wazigate.getApps().then((apps) => {
-      if (apps === null) {
-        console.error("The server reported no apps.");
-        setApps([]);
-      } else {
-        Promise.allSettled(
-          apps.map((app, i) => {
-            const menu = app.waziapp?.menu;
-            if (menu) {
-              for (const id in menu) {
-                const item = menu[id];
-                const hook: MenuHook = {
-                  ...item,
-                  icon: item.icon ? (
-                    <img
-                      className={classes.menuIcon}
-                      src={wazigate.toProxyURL(app.id, item.icon)}
-                      onError={getDefaultAppIcon}
-                    />
-                  ) : null,
-                };
-                hooks.setMenuHook(id, hook, item.prio);
-              }
-            }
-            const hook = app.waziapp?.hook;
-            if (!hook) return Promise.resolve(null);
-            return hooks.load(wazigate.toProxyURL(app.id, hook));
-          })
-        ).then((pen) => {
-          console.log("Apps loaded:", pen);
-          setApps(apps);
-        });
+    wazigate.getClouds().then(
+      (clouds) => {
+        setClouds(Object.values(clouds));
+      },
+      (err: Error) => {
+        console.error("There was an error loading the cloads:", err);
+        setClouds([]);
       }
-    }, (err: Error) => {
-      console.error("There was an error loading the apps:", err);
-      setApps([]);
-    });
+    );
+
+    var fallbackIcon = false;
+    const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
+      if (fallbackIcon) return;
+      event.target.src = defaultIcon;
+      fallbackIcon = true;
+    };
+
+    wazigate.getApps().then(
+      (apps) => {
+        if (apps === null) {
+          console.error("The server reported no apps.");
+          setApps([]);
+        } else {
+          Promise.allSettled(
+            apps.map((app, i) => {
+              const menu = app.waziapp?.menu;
+              if (menu) {
+                for (const id in menu) {
+                  const item = menu[id];
+                  const hook: MenuHook = {
+                    ...item,
+                    icon: item.icon ? (
+                      <img
+                        className={classes.menuIcon}
+                        src={wazigate.toProxyURL(app.id, item.icon)}
+                        onError={getDefaultAppIcon}
+                      />
+                    ) : null,
+                  };
+                  hooks.setMenuHook(id, hook, item.prio);
+                }
+              }
+              const hook = app.waziapp?.hook;
+              if (!hook) return Promise.resolve(null);
+              return hooks.load(wazigate.toProxyURL(app.id, hook));
+            })
+          ).then((pen) => {
+            console.log("Apps loaded:", pen);
+            setApps(apps);
+          });
+        }
+      },
+      (err: Error) => {
+        console.error("There was an error loading the apps:", err);
+        setApps([]);
+      }
+    );
   }, []);
 
   const [openMenues, setOpenMenues] = useState(new Set<string>());
@@ -322,7 +333,7 @@ export const DashboardComp = () => {
           }
           className={`${classes.a} ${
             hooks.depth(id) >= 2 ? classes.nested : ""
-            }`}
+          }`}
         >
           <ListItemIcon className={classes.drawerIcon}>{icon}</ListItemIcon>
           <ListItemText primary={item.primary} />
@@ -330,8 +341,8 @@ export const DashboardComp = () => {
             open ? (
               <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} />
             ) : (
-                <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
-              )
+              <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
+            )
           ) : null}
         </ListItem>
         {subItems.length != 0 ? (

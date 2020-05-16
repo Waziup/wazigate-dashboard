@@ -74453,7 +74453,8 @@ function AppsPage({ filter, handleDrawerToggle }) {
         body = react_1.default.createElement("span", null, "Loading, please wait...");
     }
     else if (apps.length === 0) {
-        body = (react_1.default.createElement("span", null, "\"There are not apps installed. Click '+' to add new apps.\""));
+        body = (react_1.default.createElement("span", null,
+            react_1.default.createElement("h3", null, "\"There is no App.\"")));
     }
     else if (filter == "available") {
         body = apps.map((app) => (react_1.default.createElement(MarketplaceApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
@@ -74542,6 +74543,8 @@ const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps *
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const default_menu_icon_svg_1 = __importDefault(__webpack_require__(/*! ../img/default-menu-icon.svg */ "./src/img/default-menu-icon.svg"));
+const defaultIcon = `dist/${default_menu_icon_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const ExpandLess_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandLess */ "./node_modules/@material-ui/icons/ExpandLess.js"));
 const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
@@ -74576,7 +74579,7 @@ const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
         background: "#f1f1f1",
         [theme.breakpoints.up("sm")]: {
             paddingLeft: drawerWidth,
-        }
+        },
     },
     drawer: {
         [theme.breakpoints.up("sm")]: {
@@ -74687,9 +74690,6 @@ exports.DashboardComp = () => {
     const [page, setPage] = react_1.useState(location.hash);
     const [apps, setApps] = react_1.useState(null);
     const [clouds, setClouds] = react_1.useState(null);
-    const getDefaultAppIcon = (event) => {
-        event.target.src = "img/default-icon.svg";
-    };
     react_1.useEffect(() => {
         window.addEventListener("hashchange", () => {
             setPage(location.hash);
@@ -74701,6 +74701,13 @@ exports.DashboardComp = () => {
             console.error("There was an error loading the cloads:", err);
             setClouds([]);
         });
+        var fallbackIcon = false;
+        const getDefaultAppIcon = (event) => {
+            if (fallbackIcon)
+                return;
+            event.target.src = defaultIcon;
+            fallbackIcon = true;
+        };
         wazigate.getApps().then((apps) => {
             if (apps === null) {
                 console.error("The server reported no apps.");
@@ -75612,8 +75619,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 const MenuItem_1 = __importDefault(__webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js"));
 const Select_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js"));
-// import _wazigateLogo from "../../img/wazigate.svg";
-// const wazigateLogo = `dist/${_wazigateLogo}`;
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
+const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
@@ -75654,7 +75663,7 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
 }));
 function InstalledApp({ appInfo, className }) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
     const classes = useStyles();
     /*------------ */
     // Run stuff on load
@@ -75698,6 +75707,7 @@ function InstalledApp({ appInfo, className }) {
     /*------------ */
     const [settingsModal, setSettingsModal] = react_1.useState(null);
     const showModalSettings = () => {
+        // console.log(app);
         setSettingsModal({
             /// ?
             keepConfig: false,
@@ -75715,11 +75725,14 @@ function InstalledApp({ appInfo, className }) {
         wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then((res) => {
             setUninstLoader(false);
             load();
-            alert("The app has been uninstalled.");
+            alert("The app [ " + ((app === null || app === void 0 ? void 0 : app.name) || app.id) + " ] has been uninstalled.");
             hideModalUninstall();
         }, (error) => {
             setUninstLoader(false);
-            alert("There was an error uninstalling the app:\n" + error);
+            alert("There was an error uninstalling the app [ " +
+                ((app === null || app === void 0 ? void 0 : app.name) || app.id) +
+                " ]:\n" +
+                error);
         });
     };
     /*------------ */
@@ -75767,7 +75780,7 @@ function InstalledApp({ appInfo, className }) {
         });
         const pollStatus = () => {
             wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
-                setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { logs: res })));
+                setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { logs: res === null || res === void 0 ? void 0 : res.log })));
                 if (timeout !== null) {
                     timeout = setTimeout(pollStatus, 1000);
                 }
@@ -75799,10 +75812,13 @@ function InstalledApp({ appInfo, className }) {
             alert("Can not perform action:\n" + error);
         });
     };
+    /*----------*/
     const [starting, setStarting] = react_1.useState(false);
     const start = () => {
+        var _a;
         setStarting(true);
-        wazigate.setAppConfig(app.id, { action: "start" }).then((res) => {
+        var startAction = ((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.startedAt) == "" ? "first-start" : "start";
+        wazigate.setAppConfig(app.id, { action: startAction }).then((res) => {
             setStarting(false);
             load();
         }, (error) => {
@@ -75827,8 +75843,12 @@ function InstalledApp({ appInfo, className }) {
         });
     };
     /*----------*/
+    var fallbackIcon = false;
     const getDefaultAppIcon = (event) => {
-        event.target.src = "img/default-app-icon.svg";
+        if (fallbackIcon)
+            return;
+        event.target.src = defaultLogo;
+        fallbackIcon = true;
     };
     /*----------*/
     // If I get uninstalled, I hide myself ;)
@@ -75842,93 +75862,98 @@ function InstalledApp({ appInfo, className }) {
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
             react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: app.id == "wazigate-edge"
-                        ? (_c = (_b = app) === null || _b === void 0 ? void 0 : _b.waziapp) === null || _c === void 0 ? void 0 : _c.icon : wazigate.toProxyURL(app.id, (_e = (_d = app) === null || _d === void 0 ? void 0 : _d.waziapp) === null || _e === void 0 ? void 0 : _e.icon), onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.name, subheader: react_1.default.createElement("a", { href: app.homepage ||
+                        ? wazigateLogo
+                        : wazigate.toProxyURL(app.id, (_c = (_b = app) === null || _b === void 0 ? void 0 : _b.waziapp) === null || _c === void 0 ? void 0 : _c.icon), onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.name, subheader: react_1.default.createElement("a", { href: app.homepage ||
                         "https://hub.docker.com/r/" + app.id.replace(".", "/"), target: "_blank" }, app.id) }),
             react_1.default.createElement(core_1.CardContent, null,
                 app.state ? (react_1.default.createElement("span", { className: "text-capitalize" },
                     "Status:",
                     react_1.default.createElement("span", { className: "font-weight-bold" }, app.state.status || "Disabled"))) : null,
-                react_1.default.createElement("p", null, `${((_f = app) === null || _f === void 0 ? void 0 : _f.description) || "."}`)),
+                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || "."}`)),
             react_1.default.createElement(core_1.CardActions, null,
                 react_1.default.createElement(core_1.Button, { className: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "orange"
                         : (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) ? "animate-flicker"
                             : "", title: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "New update available" : "", startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Settings_1.default, null), onClick: showModalSettings }, "Settings"),
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall }, "Uninstall"))),
-        react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, open: uninstallModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, null,
-                "Uninstall ", app === null || app === void 0 ? void 0 :
-                app.name),
-            react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                react_1.default.createElement(core_1.FormGroup, null,
-                    react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" })),
-                isUninstalling && react_1.default.createElement(core_1.LinearProgress, null)),
-            react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"))),
-        react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: updateModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, null,
-                "Update ", app === null || app === void 0 ? void 0 :
-                app.name),
-            react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                "Current Version:",
-                " ",
-                react_1.default.createElement("span", { className: "font-weight-bold" }, app === null || app === void 0 ? void 0 : app.version),
-                react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
-                    // spellCheck={false}
-                    // contentEditable={false}
-                    readOnly: true, style: {
-                        display: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasCheckedUpdates) || (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking)
-                            ? ""
-                            : "none",
-                    }, value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "." }),
-                (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) && (react_1.default.createElement(core_1.CircularProgress, { size: 34, className: classes.buttonProgress }))),
-            react_1.default.createElement(core_1.DialogActions, null,
-                !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: () => checkUpdates(), color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Check for Updates")) : null,
-                (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update Now")) : null)),
-        react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: settingsModal !== null, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, null,
-                "Settings [ ", app === null || app === void 0 ? void 0 :
-                app.name,
-                " ]"),
-            react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                react_1.default.createElement("p", { className: "text-capitalize" },
-                    "Status:",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.status) || "Unknown"}`)),
-                react_1.default.createElement("p", null,
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall, className: isUninstalling ? "animate-flicker" : "" }, "Uninstall"))),
+        react_1.default.createElement(core_1.Fade, { in: uninstallModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, 
+                // open={uninstallModal !== null}
+                open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Uninstall ", app === null || app === void 0 ? void 0 :
+                    app.name),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                    react_1.default.createElement(core_1.FormGroup, null,
+                        react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"),
+                        isUninstalling && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))),
+        react_1.default.createElement(core_1.Fade, { in: updateModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Update ", app === null || app === void 0 ? void 0 :
+                    app.name),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
                     "Current Version:",
                     " ",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`)),
-                react_1.default.createElement("p", null,
-                    "Author:",
-                    " ",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.author) || "Unknown"}`)),
-                react_1.default.createElement("p", null,
-                    "Health:",
-                    " ",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.health) || "Unknown"}`)),
-                react_1.default.createElement("p", { className: "text-capitalize" },
-                    "Restart policy:",
-                    " ",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_j = app === null || app === void 0 ? void 0 : app.state) === null || _j === void 0 ? void 0 : _j.restartPolicy) || "Unknown"}`)),
-                react_1.default.createElement("p", null, `${((_k = app) === null || _k === void 0 ? void 0 : _k.description) || ""}`)),
-            react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(Select_1.default, { disabled: isSysApp, 
-                    // labelId="restartPolicy"
-                    id: "select-restart-policy", value: ((_l = app === null || app === void 0 ? void 0 : app.state) === null || _l === void 0 ? void 0 : _l.restartPolicy) || "0", onChange: restartPolicyChange, color: "primary" },
-                    react_1.default.createElement(MenuItem_1.default, { value: "0" }, "Restart Policy"),
-                    react_1.default.createElement(MenuItem_1.default, { value: "always" }, "Always"),
-                    react_1.default.createElement(MenuItem_1.default, { value: "on-failure" }, "On-Failure"),
-                    react_1.default.createElement(MenuItem_1.default, { value: "unless-stopped" }, "Unless-Stopped"),
-                    react_1.default.createElement(MenuItem_1.default, { value: "no" }, "No")),
-                rePolicyChaing && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })),
-                react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
-                react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
-                react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { disabled: stopping || !running || isSysApp, onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
-                    stopping && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
-                react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { disabled: starting || running, onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
-                    starting && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))));
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, app === null || app === void 0 ? void 0 : app.version),
+                    react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
+                        // spellCheck={false}
+                        // contentEditable={false}
+                        readOnly: true, hidden: !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs), value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "." })),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: () => checkUpdates(), color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Check for Updates")) : null,
+                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Update Now")) : null,
+                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) && (react_1.default.createElement(core_1.CircularProgress, { size: 34, className: classes.buttonProgress })))))),
+        react_1.default.createElement(core_1.Fade, { in: settingsModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Settings [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                    react_1.default.createElement("p", { className: "text-capitalize" },
+                        "Status:",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_e = app === null || app === void 0 ? void 0 : app.state) === null || _e === void 0 ? void 0 : _e.status) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Current Version:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Author:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_f = app === null || app === void 0 ? void 0 : app.author) === null || _f === void 0 ? void 0 : _f.name) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Health:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.health) || "Unknown"}`)),
+                    react_1.default.createElement("p", { className: "text-capitalize" },
+                        "Restart policy:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.restartPolicy) || "Unknown"}`)),
+                    react_1.default.createElement("p", null, `${((_j = app) === null || _j === void 0 ? void 0 : _j.description) || ""}`)),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(Select_1.default, { disabled: isSysApp, 
+                            // labelId="restartPolicy"
+                            id: "select-restart-policy", value: ((_k = app === null || app === void 0 ? void 0 : app.state) === null || _k === void 0 ? void 0 : _k.restartPolicy) || "0", onChange: restartPolicyChange, color: "primary" },
+                            react_1.default.createElement(MenuItem_1.default, { value: "0" }, "Restart Policy"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "always" }, "Always"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "on-failure" }, "On-Failure"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "unless-stopped" }, "Unless-Stopped"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "no" }, "No")),
+                        rePolicyChaing && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                    react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
+                    react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { disabled: stopping || !running || isSysApp, onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
+                        stopping && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { disabled: starting || running, onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
+                        starting && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))))))));
 }
 exports.default = InstalledApp;
 
@@ -75959,6 +75984,8 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 const GetApp_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/GetApp */ "./node_modules/@material-ui/icons/GetApp.js"));
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
 const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
+const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const Alert_1 = __importDefault(__webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js"));
 const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
@@ -75991,7 +76018,7 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
 }));
 function MarketplaceApp({ appInfo, className }) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     const classes = useStyles();
     /*------------ */
     const [app, setApp] = react_1.useState(appInfo);
@@ -76010,22 +76037,21 @@ function MarketplaceApp({ appInfo, className }) {
     const [installSuccess, setInstallSuccess] = react_1.useState(false);
     const [startLoading, setStartLoading] = react_1.useState(false);
     const install = () => {
+        var _a;
         setInstallLoading(true);
         setInstallStatus({ log: "...", done: false });
         const pollStatus = () => {
-            wazigate.get(`"apps/${app.id}?install_logs`).then((res) => {
+            wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
                 setInstallStatus(res);
-                setInstallLoading(false);
                 if (timeout !== null) {
                     timeout = setTimeout(pollStatus, 1000);
                 }
             }, (error) => {
-                setInstallLoading(false);
                 alert("There was an error getting the install status:\n" + error);
             });
         };
         var timeout = setTimeout(pollStatus, 1000);
-        wazigate.installApp(app.id).then((res) => {
+        wazigate.installApp((_a = app) === null || _a === void 0 ? void 0 : _a.image).then((res) => {
             setInstallLoading(false);
             setModalMsg(`${res}`);
             setError(null);
@@ -76040,41 +76066,57 @@ function MarketplaceApp({ appInfo, className }) {
             timeout = null;
         });
     };
+    /*------------ */
     const start = () => {
         setStartLoading(true);
         wazigate.setAppConfig(app.id, { action: "first-start" }).then((res) => {
             setStartLoading(false);
+            setModal(false);
             // TODO: navigate / reload
         }, (error) => {
             alert("The app failed to start:\n" + error);
             setStartLoading(false);
         });
     };
+    /*----------*/
+    var fallbackIcon = false;
+    const getDefaultAppIcon = (event) => {
+        if (fallbackIcon)
+            return;
+        event.target.src = defaultLogo;
+        fallbackIcon = true;
+    };
+    /*----------*/
+    // Hide myself when install successfully
+    if (installSuccess && !modal)
+        return react_1.default.createElement("span", null);
+    /*----------*/
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
-            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }), title: app === null || app === void 0 ? void 0 : app.id, subheader: react_1.default.createElement("a", { href: app.homepage ||
-                        "https://hub.docker.com/r/" + ((_a = app === null || app === void 0 ? void 0 : app.id) === null || _a === void 0 ? void 0 : _a.replace(".", "/")), target: "_blank" }, app === null || app === void 0 ? void 0 : app.id) }),
+            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: ((_b = (_a = app) === null || _a === void 0 ? void 0 : _a.waziapp) === null || _b === void 0 ? void 0 : _b.icon) || wazigateLogo, onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.id, subheader: react_1.default.createElement("a", { href: app.homepage ||
+                        "https://hub.docker.com/r/" + ((_c = app === null || app === void 0 ? void 0 : app.id) === null || _c === void 0 ? void 0 : _c.replace(".", "/")), target: "_blank" }, app === null || app === void 0 ? void 0 : app.id) }),
             react_1.default.createElement(core_1.CardContent, null,
-                react_1.default.createElement("p", null, `${((_b = app) === null || _b === void 0 ? void 0 : _b.description) || "."}`),
-                react_1.default.createElement("p", null, (_c = app) === null || _c === void 0 ? void 0 : _c.image)),
+                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || "."}`),
+                react_1.default.createElement("p", null, (_e = app) === null || _e === void 0 ? void 0 : _e.image)),
             react_1.default.createElement(core_1.CardActions, null,
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal }, "Install"))),
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal, disabled: installSuccess }, "Install"))),
         react_1.default.createElement(core_1.Dialog, { onClose: toggleModal, open: modal, fullWidth: true, maxWidth: "xl", className: classes.modal },
             react_1.default.createElement(core_1.DialogTitle, null,
                 "Install ",
                 app.id),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                react_1.default.createElement(core_1.FormGroup, { row: true },
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        react_1.default.createElement(core_1.Button, { autoFocus: true, onClick: install, color: "primary", variant: "contained", startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Download and Install"),
-                        installLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))),
                 react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
                     // spellCheck={false}
                     // contentEditable={false}
-                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || ".", hidden: installLoading || !installStatus }),
-                modalMsg ? (react_1.default.createElement(Alert_1.default, { severity: error ? "error" : "warning", onClose: () => { } }, modalMsg)) : null),
+                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || ".", hidden: !installStatus }),
+                modalMsg && (react_1.default.createElement(Alert_1.default, { severity: error ? "error" : "info", onClose: () => { } }, modalMsg))),
             react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", disabled: !(installStatus === null || installStatus === void 0 ? void 0 : installStatus.done), startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App")))));
+                react_1.default.createElement("div", { className: classes.wrapper },
+                    react_1.default.createElement(core_1.Button, { autoFocus: true, onClick: install, color: "primary", variant: "contained", startIcon: react_1.default.createElement(GetApp_1.default, null), disabled: installLoading || installSuccess }, "Download and Install"),
+                    installLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                react_1.default.createElement("div", { className: classes.wrapper },
+                    react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", disabled: !installSuccess || startLoading, startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App"),
+                    startLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))));
 }
 exports.default = MarketplaceApp;
 
@@ -77612,6 +77654,32 @@ window["BabelRuntimeHelpers"] = {
 };
 window["MaterialUI"] = MaterialUI;
 
+
+/***/ }),
+
+/***/ "./src/img/default-app-logo.svg":
+/*!**************************************!*\
+  !*** ./src/img/default-app-logo.svg ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("img/bbb0394a2cd395948e9f69e10ac316c8.svg");
+
+/***/ }),
+
+/***/ "./src/img/default-menu-icon.svg":
+/*!***************************************!*\
+  !*** ./src/img/default-menu-icon.svg ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("img/28cc8b05c47066c8adb90dd7ad6fd127.svg");
 
 /***/ }),
 
