@@ -153,11 +153,11 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
 
   /*----------*/
 
-  var fallbackIcon = false;
+  var fallbackIcon = 0;
   const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-    if (fallbackIcon) return;
+    if (fallbackIcon > 1) return; // Trying twice
     event.target.src = defaultLogo;
-    fallbackIcon = true;
+    fallbackIcon++;
   };
 
   /*----------*/
@@ -187,13 +187,13 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
               }
               target={"_blank"}
             >
-              {app?.id}
+              {(app as any)?.image}
             </a>
           }
         />
         <CardContent>
           <p>{`${(app as any)?.description || "."}`}</p>
-          <p>{(app as any)?.image}</p>
+          {/* <p>{(app as any)?.image}</p> */}
         </CardContent>
         <CardActions>
           <Button
@@ -214,7 +214,9 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
         maxWidth="xl"
         className={classes.modal}
       >
-        <DialogTitle>Install {app.id}</DialogTitle>
+        <DialogTitle title={(app as any)?.image}>
+          Install [ {app.id} ]
+        </DialogTitle>
         <DialogContent dividers>
           <textarea
             rows={14}

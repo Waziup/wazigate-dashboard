@@ -124,8 +124,9 @@ export default function InstalledApp({ appInfo, className }: Props) {
 
   const showModalUninstall = () => {
     setUninstallModal({
-      keepConfig: false,
+      keepConfig: true,
     });
+    hideModalSettings();
   };
 
   const hideModalUninstall = () => {
@@ -359,11 +360,11 @@ export default function InstalledApp({ appInfo, className }: Props) {
 
   /*----------*/
 
-  var fallbackIcon = false;
+  var fallbackIcon = 0;
   const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-    if (fallbackIcon) return;
+    if (fallbackIcon > 1) return; // we try twice to be sure
     event.target.src = defaultLogo;
-    fallbackIcon = true;
+    fallbackIcon++;
   };
 
   /*----------*/
@@ -458,11 +459,16 @@ export default function InstalledApp({ appInfo, className }: Props) {
           maxWidth="xl"
           className={classes.modal}
         >
-          <DialogTitle>Uninstall {app?.name}</DialogTitle>
+          <DialogTitle>Uninstall [ {app?.name} ]</DialogTitle>
           <DialogContent dividers>
             <FormGroup>
               <FormControlLabel
-                control={<Switch onChange={handleKeepConfigChange} />}
+                control={
+                  <Switch
+                    onChange={handleKeepConfigChange}
+                    checked={!!uninstallModal?.keepConfig}
+                  />
+                }
                 value={!!uninstallModal?.keepConfig}
                 label="Keep Config"
               />
@@ -498,7 +504,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
           maxWidth="xl"
           className={classes.modal}
         >
-          <DialogTitle>Update {app?.name}</DialogTitle>
+          <DialogTitle>Update [ {app?.name} ]</DialogTitle>
           <DialogContent dividers>
             Current Version:{" "}
             <span className="font-weight-bold">{app?.version}</span>

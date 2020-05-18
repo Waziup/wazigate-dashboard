@@ -237,13 +237,6 @@ export const DashboardComp = () => {
       }
     );
 
-    var fallbackIcon = false;
-    const getDefaultAppIcon = (event: React.ChangeEvent<HTMLImageElement>) => {
-      if (fallbackIcon) return;
-      event.target.src = defaultIcon;
-      fallbackIcon = true;
-    };
-
     wazigate.getApps().then(
       (apps) => {
         if (apps === null) {
@@ -252,6 +245,15 @@ export const DashboardComp = () => {
         } else {
           Promise.allSettled(
             apps.map((app, i) => {
+              var fallbackIcon = 0;
+              const getDefaultAppIcon = (
+                event: React.ChangeEvent<HTMLImageElement>
+              ) => {
+                if (fallbackIcon > 1) return;
+                event.target.src = defaultIcon;
+                fallbackIcon++;
+              };
+
               const menu = app.waziapp?.menu;
               if (menu) {
                 for (const id in menu) {

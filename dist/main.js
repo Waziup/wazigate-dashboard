@@ -74701,13 +74701,6 @@ exports.DashboardComp = () => {
             console.error("There was an error loading the cloads:", err);
             setClouds([]);
         });
-        var fallbackIcon = false;
-        const getDefaultAppIcon = (event) => {
-            if (fallbackIcon)
-                return;
-            event.target.src = defaultIcon;
-            fallbackIcon = true;
-        };
         wazigate.getApps().then((apps) => {
             if (apps === null) {
                 console.error("The server reported no apps.");
@@ -74716,6 +74709,13 @@ exports.DashboardComp = () => {
             else {
                 Promise.allSettled(apps.map((app, i) => {
                     var _a, _b;
+                    var fallbackIcon = 0;
+                    const getDefaultAppIcon = (event) => {
+                        if (fallbackIcon > 1)
+                            return;
+                        event.target.src = defaultIcon;
+                        fallbackIcon++;
+                    };
                     const menu = (_a = app.waziapp) === null || _a === void 0 ? void 0 : _a.menu;
                     if (menu) {
                         for (const id in menu) {
@@ -75681,8 +75681,9 @@ function InstalledApp({ appInfo, className }) {
     const [uninstallModal, setUninstallModal] = react_1.useState(null);
     const showModalUninstall = () => {
         setUninstallModal({
-            keepConfig: false,
+            keepConfig: true,
         });
+        hideModalSettings();
     };
     const hideModalUninstall = () => {
         setUninstallModal(null);
@@ -75843,12 +75844,12 @@ function InstalledApp({ appInfo, className }) {
         });
     };
     /*----------*/
-    var fallbackIcon = false;
+    var fallbackIcon = 0;
     const getDefaultAppIcon = (event) => {
-        if (fallbackIcon)
-            return;
+        if (fallbackIcon > 1)
+            return; // we try twice to be sure
         event.target.src = defaultLogo;
-        fallbackIcon = true;
+        fallbackIcon++;
     };
     /*----------*/
     // If I get uninstalled, I hide myself ;)
@@ -75881,11 +75882,12 @@ function InstalledApp({ appInfo, className }) {
                 // open={uninstallModal !== null}
                 open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
                 react_1.default.createElement(core_1.DialogTitle, null,
-                    "Uninstall ", app === null || app === void 0 ? void 0 :
-                    app.name),
+                    "Uninstall [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
                 react_1.default.createElement(core_1.DialogContent, { dividers: true },
                     react_1.default.createElement(core_1.FormGroup, null,
-                        react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
+                        react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange, checked: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig) }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
                 react_1.default.createElement(core_1.DialogActions, null,
                     react_1.default.createElement("div", { className: classes.wrapper },
                         react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"),
@@ -75893,8 +75895,9 @@ function InstalledApp({ appInfo, className }) {
         react_1.default.createElement(core_1.Fade, { in: updateModal != null },
             react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
                 react_1.default.createElement(core_1.DialogTitle, null,
-                    "Update ", app === null || app === void 0 ? void 0 :
-                    app.name),
+                    "Update [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
                 react_1.default.createElement(core_1.DialogContent, { dividers: true },
                     "Current Version:",
                     " ",
@@ -76018,7 +76021,7 @@ const useStyles = core_1.makeStyles((theme) => ({
     },
 }));
 function MarketplaceApp({ appInfo, className }) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     const classes = useStyles();
     /*------------ */
     const [app, setApp] = react_1.useState(appInfo);
@@ -76079,12 +76082,12 @@ function MarketplaceApp({ appInfo, className }) {
         });
     };
     /*----------*/
-    var fallbackIcon = false;
+    var fallbackIcon = 0;
     const getDefaultAppIcon = (event) => {
-        if (fallbackIcon)
-            return;
+        if (fallbackIcon > 1)
+            return; // Trying twice
         event.target.src = defaultLogo;
-        fallbackIcon = true;
+        fallbackIcon++;
     };
     /*----------*/
     // Hide myself when install successfully
@@ -76094,16 +76097,16 @@ function MarketplaceApp({ appInfo, className }) {
     return (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement(core_1.Card, { className: className },
             react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: ((_b = (_a = app) === null || _a === void 0 ? void 0 : _a.waziapp) === null || _b === void 0 ? void 0 : _b.icon) || wazigateLogo, onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.id, subheader: react_1.default.createElement("a", { href: app.homepage ||
-                        "https://hub.docker.com/r/" + ((_c = app === null || app === void 0 ? void 0 : app.id) === null || _c === void 0 ? void 0 : _c.replace(".", "/")), target: "_blank" }, app === null || app === void 0 ? void 0 : app.id) }),
+                        "https://hub.docker.com/r/" + ((_c = app === null || app === void 0 ? void 0 : app.id) === null || _c === void 0 ? void 0 : _c.replace(".", "/")), target: "_blank" }, (_d = app) === null || _d === void 0 ? void 0 : _d.image) }),
             react_1.default.createElement(core_1.CardContent, null,
-                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || "."}`),
-                react_1.default.createElement("p", null, (_e = app) === null || _e === void 0 ? void 0 : _e.image)),
+                react_1.default.createElement("p", null, `${((_e = app) === null || _e === void 0 ? void 0 : _e.description) || "."}`)),
             react_1.default.createElement(core_1.CardActions, null,
                 react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal, disabled: installSuccess }, "Install"))),
         react_1.default.createElement(core_1.Dialog, { onClose: toggleModal, open: modal, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, null,
-                "Install ",
-                app.id),
+            react_1.default.createElement(core_1.DialogTitle, { title: (_f = app) === null || _f === void 0 ? void 0 : _f.image },
+                "Install [ ",
+                app.id,
+                " ]"),
             react_1.default.createElement(core_1.DialogContent, { dividers: true },
                 react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
                     // spellCheck={false}
