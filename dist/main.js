@@ -48627,7 +48627,7 @@ exports = ___CSS_LOADER_API_IMPORT___(false);
 var ___CSS_LOADER_URL_REPLACEMENT_0___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_0___);
 var ___CSS_LOADER_URL_REPLACEMENT_1___ = ___CSS_LOADER_GET_URL_IMPORT___(___CSS_LOADER_URL_IMPORT_1___);
 // Module
-exports.push([module.i, "html {\n  height: 100%; }\n\nbody {\n  margin: 0;\n  background-color: #f1f1f1;\n  font-size: 16px;\n  line-height: 1.25em;\n  font-family: \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif;\n  position: relative;\n  cursor: default;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  box-sizing: border-box; }\n  body .code {\n    font-family: \"monospace\"; }\n  body.windows {\n    font-family: \"Segoe UI\", Tahoma, sans-serif; }\n    body.windows .code {\n      font-family: Consolas, Lucida Console, Courier New, monospace; }\n  body.linux {\n    font-family: Roboto, Ubuntu, Arial, sans-serif; }\n    body.linux .code {\n      font-family: \"dejavu sans mono, monospace\"; }\n  body.mac {\n    font-family: \".SFNSDisplay-Regular\", \"Helvetica Neue\", \"Lucida Grande\", sans-serif; }\n    body.mac .code {\n      font-family: Menlo, monospace; }\n\n#dashboard {\n  height: 100%; }\n\nh1,\nh2,\nh3,\nh4 {\n  font-weight: normal;\n  margin: 0;\n  line-height: initial; }\n\na {\n  color: unset;\n  text-decoration: unset; }\n\npre {\n  margin: 0; }\n\n.error {\n  background-color: #ffb294;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 90px 90px;\n  background-position: top right;\n  background-repeat: no-repeat;\n  padding: 20px 40px;\n  margin: 20px 0; }\n\n.title {\n  padding: 0 20px;\n  margin: 40px 0 20px 0; }\n\n#menu {\n  position: fixed;\n  left: 0;\n  bottom: 1.25em;\n  top: 0;\n  width: 240px;\n  background-color: #34425a;\n  padding-top: 60px;\n  color: #f1f1f1; }\n  #menu:before {\n    content: \"\";\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n    background-size: 120px 78px;\n    position: absolute;\n    bottom: 10px;\n    left: 60px;\n    width: 120px;\n    height: 78px; }\n  #menu .menu-item {\n    display: block;\n    line-height: 32px;\n    font-size: 20px;\n    padding: 4px 12px;\n    cursor: pointer; }\n    #menu .menu-item:hover {\n      background: #2a3548; }\n  #menu .item-icon {\n    width: 24px;\n    height: 24px;\n    vertical-align: sub; }\n  #menu .item-name {\n    margin-left: 12px; }\n\n#statusbar {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 1.25em;\n  background: #303846; }\n\n.devices {\n  padding: 0 20px; }\n  .devices .devices-device {\n    border: 1px solid #b9b9b9;\n    border-radius: 8px;\n    width: 300px;\n    margin: 10px;\n    display: inline-block;\n    vertical-align: top; }\n  .devices .device-name {\n    padding: 5px 10px;\n    cursor: text; }\n    .devices .device-name:hover {\n      text-decoration: underline; }\n  .devices .device-id {\n    font-size: 0.75em;\n    line-height: 1.75em;\n    padding: 0 10px;\n    background: #dedede;\n    color: #a0a0a0;\n    letter-spacing: 1px;\n    border-radius: 0 0 8px 8px; }\n  .devices .device-ent {\n    display: contents; }\n  .devices .ent-preview {\n    text-align: center;\n    max-width: 108px;\n    padding: 5px;\n    min-width: 60px;\n    margin: 5px 0 5px 5px;\n    display: inline-block;\n    cursor: pointer;\n    vertical-align: top;\n    border-radius: 4px; }\n    .devices .ent-preview.open {\n      background: #e8e7e7; }\n    .devices .ent-preview:hover {\n      background: #dedede; }\n  .devices .ent-name {\n    text-overflow: ellipsis;\n    overflow: hidden; }\n  .devices .ent-icon {\n    width: 36px;\n    height: 36px; }\n  .devices .ent-details {\n    float: right;\n    width: 100%;\n    background: #e8e8e8;\n    border-top: 1px solid #dadada;\n    border-bottom: 1px solid #dadada;\n    color: #808080; }\n  .devices .details-name {\n    min-width: 68px;\n    padding: 0 4px 0 8px;\n    line-height: 1.75em;\n    display: inline-block; }\n  .devices .ent-detail {\n    padding: 0 8px; }\n  .devices .details-field {\n    display: flex;\n    flex-wrap: wrap; }\n  .devices .details-value {\n    flex-grow: 1;\n    line-height: 1.75em;\n    padding: 0 8px;\n    display: block; }\n  .devices .ent-value {\n    width: 100px; }\n  .devices .ent-kind {\n    line-height: 1.75em; }\n  .devices .kind-label {\n    display: inline-block;\n    cursor: pointer;\n    padding: 0 4px 0 0; }\n    .devices .kind-label:hover {\n      background: #d8d8d8; }\n  .devices .kind-icon {\n    width: 24px;\n    height: 24px;\n    margin: 2px;\n    vertical-align: bottom; }\n  .devices .kind-unit {\n    font-size: 10px;\n    padding: 0px 4px;\n    line-height: 16px;\n    border: 1px solid #b9b9b9;\n    margin: 0 4px;\n    display: inline-block;\n    border-radius: 2px;\n    cursor: pointer; }\n    .devices .kind-unit:hover {\n      background: #d8d8d8; }\n  .devices .meta-name {\n    padding: 0 8px;\n    font-size: 12px;\n    letter-spacing: 1px;\n    background: #dadada;\n    line-height: 15px; }\n\ninput,\nselect {\n  background: unset;\n  height: 1.75em;\n  line-height: 1.75em;\n  font: unset;\n  padding: 0 4px;\n  border: none;\n  color: unset; }\n\n.meta-lora {\n  background: #c6e2ec; }\n  .meta-lora .meta-name {\n    background: #b3d0da; }\n  .meta-lora .lora-id {\n    width: 100%;\n    padding: 0.25em 12px;\n    line-height: 1.25em;\n    height: 1.75em;\n    box-sizing: border-box;\n    font-size: 12px;\n    letter-spacing: 1.5px;\n    background: #bdd7e0;\n    color: #636d71; }\n\n.app {\n  width: 100%;\n  height: 100vh;\n  border: none; }\n\n.MuiFab-root.wazigate-fabAdd {\n  background: #f35e19;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabAdd:hover {\n    background: #f38c5c; }\n\n.MuiFab-root.wazigate-fabSetting {\n  background: #66c;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabSetting:hover {\n    background: #a6c; }\n\n@keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n.animate-flicker {\n  -webkit-animation: flickerAnimation 1s infinite;\n  -moz-animation: flickerAnimation 1s infinite;\n  -o-animation: flickerAnimation 1s infinite;\n  animation: flickerAnimation 1s infinite; }\n", ""]);
+exports.push([module.i, "html {\n  height: 100%; }\n\nbody {\n  margin: 0;\n  background-color: #f1f1f1;\n  font-size: 16px;\n  line-height: 1.25em;\n  font-family: \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\",\r sans-serif;\n  position: relative;\n  cursor: default;\n  user-select: none;\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  box-sizing: border-box; }\n  body .code {\n    font-family: \"monospace\"; }\n  body.windows {\n    font-family: \"Segoe UI\", Tahoma, sans-serif; }\n    body.windows .code {\n      font-family: Consolas, Lucida Console, Courier New, monospace; }\n  body.linux {\n    font-family: Roboto, Ubuntu, Arial, sans-serif; }\n    body.linux .code {\n      font-family: \"dejavu sans mono, monospace\"; }\n  body.mac {\n    font-family: \".SFNSDisplay-Regular\", \"Helvetica Neue\", \"Lucida Grande\",\r sans-serif; }\n    body.mac .code {\n      font-family: Menlo, monospace; }\n\n#dashboard {\n  height: 100%; }\n\nh1,\nh2,\nh3,\nh4 {\n  font-weight: normal;\n  margin: 0;\n  line-height: initial; }\n\na {\n  color: unset;\n  text-decoration: unset; }\n\npre {\n  margin: 0; }\n\n.error {\n  background-color: #ffb294;\n  background-image: url(" + ___CSS_LOADER_URL_REPLACEMENT_0___ + ");\n  background-size: 90px 90px;\n  background-position: top right;\n  background-repeat: no-repeat;\n  padding: 20px 40px;\n  margin: 20px 0; }\n\n.title {\n  padding: 0 20px;\n  margin: 40px 0 20px 0; }\n\n#menu {\n  position: fixed;\n  left: 0;\n  bottom: 1.25em;\n  top: 0;\n  width: 240px;\n  background-color: #34425a;\n  padding-top: 60px;\n  color: #f1f1f1; }\n  #menu:before {\n    content: \"\";\n    background: url(" + ___CSS_LOADER_URL_REPLACEMENT_1___ + ");\n    background-size: 120px 78px;\n    position: absolute;\n    bottom: 10px;\n    left: 60px;\n    width: 120px;\n    height: 78px; }\n  #menu .menu-item {\n    display: block;\n    line-height: 32px;\n    font-size: 20px;\n    padding: 4px 12px;\n    cursor: pointer; }\n    #menu .menu-item:hover {\n      background: #2a3548; }\n  #menu .item-icon {\n    width: 24px;\n    height: 24px;\n    vertical-align: sub; }\n  #menu .item-name {\n    margin-left: 12px; }\n\n#statusbar {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 1.25em;\n  background: #303846; }\n\n.devices {\n  padding: 0 20px; }\n  .devices .devices-device {\n    border: 1px solid #b9b9b9;\n    border-radius: 8px;\n    width: 300px;\n    margin: 10px;\n    display: inline-block;\n    vertical-align: top; }\n  .devices .device-name {\n    padding: 5px 10px;\n    cursor: text; }\n    .devices .device-name:hover {\n      text-decoration: underline; }\n  .devices .device-id {\n    font-size: 0.75em;\n    line-height: 1.75em;\n    padding: 0 10px;\n    background: #dedede;\n    color: #a0a0a0;\n    letter-spacing: 1px;\n    border-radius: 0 0 8px 8px; }\n  .devices .device-ent {\n    display: contents; }\n  .devices .ent-preview {\n    text-align: center;\n    max-width: 108px;\n    padding: 5px;\n    min-width: 60px;\n    margin: 5px 0 5px 5px;\n    display: inline-block;\n    cursor: pointer;\n    vertical-align: top;\n    border-radius: 4px; }\n    .devices .ent-preview.open {\n      background: #e8e7e7; }\n    .devices .ent-preview:hover {\n      background: #dedede; }\n  .devices .ent-name {\n    text-overflow: ellipsis;\n    overflow: hidden; }\n  .devices .ent-icon {\n    width: 36px;\n    height: 36px; }\n  .devices .ent-details {\n    float: right;\n    width: 100%;\n    background: #e8e8e8;\n    border-top: 1px solid #dadada;\n    border-bottom: 1px solid #dadada;\n    color: #808080; }\n  .devices .details-name {\n    min-width: 68px;\n    padding: 0 4px 0 8px;\n    line-height: 1.75em;\n    display: inline-block; }\n  .devices .ent-detail {\n    padding: 0 8px; }\n  .devices .details-field {\n    display: flex;\n    flex-wrap: wrap; }\n  .devices .details-value {\n    flex-grow: 1;\n    line-height: 1.75em;\n    padding: 0 8px;\n    display: block; }\n  .devices .ent-value {\n    width: 100px; }\n  .devices .ent-kind {\n    line-height: 1.75em; }\n  .devices .kind-label {\n    display: inline-block;\n    cursor: pointer;\n    padding: 0 4px 0 0; }\n    .devices .kind-label:hover {\n      background: #d8d8d8; }\n  .devices .kind-icon {\n    width: 24px;\n    height: 24px;\n    margin: 2px;\n    vertical-align: bottom; }\n  .devices .kind-unit {\n    font-size: 10px;\n    padding: 0px 4px;\n    line-height: 16px;\n    border: 1px solid #b9b9b9;\n    margin: 0 4px;\n    display: inline-block;\n    border-radius: 2px;\n    cursor: pointer; }\n    .devices .kind-unit:hover {\n      background: #d8d8d8; }\n  .devices .meta-name {\n    padding: 0 8px;\n    font-size: 12px;\n    letter-spacing: 1px;\n    background: #dadada;\n    line-height: 15px; }\n\ninput,\nselect {\n  background: unset;\n  height: 1.75em;\n  line-height: 1.75em;\n  font: unset;\n  padding: 0 4px;\n  border: none;\n  color: unset; }\n\n.meta-lora {\n  background: #c6e2ec; }\n  .meta-lora .meta-name {\n    background: #b3d0da; }\n  .meta-lora .lora-id {\n    width: 100%;\n    padding: 0.25em 12px;\n    line-height: 1.25em;\n    height: 1.75em;\n    box-sizing: border-box;\n    font-size: 12px;\n    letter-spacing: 1.5px;\n    background: #bdd7e0;\n    color: #636d71; }\n\n.app {\n  width: 100%;\n  height: 100vh;\n  border: none; }\n\n.MuiFab-root.wazigate-fabAdd {\n  background: #f35e19;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabAdd:hover {\n    background: #f38c5c; }\n\n.MuiFab-root.wazigate-fabSetting {\n  background: #66c;\n  outline: none;\n  position: fixed;\n  right: 12px;\n  bottom: 32px; }\n  .MuiFab-root.wazigate-fabSetting:hover {\n    background: #a6c; }\n\n@keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-o-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-moz-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n@-webkit-keyframes flickerAnimation {\n  0% {\n    opacity: 1; }\n  50% {\n    opacity: 0.5; }\n  100% {\n    opacity: 1; } }\n\n.animate-flicker {\n  -webkit-animation: flickerAnimation 1s infinite;\n  -moz-animation: flickerAnimation 1s infinite;\n  -o-animation: flickerAnimation 1s infinite;\n  animation: flickerAnimation 1s infinite; }\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -74185,6 +74185,7 @@ class HookRegistry {
     constructor() {
         this.hooks = {};
         this.pending = {};
+        this.listeners = new Map;
     }
     resolve() {
         if (!document.currentScript) {
@@ -74225,9 +74226,33 @@ class HookRegistry {
         else {
             this.hooks[id] = [[hook, prio]];
         }
+        for (const [r, l] of this.listeners) {
+            if (r.test(id)) {
+                for (const cb of l) {
+                    try {
+                        cb(id, hook);
+                    }
+                    catch (err) {
+                        console.error("HookRegistry listener error:", id, r, l);
+                    }
+                }
+            }
+        }
     }
     set(id, hook, prio = 0) {
         this.hooks[id] = [[hook, prio]];
+        for (const [r, l] of this.listeners) {
+            if (r.test(id)) {
+                for (const cb of l) {
+                    try {
+                        cb(id, hook);
+                    }
+                    catch (err) {
+                        console.error("HookRegistry listener error:", id, r, l);
+                    }
+                }
+            }
+        }
     }
     delete(id, hook) {
         if (id in this.hooks) {
@@ -74237,6 +74262,22 @@ class HookRegistry {
                     delete this.hooks[id];
                 else
                     this.hooks[id].splice(i, 1);
+            }
+        }
+    }
+    on(id, cb) {
+        const l = this.listeners.get(id);
+        if (l)
+            l.add(cb);
+        else
+            this.listeners.set(id, new Set([cb]));
+    }
+    off(id, cb) {
+        const l = this.listeners.get(id);
+        if (l) {
+            l.delete(cb);
+            if (l.size === 0) {
+                this.listeners.delete(id);
             }
         }
     }
@@ -74534,42 +74575,19 @@ const Devices_1 = __importDefault(__webpack_require__(/*! ./pages/Devices */ "./
 const Error_1 = __importDefault(__webpack_require__(/*! ./pages/Error */ "./src/components/pages/Error.tsx"));
 const AppsProxy_1 = __webpack_require__(/*! ./AppsProxy */ "./src/components/AppsProxy.tsx");
 const Sync_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Sync */ "./node_modules/@material-ui/icons/Sync.js"));
-// import WifiIcon from "@material-ui/icons/Wifi";
-// import RouterIcon from "@material-ui/icons/Router";
 const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps */ "./node_modules/@material-ui/icons/Apps.js"));
-// import LinkIcon from "@material-ui/icons/Link";
-// import LinkOffIcon from "@material-ui/icons/LinkOff";
-// import SettingsIcon from "@material-ui/icons/Settings";
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
 const default_menu_icon_svg_1 = __importDefault(__webpack_require__(/*! ../img/default-menu-icon.svg */ "./src/img/default-menu-icon.svg"));
 const defaultIcon = `dist/${default_menu_icon_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-const ExpandLess_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandLess */ "./node_modules/@material-ui/icons/ExpandLess.js"));
-const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
 const Sync_2 = __importDefault(__webpack_require__(/*! ./pages/Sync */ "./src/components/pages/Sync.tsx"));
 const MQTTIndicator_1 = __webpack_require__(/*! ./MQTTIndicator */ "./src/components/MQTTIndicator.tsx");
+const HookMenu_1 = __importDefault(__webpack_require__(/*! ./HookMenu */ "./src/components/HookMenu.tsx"));
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
-// var menu = (item: MenuItem) => {
-//   return (
-//     <a
-//       key={`${item.label}${item.href}`}
-//       className="menu-item"
-//       href={item.href}
-//       target={item.target || "_self"}
-//     >
-//       <IconComp className="item-icon" src={item.icon} />
-//       <span className="item-name">{item.label}</span>
-//     </a>
-//   );
-// };
-// type WazigatePkg = {
-//   menu: MenuItem[];
-//   hook: string;
-// };
 const drawerWidth = 240;
 const useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
     root: {
@@ -74738,48 +74756,10 @@ exports.DashboardComp = () => {
             setApps([]);
         });
     }, []);
-    const [openMenues, setOpenMenues] = react_1.useState(new Set());
-    const handleMenuItemClick = (id) => {
-        setOpenMenues((openMenues) => {
-            if (!openMenues.has(id)) {
-                openMenues.add(id);
-                return new Set(openMenues);
-            }
-            return openMenues;
-        });
-    };
-    const handleMenuOpenerClick = (id, event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setOpenMenues((openMenues) => {
-            openMenues.add(id);
-            return new Set(openMenues);
-        });
-    };
-    const handleMenuCloserClick = (id, event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setOpenMenues((openMenues) => {
-            openMenues.delete(id);
-            return new Set(openMenues);
-        });
-    };
-    const menuItem = (id, item) => {
-        const open = openMenues.has(id);
-        const subItems = hooks.getAtPrio(id);
-        const icon = item.icon || (react_1.default.createElement("img", { src: "img/default-icon.svg", className: classes.menuIcon }));
-        return (react_1.default.createElement(react_1.Fragment, { key: id },
-            react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: id, href: item.href, onClick: subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null, className: `${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}` },
-                react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, icon),
-                react_1.default.createElement(core_1.ListItemText, { primary: item.primary }),
-                subItems.length !== 0 ? (open ? (react_1.default.createElement(ExpandLess_1.default, { onClick: handleMenuCloserClick.bind(null, id) })) : (react_1.default.createElement(ExpandMore_1.default, { onClick: handleMenuOpenerClick.bind(null, id) }))) : null),
-            subItems.length != 0 ? (react_1.default.createElement(core_1.Collapse, { in: open, timeout: "auto", unmountOnExit: true },
-                react_1.default.createElement(core_1.List, { component: "div", disablePadding: true }, subItems.map(([id, item]) => menuItem(id, item))))) : null));
-    };
     const drawer = (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement("div", { className: classes.toolbar }),
         react_1.default.createElement(core_1.Divider, null),
-        react_1.default.createElement(core_1.List, { className: classes.menu }, hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item))),
+        react_1.default.createElement(HookMenu_1.default, { className: classes.menu, hook: "menu", on: /^menu\..*/ }),
         react_1.default.createElement("div", null,
             react_1.default.createElement(MQTTIndicator_1.MQTTIndicator, null))));
     var body;
@@ -75015,6 +74995,113 @@ function Error(props) {
         react_1.default.createElement(Error_1.default, { className: classes.backgroundIcon })));
 }
 exports.default = Error;
+
+
+/***/ }),
+
+/***/ "./src/components/HookMenu.tsx":
+/*!*************************************!*\
+  !*** ./src/components/HookMenu.tsx ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const ExpandLess_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandLess */ "./node_modules/@material-ui/icons/ExpandLess.js"));
+const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
+const useStyles = core_1.makeStyles((theme) => core_1.createStyles({
+    menuIcon: {
+        width: "1em",
+        height: "1em",
+        fontSize: "1.5rem",
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
+    a: {
+        "&:hover": {
+            color: "unset !important",
+        },
+    },
+    drawerIcon: {
+        color: "rgba(255, 255, 255, 0.84)",
+    }
+}));
+function HookMenu(_a) {
+    var { hook, on } = _a, props = __rest(_a, ["hook", "on"]);
+    const classes = useStyles();
+    const [openMenues, setOpenMenues] = react_1.useState(new Set());
+    const handleMenuItemClick = (id) => {
+        setOpenMenues((openMenues) => {
+            if (!openMenues.has(id)) {
+                openMenues.add(id);
+                return new Set(openMenues);
+            }
+            return openMenues;
+        });
+    };
+    const handleMenuOpenerClick = (id, event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpenMenues((openMenues) => {
+            openMenues.add(id);
+            return new Set(openMenues);
+        });
+    };
+    const handleMenuCloserClick = (id, event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpenMenues((openMenues) => {
+            openMenues.delete(id);
+            return new Set(openMenues);
+        });
+    };
+    const menuItem = (id, item) => {
+        const open = openMenues.has(id);
+        const subItems = hooks.getAtPrio(id);
+        const icon = item.icon || (react_1.default.createElement("img", { src: "img/default-icon.svg", className: classes.menuIcon }));
+        return (react_1.default.createElement(react_1.Fragment, { key: id },
+            react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: id, href: item.href, onClick: subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null, className: `${classes.a} ${hooks.depth(id) >= 2 ? classes.nested : ""}` },
+                react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon }, icon),
+                react_1.default.createElement(core_1.ListItemText, { primary: item.primary }),
+                subItems.length !== 0 ? (open ? (react_1.default.createElement(ExpandLess_1.default, { onClick: handleMenuCloserClick.bind(null, id) })) : (react_1.default.createElement(ExpandMore_1.default, { onClick: handleMenuOpenerClick.bind(null, id) }))) : null),
+            subItems.length != 0 ? (react_1.default.createElement(core_1.Collapse, { in: open, timeout: "auto", unmountOnExit: true },
+                react_1.default.createElement(core_1.List, { component: "div", disablePadding: true }, subItems.map(([id, item]) => menuItem(id, item))))) : null));
+    };
+    const [n, setN] = react_1.useState(0);
+    react_1.useEffect(() => {
+        const cb = () => setN((n) => n + 1);
+        hooks.on(on, cb);
+        return () => hooks.off(on, cb);
+    }, []);
+    return (react_1.default.createElement(core_1.List, Object.assign({}, props), hooks.getAtPrio(hook).map(([id, item]) => menuItem(id, item))));
+}
+exports.default = HookMenu;
 
 
 /***/ }),
@@ -77682,7 +77769,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("img/28cc8b05c47066c8adb90dd7ad6fd127.svg");
+/* harmony default export */ __webpack_exports__["default"] = ("img/c9b8ffa0d3b89eead25954e46cb09823.svg");
 
 /***/ }),
 

@@ -46,6 +46,8 @@ export default class HookRegistry {
         [id: string]: () => void
     } = {}
 
+    listeners: Map<RegExp, Set<(id: string, hook: any) => void>> = new Map;
+
     resolve() {
         if (!document.currentScript) {
             throw "hooks.resolve() must be called only once from a loading hook script";
@@ -83,10 +85,32 @@ export default class HookRegistry {
         } else {
             this.hooks[id] = [[hook, prio]];
         }
+        for (const [r, l] of this.listeners) {
+            if(r.test(id)) {
+                for(const cb of l) {
+                    try {
+                        cb(id, hook);
+                    } catch(err) {
+                        console.error("HookRegistry listener error:", id, r, l);
+                    }
+                }
+            }
+        }
     }
 
     set(id: string, hook: any, prio: number = 0) {
         this.hooks[id] = [[hook, prio]];
+        for (const [r, l] of this.listeners) {
+            if(r.test(id)) {
+                for(const cb of l) {
+                    try {
+                        cb(id, hook);
+                    } catch(err) {
+                        console.error("HookRegistry listener error:", id, r, l);
+                    }
+                }
+            }
+        }
     }
 
     delete(id: string, hook: any) {
@@ -97,6 +121,22 @@ export default class HookRegistry {
                     delete this.hooks[id];
                 else
                     this.hooks[id].splice(i, 1);
+            }
+        }
+    }
+
+    on(id: RegExp, cb: (id: string, hook: any) => void) {
+        const l = this.listeners.get(id);
+        if(l) l.add(cb);
+        else this.listeners.set(id, new Set([cb]));
+    }
+
+    off(id: RegExp, cb: (id: string, hook: any) => void) {
+        const l = this.listeners.get(id);
+        if(l) {
+            l.delete(cb);
+            if (l.size === 0) {
+                this.listeners.delete(id);
             }
         }
     }

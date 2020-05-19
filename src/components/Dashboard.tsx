@@ -4,15 +4,10 @@ import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import ErrorPage from "./pages/Error";
-import waziup, { MenuHook, App, Cloud } from "waziup";
+import { MenuHook, App, Cloud } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
 import SyncIcon from "@material-ui/icons/Sync";
-// import WifiIcon from "@material-ui/icons/Wifi";
-// import RouterIcon from "@material-ui/icons/Router";
 import AppsIcon from "@material-ui/icons/Apps";
-// import LinkIcon from "@material-ui/icons/Link";
-// import LinkOffIcon from "@material-ui/icons/LinkOff";
-// import SettingsIcon from "@material-ui/icons/Settings";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import {
   makeStyles,
@@ -21,62 +16,26 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 import wazigateImage from "../img/wazigate.svg";
-import clsx from "clsx";
 
 import _defaultIcon from "../img/default-menu-icon.svg";
 const defaultIcon = `dist/${_defaultIcon}`;
 
 import {
-  Collapse,
-  ListItemText,
-  ListItem,
-  ListItemIcon,
   CssBaseline,
   Divider,
   Drawer,
   Hidden,
-  List,
-  Button,
 } from "@material-ui/core";
 
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import SyncPage from "./pages/Sync";
 import { MQTTIndicator } from "./MQTTIndicator";
-
-// import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap-css-only/css/bootstrap.min.css";
-// import "mdbreact/dist/css/mdb.css";
-
-interface State {
-  page: string;
-  loading: {
-    pending: number;
-  };
-}
+import HookMenu from "./HookMenu";
 
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
-
-// var menu = (item: MenuItem) => {
-//   return (
-//     <a
-//       key={`${item.label}${item.href}`}
-//       className="menu-item"
-//       href={item.href}
-//       target={item.target || "_self"}
-//     >
-//       <IconComp className="item-icon" src={item.icon} />
-//       <span className="item-name">{item.label}</span>
-//     </a>
-//   );
-// };
-
-// type WazigatePkg = {
-//   menu: MenuItem[];
-//   hook: string;
-// };
 
 const drawerWidth = 240;
 
@@ -288,83 +247,11 @@ export const DashboardComp = () => {
     );
   }, []);
 
-  const [openMenues, setOpenMenues] = useState(new Set<string>());
-  const handleMenuItemClick = (id: string) => {
-    setOpenMenues((openMenues) => {
-      if (!openMenues.has(id)) {
-        openMenues.add(id);
-        return new Set(openMenues);
-      }
-      return openMenues;
-    });
-  };
-
-  const handleMenuOpenerClick = (id: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setOpenMenues((openMenues) => {
-      openMenues.add(id);
-      return new Set(openMenues);
-    });
-  };
-
-  const handleMenuCloserClick = (id: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setOpenMenues((openMenues) => {
-      openMenues.delete(id);
-      return new Set(openMenues);
-    });
-  };
-
-  const menuItem = (id: string, item: MenuHook) => {
-    const open = openMenues.has(id);
-    const subItems = hooks.getAtPrio(id);
-    const icon = item.icon || (
-      <img src="img/default-icon.svg" className={classes.menuIcon} />
-    );
-    return (
-      <Fragment key={id}>
-        <ListItem
-          component="a"
-          button
-          key={id}
-          href={item.href}
-          onClick={
-            subItems.length !== 0 ? handleMenuItemClick.bind(null, id) : null
-          }
-          className={`${classes.a} ${
-            hooks.depth(id) >= 2 ? classes.nested : ""
-          }`}
-        >
-          <ListItemIcon className={classes.drawerIcon}>{icon}</ListItemIcon>
-          <ListItemText primary={item.primary} />
-          {subItems.length !== 0 ? (
-            open ? (
-              <ExpandLess onClick={handleMenuCloserClick.bind(null, id)} />
-            ) : (
-              <ExpandMore onClick={handleMenuOpenerClick.bind(null, id)} />
-            )
-          ) : null}
-        </ListItem>
-        {subItems.length != 0 ? (
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {subItems.map(([id, item]) => menuItem(id, item))}
-            </List>
-          </Collapse>
-        ) : null}
-      </Fragment>
-    );
-  };
-
   const drawer = (
     <Fragment>
       <div className={classes.toolbar} />
       <Divider />
-      <List className={classes.menu}>
-        {hooks.getAtPrio("menu").map(([id, item]) => menuItem(id, item))}
-      </List>
+      <HookMenu className={classes.menu} hook="menu" on={/^menu\..*/} />
       <div>
         <MQTTIndicator />
       </div>
