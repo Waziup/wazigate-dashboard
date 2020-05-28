@@ -138,7 +138,7 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
 
   const start = () => {
     setStartLoading(true);
-    wazigate.setAppConfig(app.id, { action: "first-start" } as any).then(
+    wazigate.setAppConfig(app.id, { action: "up -d --no-build" } as any).then(
       (res) => {
         setStartLoading(false);
         setModal(false);
@@ -228,7 +228,7 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
             hidden={!installStatus}
           ></textarea>
           {modalMsg && (
-            <Alert severity={error ? "error" : "info"} onClose={() => {}}>
+            <Alert severity={error ? "error" : "info"} onClose={() => { }}>
               {modalMsg}
             </Alert>
           )}

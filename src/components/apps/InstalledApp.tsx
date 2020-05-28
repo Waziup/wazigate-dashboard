@@ -193,9 +193,9 @@ export default function InstalledApp({ appInfo, className }: Props) {
         setUninstLoader(false);
         alert(
           "There was an error uninstalling the app [ " +
-            (app?.name || app.id) +
-            " ]:\n" +
-            error
+          (app?.name || app.id) +
+          " ]:\n" +
+          error
         );
       }
     );
@@ -322,7 +322,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
   const start = () => {
     setStarting(true);
 
-    var startAction = app?.state?.startedAt == "" ? "first-start" : "start";
+    var startAction = app?.state?.startedAt == "" ? "up -d --no-build" : "start";
     wazigate.setAppConfig(app.id, { action: startAction } as AppConfig).then(
       (res) => {
         setStarting(false);
@@ -427,8 +427,8 @@ export default function InstalledApp({ appInfo, className }: Props) {
               updateStatus?.hasUpdate
                 ? "orange"
                 : updateStatus?.isChecking
-                ? "animate-flicker"
-                : ""
+                  ? "animate-flicker"
+                  : ""
             }
             title={updateStatus?.hasUpdate ? "New update available" : ""}
             startIcon={<UpdateIcon />}
@@ -572,25 +572,25 @@ export default function InstalledApp({ appInfo, className }: Props) {
               Current Version:{" "}
               <span className="font-weight-bold">{`${
                 app?.version || "Unknown"
-              }`}</span>
+                }`}</span>
             </p>
             <p>
               Author:{" "}
               <span className="font-weight-bold">{`${
                 app?.author?.name || "Unknown"
-              }`}</span>
+                }`}</span>
             </p>
             <p>
               Health:{" "}
               <span className="font-weight-bold">{`${
                 app?.state?.health || "Unknown"
-              }`}</span>
+                }`}</span>
             </p>
             <p className="text-capitalize">
               Restart policy:{" "}
               <span className="font-weight-bold">{`${
                 app?.state?.restartPolicy || "Unknown"
-              }`}</span>
+                }`}</span>
             </p>
             <p>{`${(app as any)?.description || ""}`}</p>
           </DialogContent>
