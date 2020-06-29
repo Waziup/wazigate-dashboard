@@ -33,7 +33,7 @@ import SyncPage from "./pages/Sync";
 import { MQTTIndicator } from "./MQTTIndicator";
 import HookMenu from "./HookMenu";
 
-const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.+)/;
+const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.*)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
 
