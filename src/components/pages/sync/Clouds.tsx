@@ -103,14 +103,23 @@ export const CloudComp = ({ cloud, className }: Props) => {
     const [saving, setSaving] = useState(false);
 
     const handleRenameClick = () => {
-        const newCloudName = prompt("New cloud name:", cloud.id);
+        const oldName = cloud.name || cloud.id;
+        const newCloudName = prompt("New cloud name:", oldName);
         if (newCloudName) {
             setCloud(cloud => ({
                 ...cloud,
                 name: newCloudName,
             }));
+            wazigate.set(`clouds/${cloud.id}/name`, newCloudName).then(() => {
+                // OK
+            }, (err) =>  {
+                alert("Can not change cloud name:\n"+err);
+                setCloud(cloud => ({
+                    ...cloud,
+                    name: oldName,
+                }));
+            })
         }
-        // TODO: Implement name save at wazigate-edge
         handleMenuClose();
     }
 

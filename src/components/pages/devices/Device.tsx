@@ -79,8 +79,17 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
 
     const [deviceName, setDeviceName] = useState(device.name);
     const handleNameClick = () => {
-        const newDeviceName = prompt("New device name:", deviceName);
-        if (newDeviceName) setDeviceName(newDeviceName);
+        const oldName = deviceName;
+        const newDeviceName = prompt("New device name:", oldName);
+        if (newDeviceName && newDeviceName != oldName) {
+            setDeviceName(newDeviceName);
+            wazigate.set(`devices/${device.id}/name`, newDeviceName).then(() => {
+                // OK
+            }, (err) => {
+                alert("The device name could not be saved:\n"+err);
+                setDeviceName(oldName);
+            });
+        }
         handleMenuClose();
     }
 
@@ -190,7 +199,7 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                     </ListItemIcon>
                     <ListItemText primary="Delete" />
                 </MenuItem>
-                <Divider />
+                {/* <Divider />
                 <MenuItem onClick={handleNameClick}>
                     <ListItemIcon>
                         <AddIcon fontSize="small" />
@@ -202,7 +211,7 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                         <AddIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Add Actuator" />
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
             <Divider />
             <CardContent>
