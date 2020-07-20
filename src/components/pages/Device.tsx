@@ -4,6 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Error from "../Error";
 import {default as SensorComp} from "./device/Sensor";
+import {default as ActuatorComp} from "./device/Actuator";
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -109,6 +110,21 @@ const useStyles = makeStyles((theme) => ({
         // [theme.breakpoints.up(990)]: {
         //     columnCount: 2,
         // },
+        [theme.breakpoints.down('sm')]: {
+            width: `calc(100% - ${theme.spacing(2)}px)`,
+        },
+
+    },
+    actuators: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    actuator: {
+        margin: theme.spacing(1),
+        textAlign: "left",
+        display: "inline-block",
+        verticalAlign: "top",
+        width: 340,
         [theme.breakpoints.down('sm')]: {
             width: `calc(100% - ${theme.spacing(2)}px)`,
         },
@@ -414,16 +430,28 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
         body = <Error error={error} />
     } else {
         body = (
-            <div className={classes.sensors}>
-                { device.sensors.map(sensor => (
-                    <SensorComp
-                        key={sensor.id}
-                        className={classes.sensor}
-                        deviceID={deviceID}
-                        sensor={sensor}
-                    />
-                )) }
-            </div>
+            <>
+                <div className={classes.sensors}>
+                    { device.sensors.map(sensor => (
+                        <SensorComp
+                            key={sensor.id}
+                            className={classes.sensor}
+                            deviceID={deviceID}
+                            sensor={sensor}
+                        />
+                    )) }
+                </div>
+                <div className={classes.actuators}>
+                    { device.actuators.map(actuator => (
+                        <ActuatorComp
+                            key={actuator.id}
+                            className={classes.sensor}
+                            deviceID={deviceID}
+                            actuator={actuator}
+                        />
+                    )) }
+                </div>
+            </>
         )
     }
 

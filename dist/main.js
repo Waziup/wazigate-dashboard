@@ -76237,6 +76237,7 @@ const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js"));
 const Error_1 = __importDefault(__webpack_require__(/*! ../Error */ "./src/components/Error.tsx"));
 const Sensor_1 = __importDefault(__webpack_require__(/*! ./device/Sensor */ "./src/components/pages/device/Sensor.tsx"));
+const Actuator_1 = __importDefault(__webpack_require__(/*! ./device/Actuator */ "./src/components/pages/device/Actuator.tsx"));
 const Edit_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js"));
 const MoreVert_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/MoreVert */ "./node_modules/@material-ui/icons/MoreVert.js"));
 const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
@@ -76316,6 +76317,20 @@ const useStyles = core_1.makeStyles((theme) => ({
         // [theme.breakpoints.up(990)]: {
         //     columnCount: 2,
         // },
+        [theme.breakpoints.down('sm')]: {
+            width: `calc(100% - ${theme.spacing(2)}px)`,
+        },
+    },
+    actuators: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    actuator: {
+        margin: theme.spacing(1),
+        textAlign: "left",
+        display: "inline-block",
+        verticalAlign: "top",
+        width: 340,
         [theme.breakpoints.down('sm')]: {
             width: `calc(100% - ${theme.spacing(2)}px)`,
         },
@@ -76456,7 +76471,9 @@ function SensorPage({ deviceID, handleDrawerToggle }) {
         body = react_1.default.createElement(Error_1.default, { error: error });
     }
     else {
-        body = (react_1.default.createElement("div", { className: classes.sensors }, device.sensors.map(sensor => (react_1.default.createElement(Sensor_1.default, { key: sensor.id, className: classes.sensor, deviceID: deviceID, sensor: sensor })))));
+        body = (react_1.default.createElement(react_1.default.Fragment, null,
+            react_1.default.createElement("div", { className: classes.sensors }, device.sensors.map(sensor => (react_1.default.createElement(Sensor_1.default, { key: sensor.id, className: classes.sensor, deviceID: deviceID, sensor: sensor })))),
+            react_1.default.createElement("div", { className: classes.actuators }, device.actuators.map(actuator => (react_1.default.createElement(Actuator_1.default, { key: actuator.id, className: classes.sensor, deviceID: deviceID, actuator: actuator }))))));
     }
     return (react_1.default.createElement("div", { className: classes.page },
         react_1.default.createElement(core_1.AppBar, { position: "fixed", className: classes.appBar },
@@ -77222,6 +77239,95 @@ exports.default = SyncPage;
 
 /***/ }),
 
+/***/ "./src/components/pages/device/Actuator.tsx":
+/*!**************************************************!*\
+  !*** ./src/components/pages/device/Actuator.tsx ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "react"));
+const ontologies_json_1 = __importDefault(__webpack_require__(/*! ../../../ontologies.json */ "./src/ontologies.json"));
+const ontologies_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/ontologies.svg */ "./src/img/ontologies.svg"));
+const SVGSpriteIcon_1 = __importDefault(__webpack_require__(/*! ../../SVGSpriteIcon */ "./src/components/SVGSpriteIcon.tsx"));
+const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
+const ExpandMore_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js"));
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const useStyles = core_1.makeStyles((theme) => ({
+    root: {
+    // maxWidth: 345,
+    // display: "inline-block",
+    // verticalAlign: "top",
+    },
+    name: {
+        cursor: "text",
+        '&:hover': {
+            "text-decoration": "underline",
+        },
+    },
+    icon: {
+        width: "40px",
+        height: "40px",
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: core_1.colors.red[500],
+    },
+    value: {
+        float: "right",
+        flexGrow: 0,
+        marginLeft: "1.5em",
+    },
+}));
+const defaultKindIcon = "crane";
+function Actuator({ deviceID, actuator, className }) {
+    var _a, _b;
+    const classes = useStyles();
+    const kind = (actuator.meta.kind || "");
+    const quantity = (actuator.meta.quantity || "");
+    const unit = (actuator.meta.unit || "");
+    const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultKindIcon;
+    const kindLabel = ((_b = ontologies_json_1.default.sensingDevices[kind]) === null || _b === void 0 ? void 0 : _b.label) || kind;
+    const [expanded, setExpanded] = react_1.default.useState(false);
+    const handleExpandClick = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setExpanded(!expanded);
+    };
+    return (react_1.default.createElement(core_1.Card, { className: `${classes.root} ${className || ""}` },
+        react_1.default.createElement(core_1.List, { dense: true },
+            react_1.default.createElement(core_1.ListItem, { component: "a", button: true, href: `#/devices/${deviceID}/actuators/${actuator.id}` },
+                react_1.default.createElement(core_1.ListItemIcon, null,
+                    react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` })),
+                react_1.default.createElement(core_1.ListItemText, { primary: actuator.name, secondary: kindLabel }),
+                react_1.default.createElement(core_1.IconButton, { className: clsx_1.default(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                    }), onClick: handleExpandClick, "aria-expanded": expanded, "aria-label": "show more" },
+                    react_1.default.createElement(ExpandMore_1.default, null)))),
+        react_1.default.createElement(core_1.Collapse, { in: expanded, timeout: "auto", unmountOnExit: true },
+            react_1.default.createElement(core_1.CardContent, null,
+                react_1.default.createElement(core_1.Typography, { paragraph: true }, "Actuator Details")))));
+}
+exports.default = Actuator;
+
+
+/***/ }),
+
 /***/ "./src/components/pages/device/Sensor.tsx":
 /*!************************************************!*\
   !*** ./src/components/pages/device/Sensor.tsx ***!
@@ -77409,7 +77515,8 @@ const useStyles = core_1.makeStyles((theme) => ({
         marginLeft: "1.5em",
     },
 }));
-const defaultKindIcon = "meter";
+const defaultSensorIcon = "meter";
+const defaultActuatorIcon = "crane";
 exports.DeviceComp = ({ device, className, onDelete }) => {
     const classes = useStyles();
     const [deviceName, setDeviceName] = react_1.useState(device.name);
@@ -77506,7 +77613,7 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
                 const kind = (sensor.meta.kind || "");
                 const quantity = (sensor.meta.quantity || "");
                 const unit = (sensor.meta.unit || "");
-                const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultKindIcon;
+                const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultSensorIcon;
                 const kindLabel = ((_b = ontologies_json_1.default.sensingDevices[kind]) === null || _b === void 0 ? void 0 : _b.label) || kind;
                 const unitLabel = ((_c = ontologies_json_1.default.units[unit]) === null || _c === void 0 ? void 0 : _c.label) || unit;
                 return (react_1.default.createElement(core_1.ListItem, { component: "a", key: sensor.id, button: true, href: `#/devices/${device.id}/sensors/${sensor.id}` },
@@ -77514,6 +77621,20 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
                         react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` })),
                     react_1.default.createElement(core_1.ListItemText, { primary: sensor.name, secondary: kindLabel }),
                     react_1.default.createElement(core_1.ListItemText, { className: classes.value, primary: `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}` })));
+            })),
+            react_1.default.createElement(List_1.default, { dense: true }, device.actuators.map(actuator => {
+                var _a, _b, _c;
+                const kind = (actuator.meta.kind || "");
+                const quantity = (actuator.meta.quantity || "");
+                const unit = (actuator.meta.unit || "");
+                const icon = ((_a = ontologies_json_1.default.sensingDevices[kind]) === null || _a === void 0 ? void 0 : _a.icon) || defaultActuatorIcon;
+                const kindLabel = ((_b = ontologies_json_1.default.sensingDevices[kind]) === null || _b === void 0 ? void 0 : _b.label) || kind;
+                const unitLabel = ((_c = ontologies_json_1.default.units[unit]) === null || _c === void 0 ? void 0 : _c.label) || unit;
+                return (react_1.default.createElement(core_1.ListItem, { component: "a", key: actuator.id, button: true, href: `#/devices/${device.id}/actuators/${actuator.id}` },
+                    react_1.default.createElement(core_1.ListItemIcon, null,
+                        react_1.default.createElement(SVGSpriteIcon_1.default, { className: classes.icon, src: `dist/${ontologies_svg_1.default}#${icon}` })),
+                    react_1.default.createElement(core_1.ListItemText, { primary: actuator.name, secondary: kindLabel }),
+                    react_1.default.createElement(core_1.ListItemText, { className: classes.value, primary: `${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}` })));
             })))));
 };
 const alphabetcolors = ["#5A8770", "#B2B7BB", "#6FA9AB", "#F5AF29", "#0088B9", "#F18636", "#D93A37", "#A6B12E", "#5C9BBC", "#F5888D", "#9A89B5", "#407887", "#9A89B5", "#5A8770", "#D33F33", "#A2B01F", "#F0B126", "#0087BF", "#F18636", "#0087BF", "#B2B7BB", "#72ACAE", "#9C8AB4", "#5A8770", "#EEB424", "#407887"];
@@ -77799,7 +77920,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("img/4423017d98dfd83345be802220fcc666.svg");
+/* harmony default export */ __webpack_exports__["default"] = ("img/e56f239e3c5bb9825f506e49efcccad9.svg");
 
 /***/ }),
 

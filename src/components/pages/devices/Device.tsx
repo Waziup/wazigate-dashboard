@@ -72,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const defaultKindIcon = "meter";
+const defaultSensorIcon = "meter";
+const defaultActuatorIcon = "crane";
 
 export const DeviceComp = ({ device, className, onDelete }: Props) => {
     const classes = useStyles();
@@ -221,7 +222,7 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                         const quantity = (sensor.meta.quantity || "") as string;
                         const unit = (sensor.meta.unit || "") as string;
 
-                        const icon = ontologies.sensingDevices[kind]?.icon || defaultKindIcon;
+                        const icon = ontologies.sensingDevices[kind]?.icon || defaultSensorIcon;
                         const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
                         const unitLabel = ontologies.units[unit]?.label || unit;
 
@@ -240,6 +241,36 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                                 <ListItemText
                                     className={classes.value}
                                     primary={`${sensor.value}${unitLabel?` ${unitLabel}`:""}`}
+                                />
+                            </ListItem>
+                        )
+                    }) }
+                </List>
+                <List dense={true}>
+                    { device.actuators.map(actuator => {
+                        const kind = (actuator.meta.kind || "") as string;
+                        const quantity = (actuator.meta.quantity || "") as string;
+                        const unit = (actuator.meta.unit || "") as string;
+
+                        const icon = ontologies.sensingDevices[kind]?.icon || defaultActuatorIcon;
+                        const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
+                        const unitLabel = ontologies.units[unit]?.label || unit;
+
+                        return (
+                            <ListItem component="a" key={actuator.id} button href={`#/devices/${device.id}/actuators/${actuator.id}`}>
+                                <ListItemIcon>
+                                    <SVGSpriteIcon
+                                        className={classes.icon}
+                                        src={`dist/${ontologiesSprite}#${icon}`}
+                                    />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={actuator.name}
+                                    secondary={kindLabel}
+                                />
+                                <ListItemText
+                                    className={classes.value}
+                                    primary={`${actuator.value}${unitLabel?` ${unitLabel}`:""}`}
                                 />
                             </ListItem>
                         )
