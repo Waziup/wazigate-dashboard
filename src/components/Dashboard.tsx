@@ -276,6 +276,10 @@ export const DashboardComp = () => {
       body = (
         <AppsPage filter="available" handleDrawerToggle={handleDrawerToggle} />
       );
+    } else if (page === "#/docs/") {
+      body = (
+        <iframe className="app" src="/docs/" />
+      );
     } else if ((match = page.match(sensorRegExp))) {
       body = (
         <SensorPage
