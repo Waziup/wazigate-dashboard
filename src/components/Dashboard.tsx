@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import AppsPage from "./Apps";
+import LoginPage from "./pages/Login";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
@@ -8,6 +9,7 @@ import { MenuHook, App, Cloud } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
 import SyncIcon from "@material-ui/icons/Sync";
 import AppsIcon from "@material-ui/icons/Apps";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import {
   makeStyles,
@@ -25,6 +27,9 @@ import {
   Divider,
   Drawer,
   Hidden,
+  ListItem,
+  ListItemIcon,
+  ListItemText
 } from "@material-ui/core";
 
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -176,11 +181,56 @@ export const DashboardComp = () => {
 
   const [page, setPage] = useState(location.hash);
 
+  /*----------- */
+
+  const isAuthorized = () => {
+    //Just a cheap API call
+    window.fetch("/sys/uptime").then(
+      (resp) => {
+        if (resp.status == 401) {
+          setPage("#/login");
+        } else {
+          setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
+        }
+      }
+    );
+  };
+
+  const doLogout = () => {
+    event.preventDefault();
+    wazigate.set<any>("auth/logout", {}).then(
+      (res) => {
+        window.location.href = "/";
+      },
+      (error) => {
+        console.log(error);
+        alert("Logout failed: " + error);
+      }
+    );
+  }
+
+  const reToken = () => {
+    wazigate.set<any>("auth/retoken", {}).then(
+      (res) => {
+        console.log("Referesh token", res);
+        setTimeout(reToken, 1000 * 60 * 8); // Referesh the token every 10-2 minutes
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  /*----------- */
+
   const [apps, setApps] = useState(null);
 
   const [clouds, setClouds] = useState(null as Cloud[]);
 
   useEffect(() => {
+    isAuthorized();
+    setTimeout(reToken, 1000 * 60 * 8);
+
     window.addEventListener("hashchange", () => {
       setPage(location.hash);
       setMobileOpen(false);
@@ -250,6 +300,19 @@ export const DashboardComp = () => {
   const drawer = (
     <Fragment>
       <div className={classes.toolbar} />
+
+      <Fragment key="topLinks">
+        <ListItem
+          component="a"
+          button
+          key="logout"
+          href="/#/logout"
+          onClick={doLogout}
+          className={classes.a}>
+          <ListItemIcon className={classes.drawerIcon}><ExitToAppIcon /></ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
+      </Fragment>
       <Divider />
       <HookMenu className={classes.menu} hook="menu" on={/^menu\..*/} />
       <div>
@@ -298,6 +361,13 @@ export const DashboardComp = () => {
       );
     } else if ((match = page.match(appsRegExp))) {
       body = <AppsProxyComp app={match[1]} path={match[2]} />;
+    }
+    else if (page === "#/login") {
+      return (
+        <LoginPage />
+      );
+    } else if (page === "#/logout") {
+      doLogout();
     } else {
       body = (
         <ErrorPage
