@@ -1,63 +1,82 @@
 import React, { useState, Fragment, useEffect } from "react";
 // import { TimeComp } from "../Time";
 
-import Avatar from '@material-ui/core/Avatar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Container from '@material-ui/core/Container';
-import { green } from "@material-ui/core/colors";
 import { Alert } from '@material-ui/lab';
+import _wazigateLogo from "../../img/wazigate.svg"
+import clsx from "clsx";
+
+const wazigateLogo = `dist/${_wazigateLogo}`;
 
 import {
-  makeStyles,
+  Divider,
   Card,
-  CardHeader,
   CardContent,
-  CardActions,
-  Button,
-  CircularProgress,
-  DialogActions,
-  // Typography,
-  FormControlLabel,
-  Switch,
-  // LinearProgress,
-  Fade,
+  makeStyles,
   Grid,
-} from "@material-ui/core";
+  List,
+  FormGroup,
+  TextField,
+  Button,
+  CardActions,
+  Grow,
+  LinearProgress,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: 400,
+    maxWidth: "calc(100% - 32px)",
+    display: "inline-block",
+    verticalAlign: "top",
+  },
+  name: {
+    cursor: "text",
+    '&:hover': {
+      "text-decoration": "underline",
+    },
+  },
+  icon: {
+    width: "40px",
+    height: "40px",
+  },
+  logo: {
+    display: "inline-flex",
+    height: "2rem",
+    marginRight: 16,
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  value: {
+    float: "right",
+    flexGrow: 0,
+    marginLeft: "1.5em",
+  },
+  wrapper: {
+    position: "relative",
+  },
+  progress: {
+    color: "#4caf50",
+    display: "inline",
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  buttonProgress: {
-    color: green[200],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12,
-  },
-  wrapper: {
-    margin: theme.spacing(1),
-    position: "relative",
-  },
+  }
 }));
 
 export default function Login() {
@@ -100,59 +119,68 @@ export default function Login() {
 
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login to the Wazigate dahsboard
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={loginCheck}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <div className={classes.wrapper}>
-            <Button
-              type="submit"
-              fullWidth
-              disabled={checking}
-              color="primary"
-              variant="contained"
-              className={classes.submit}
-            // startIcon={<PlayArrowIcon />}
-            >
-              Login
-              </Button>
-            {checking && (
-              <CircularProgress
-                size={24}
-                className={classes.buttonProgress}
+
+    <div className={classes.paper}>
+      <Card className={clsx(classes.root)}>
+        <Grow in={checking}>
+          <LinearProgress />
+        </Grow>
+        <List dense={true}>
+          <ListItem>
+            <img className={classes.logo} src={wazigateLogo} />
+            <ListItemText
+              primary="Login to the Wazigate dahsboard"
+            />
+          </ListItem>
+        </List>
+        <Divider />
+        <CardContent>
+          <form noValidate onSubmit={loginCheck}>
+            <FormGroup>
+
+              <TextField
+                // variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
               />
-            )}
-          </div>
+              <TextField
+                // variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <CardActions>
+                <Button
+                  type="submit"
+                  fullWidth
+                  disabled={checking}
+                  color="primary"
+                  variant="contained"
+                  startIcon={<LockOpenIcon />}
+                >
+                  Login
+                </Button>
+              </CardActions>
+
+            </FormGroup>
+          </form>
+
+          <Divider />
+          <br />
 
           {msg != "" && (<Alert severity={loginErr ? "error" : "success"}>{msg}</Alert>)}
+
           <Grid container>
             <Grid item xs>
               Default username: <b>admin</b>
@@ -163,8 +191,8 @@ export default function Login() {
               Default password: <b>loragateway</b>
             </Grid>
           </Grid>
-        </form>
-      </div>
-    </Container>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

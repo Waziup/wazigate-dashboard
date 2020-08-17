@@ -37155,10 +37155,10 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/icons/LockOutlined.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/@material-ui/icons/LockOutlined.js ***!
-  \*********************************************************/
+/***/ "./node_modules/@material-ui/icons/LockOpen.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@material-ui/icons/LockOpen.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37177,8 +37177,8 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
 var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
 
 var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
-  d: "M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"
-}), 'LockOutlined');
+  d: "M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"
+}), 'LockOpen');
 
 exports.default = _default;
 
@@ -37237,6 +37237,35 @@ var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/crea
 var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
   d: "M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
 }), 'MoreVert');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/Person.js":
+/*!***************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Person.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+}), 'Person');
 
 exports.default = _default;
 
@@ -79448,12 +79477,14 @@ const Login_1 = __importDefault(__webpack_require__(/*! ./pages/Login */ "./src/
 const Sensor_1 = __importDefault(__webpack_require__(/*! ./pages/Sensor */ "./src/components/pages/Sensor.tsx"));
 const Device_1 = __importDefault(__webpack_require__(/*! ./pages/Device */ "./src/components/pages/Device.tsx"));
 const Devices_1 = __importDefault(__webpack_require__(/*! ./pages/Devices */ "./src/components/pages/Devices.tsx"));
+const UserProfile_1 = __importDefault(__webpack_require__(/*! ./pages/UserProfile */ "./src/components/pages/UserProfile.tsx"));
 const Error_1 = __importDefault(__webpack_require__(/*! ./pages/Error */ "./src/components/pages/Error.tsx"));
 const AppsProxy_1 = __webpack_require__(/*! ./AppsProxy */ "./src/components/AppsProxy.tsx");
 const Sync_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Sync */ "./node_modules/@material-ui/icons/Sync.js"));
 const Apps_2 = __importDefault(__webpack_require__(/*! @material-ui/icons/Apps */ "./node_modules/@material-ui/icons/Apps.js"));
 const ExitToApp_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/ExitToApp */ "./node_modules/@material-ui/icons/ExitToApp.js"));
 const Dashboard_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Dashboard */ "./node_modules/@material-ui/icons/Dashboard.js"));
+const Person_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Person */ "./node_modules/@material-ui/icons/Person.js"));
 const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
 const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../img/wazigate.svg */ "./src/img/wazigate.svg"));
 const default_menu_icon_svg_1 = __importDefault(__webpack_require__(/*! ../img/default-menu-icon.svg */ "./src/img/default-menu-icon.svg"));
@@ -79575,6 +79606,11 @@ hooks.setMenuHook("apps", {
     icon: react_1.default.createElement(Apps_2.default, null),
     href: "#/apps",
 }, 80);
+hooks.setMenuHook("profile", {
+    primary: "User Profile",
+    icon: react_1.default.createElement(Person_1.default, null),
+    href: "#/profile",
+}, 1999);
 exports.DashboardComp = () => {
     const classes = useStyles();
     const theme = styles_1.useTheme();
@@ -79584,17 +79620,6 @@ exports.DashboardComp = () => {
     };
     const [page, setPage] = react_1.useState(location.hash);
     /*----------- */
-    const isAuthorized = () => {
-        //Just a cheap API call
-        window.fetch("/sys/uptime").then((resp) => {
-            if (resp.status == 401) {
-                setPage("#/login");
-            }
-            else {
-                setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
-            }
-        });
-    };
     const doLogout = () => {
         event.preventDefault();
         wazigate.set("auth/logout", {}).then((res) => {
@@ -79604,20 +79629,10 @@ exports.DashboardComp = () => {
             alert("Logout failed: " + error);
         });
     };
-    const reToken = () => {
-        wazigate.set("auth/retoken", {}).then((res) => {
-            console.log("Referesh token", res);
-            setTimeout(reToken, 1000 * 60 * 8); // Referesh the token every 10-2 minutes
-        }, (error) => {
-            console.log(error);
-        });
-    };
     /*----------- */
     const [apps, setApps] = react_1.useState(null);
     const [clouds, setClouds] = react_1.useState(null);
     react_1.useEffect(() => {
-        isAuthorized();
-        setTimeout(reToken, 1000 * 60 * 8);
         window.addEventListener("hashchange", () => {
             setPage(location.hash);
             setMobileOpen(false);
@@ -79668,7 +79683,7 @@ exports.DashboardComp = () => {
     const drawer = (react_1.default.createElement(react_1.Fragment, null,
         react_1.default.createElement("div", { className: classes.toolbar }),
         react_1.default.createElement(react_1.Fragment, { key: "topLinks" },
-            react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: "logout", href: "/#/logout", onClick: doLogout, className: classes.a },
+            react_1.default.createElement(core_1.ListItem, { component: "a", button: true, key: "logout", href: "/#/logout", className: classes.a },
                 react_1.default.createElement(core_1.ListItemIcon, { className: classes.drawerIcon },
                     react_1.default.createElement(ExitToApp_1.default, null)),
                 react_1.default.createElement(core_1.ListItemText, { primary: "Logout" }))),
@@ -79708,6 +79723,9 @@ exports.DashboardComp = () => {
         }
         else if (page === "#/login") {
             return (react_1.default.createElement(Login_1.default, null));
+        }
+        else if (page === "#/profile") {
+            body = (react_1.default.createElement(UserProfile_1.default, null));
         }
         else if (page === "#/logout") {
             doLogout();
@@ -81657,45 +81675,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
 // import { TimeComp } from "../Time";
-const Avatar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/esm/Avatar/index.js"));
-const CssBaseline_1 = __importDefault(__webpack_require__(/*! @material-ui/core/CssBaseline */ "./node_modules/@material-ui/core/esm/CssBaseline/index.js"));
-const TextField_1 = __importDefault(__webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js"));
-const LockOutlined_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOutlined */ "./node_modules/@material-ui/icons/LockOutlined.js"));
-const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
-const Container_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js"));
-const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+const LockOpen_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/LockOpen */ "./node_modules/@material-ui/icons/LockOpen.js"));
 const lab_1 = __webpack_require__(/*! @material-ui/lab */ "./node_modules/@material-ui/lab/esm/index.js");
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const useStyles = core_1.makeStyles((theme) => ({
+    root: {
+        width: 400,
+        maxWidth: "calc(100% - 32px)",
+        display: "inline-block",
+        verticalAlign: "top",
+    },
+    name: {
+        cursor: "text",
+        '&:hover': {
+            "text-decoration": "underline",
+        },
+    },
+    icon: {
+        width: "40px",
+        height: "40px",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    value: {
+        float: "right",
+        flexGrow: 0,
+        marginLeft: "1.5em",
+    },
+    wrapper: {
+        position: "relative",
+    },
+    progress: {
+        color: "#4caf50",
+        display: "inline",
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%',
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    buttonProgress: {
-        color: colors_1.green[200],
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: -12,
-        marginLeft: -12,
-    },
-    wrapper: {
-        margin: theme.spacing(1),
-        position: "relative",
-    },
+    }
 }));
 function Login() {
     const classes = useStyles();
@@ -81725,18 +81760,32 @@ function Login() {
             setMsg("Invalid credentials!");
         });
     };
-    return (react_1.default.createElement(Container_1.default, { component: "main", maxWidth: "xs" },
-        react_1.default.createElement(CssBaseline_1.default, null),
-        react_1.default.createElement("div", { className: classes.paper },
-            react_1.default.createElement(Avatar_1.default, { className: classes.avatar },
-                react_1.default.createElement(LockOutlined_1.default, null)),
-            react_1.default.createElement(Typography_1.default, { component: "h1", variant: "h5" }, "Login to the Wazigate dahsboard"),
-            react_1.default.createElement("form", { className: classes.form, noValidate: true, onSubmit: loginCheck },
-                react_1.default.createElement(TextField_1.default, { variant: "outlined", margin: "normal", required: true, fullWidth: true, id: "username", label: "Username", name: "username", autoComplete: "username", autoFocus: true }),
-                react_1.default.createElement(TextField_1.default, { variant: "outlined", margin: "normal", required: true, fullWidth: true, name: "password", label: "Password", type: "password", id: "password", autoComplete: "current-password" }),
-                react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { type: "submit", fullWidth: true, disabled: checking, color: "primary", variant: "contained", className: classes.submit }, "Login"),
-                    checking && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+    return (react_1.default.createElement("div", { className: classes.paper },
+        react_1.default.createElement(core_1.Card, { className: clsx_1.default(classes.root) },
+            react_1.default.createElement(core_1.Grow, { in: checking },
+                react_1.default.createElement(core_1.LinearProgress, null)),
+            react_1.default.createElement(core_1.List, { dense: true },
+                react_1.default.createElement(core_1.ListItem, null,
+                    react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }),
+                    react_1.default.createElement(core_1.ListItemText, { primary: "Login to the Wazigate dahsboard" }))),
+            react_1.default.createElement(core_1.Divider, null),
+            react_1.default.createElement(core_1.CardContent, null,
+                react_1.default.createElement("form", { noValidate: true, onSubmit: loginCheck },
+                    react_1.default.createElement(core_1.FormGroup, null,
+                        react_1.default.createElement(core_1.TextField
+                        // variant="outlined"
+                        , { 
+                            // variant="outlined"
+                            margin: "normal", required: true, fullWidth: true, id: "username", label: "Username", name: "username", autoComplete: "username", autoFocus: true }),
+                        react_1.default.createElement(core_1.TextField
+                        // variant="outlined"
+                        , { 
+                            // variant="outlined"
+                            margin: "normal", required: true, fullWidth: true, name: "password", label: "Password", type: "password", id: "password", autoComplete: "current-password" }),
+                        react_1.default.createElement(core_1.CardActions, null,
+                            react_1.default.createElement(core_1.Button, { type: "submit", fullWidth: true, disabled: checking, color: "primary", variant: "contained", startIcon: react_1.default.createElement(LockOpen_1.default, null) }, "Login")))),
+                react_1.default.createElement(core_1.Divider, null),
+                react_1.default.createElement("br", null),
                 msg != "" && (react_1.default.createElement(lab_1.Alert, { severity: loginErr ? "error" : "success" }, msg)),
                 react_1.default.createElement(core_1.Grid, { container: true },
                     react_1.default.createElement(core_1.Grid, { item: true, xs: true },
@@ -82275,6 +82324,167 @@ function SyncPage({ handleDrawerToggle }) {
         react_1.default.createElement("div", { className: classes.body }, body)));
 }
 exports.default = SyncPage;
+
+
+/***/ }),
+
+/***/ "./src/components/pages/UserProfile.tsx":
+/*!**********************************************!*\
+  !*** ./src/components/pages/UserProfile.tsx ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+// import { TimeComp } from "../Time";
+const lab_1 = __webpack_require__(/*! @material-ui/lab */ "./node_modules/@material-ui/lab/esm/index.js");
+const Save_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Save */ "./node_modules/@material-ui/icons/Save.js"));
+const List_1 = __importDefault(__webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/esm/List/index.js"));
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const clsx_1 = __importDefault(__webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const useStyles = core_1.makeStyles((theme) => ({
+    root: {
+        width: 400,
+        maxWidth: "calc(100% - 32px)",
+        display: "inline-block",
+        verticalAlign: "top",
+    },
+    name: {
+        cursor: "text",
+        '&:hover': {
+            "text-decoration": "underline",
+        },
+    },
+    icon: {
+        width: "40px",
+        height: "40px",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    avatar: {
+        backgroundColor: core_1.colors.red[500],
+    },
+    value: {
+        float: "right",
+        flexGrow: 0,
+        marginLeft: "1.5em",
+    },
+    wrapper: {
+        position: "relative",
+    },
+    progress: {
+        color: "#4caf50",
+        display: "inline",
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    }
+}));
+function UserProfile() {
+    const classes = useStyles();
+    /*------------ */
+    // Run stuff on load
+    react_1.useEffect(() => {
+        loadProfile();
+    }, [] /* This makes it to run only once*/);
+    /*------------ */
+    const [loading, setLoading] = react_1.useState(false);
+    const [profile, setProfile] = react_1.useState(null);
+    const loadProfile = () => {
+        setLoading(true);
+        wazigate.get("auth/profile").then((res) => {
+            setLoading(false);
+            setProfile(res);
+        }, (error) => {
+            setLoading(false);
+            console.log(error);
+        });
+    };
+    /*------------ */
+    const [msg, setMsg] = react_1.useState("");
+    const [err, setErr] = react_1.useState(false);
+    const saveProfile = (event) => {
+        event.preventDefault();
+        //Validation
+        if (event.target.password.value.length > 0 &&
+            event.target.newPassword.value != event.target.newPasswordConfirm.value) {
+            setErr(true);
+            setMsg("The new password doesn't match with the confirm new password!");
+            return;
+        }
+        var formData = {
+            "name": event.target.name.value,
+            "password": event.target.password.value,
+            "newPassword": event.target.newPassword.value
+        };
+        var passField = event.target.password;
+        setLoading(true);
+        wazigate.set("auth/profile", formData).then((res) => {
+            setLoading(false);
+            setErr(false);
+            setMsg(res);
+        }, (error) => {
+            setLoading(false);
+            setErr(true);
+            console.log(error);
+            setMsg("Wrong password!");
+            passField.focus();
+        });
+    };
+    return (react_1.default.createElement("div", { className: classes.paper },
+        react_1.default.createElement(core_1.Card, { className: clsx_1.default(classes.root) },
+            react_1.default.createElement(core_1.Grow, { in: loading },
+                react_1.default.createElement(core_1.LinearProgress, null)),
+            react_1.default.createElement(List_1.default, { dense: true },
+                react_1.default.createElement(core_1.ListItem, null,
+                    react_1.default.createElement("img", { className: classes.logo, src: wazigateLogo }),
+                    react_1.default.createElement(core_1.ListItemText, { primary: "Wazigate user profile" }))),
+            react_1.default.createElement(core_1.Divider, null),
+            react_1.default.createElement(core_1.CardContent, null,
+                react_1.default.createElement("form", { noValidate: true, onSubmit: saveProfile },
+                    react_1.default.createElement(core_1.FormGroup, null,
+                        profile && profile.name &&
+                            (react_1.default.createElement(core_1.TextField, { label: "Name", name: "name", defaultValue: profile.name, margin: "normal" })),
+                        react_1.default.createElement(core_1.TextField, { label: "Username", name: "username", value: profile && profile.username ? profile.username : "...", margin: "normal", disabled: true }),
+                        react_1.default.createElement(core_1.TextField, { label: "Password", type: "password", name: "password", margin: "normal" }),
+                        react_1.default.createElement(core_1.TextField, { label: "New password", type: "password", name: "newPassword", margin: "normal" }),
+                        react_1.default.createElement(core_1.TextField, { label: "Confirm new password", type: "password", name: "newPasswordConfirm", margin: "normal" }),
+                        react_1.default.createElement(core_1.CardActions, null,
+                            react_1.default.createElement(core_1.Button, { type: "submit", variant: "contained", color: "primary", startIcon: react_1.default.createElement(Save_1.default, null), disabled: loading }, " Save")))),
+                msg != "" && (react_1.default.createElement(lab_1.Alert, { severity: err ? "error" : "success" }, msg))))));
+}
+exports.default = UserProfile;
 
 
 /***/ }),
@@ -83021,6 +83231,30 @@ else if (navigator.platform.indexOf("Linux") != -1)
 // WebSocket.prototype.send = function(data: ArrayBuffer) {
 //     if (data.byteLength !== 1) send.apply(this, arguments);
 // }
+const isAuthorized = () => {
+    //Just a cheap API call
+    window.fetch("/sys/uptime").then((resp) => {
+        if (resp.status == 401) {
+            window.location.href = "/#/login";
+        }
+        else {
+            setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
+        }
+    });
+};
+isAuthorized();
+/*----------- */
+// We might make this optional in future
+const reToken = () => {
+    wazigate.set("auth/retoken", {}).then((res) => {
+        // console.log("Referesh token", res);
+        setTimeout(reToken, 1000 * 60 * 8); // Referesh the token every 10-2 minutes
+    }, (error) => {
+        console.log(error);
+    });
+};
+setTimeout(reToken, 1000 * 60 * 8);
+/*----------- */
 waziup.connect().then(wazigate => {
     window["wazigate"] = wazigate;
     if (isDemo) {

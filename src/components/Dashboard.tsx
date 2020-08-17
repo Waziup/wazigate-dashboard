@@ -4,6 +4,7 @@ import LoginPage from "./pages/Login";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
+import UserProfilePage from "./pages/UserProfile";
 import ErrorPage from "./pages/Error";
 import { MenuHook, App, Cloud } from "waziup";
 import { AppsProxyComp } from "./AppsProxy";
@@ -11,6 +12,7 @@ import SyncIcon from "@material-ui/icons/Sync";
 import AppsIcon from "@material-ui/icons/Apps";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import PersonIcon from '@material-ui/icons/Person';
 import {
   makeStyles,
   useTheme,
@@ -170,6 +172,16 @@ hooks.setMenuHook(
   80
 );
 
+hooks.setMenuHook(
+  "profile",
+  {
+    primary: "User Profile",
+    icon: <PersonIcon />,
+    href: "#/profile",
+  },
+  1999
+);
+
 export const DashboardComp = () => {
   const classes = useStyles();
   const theme = useTheme();
@@ -182,19 +194,6 @@ export const DashboardComp = () => {
   const [page, setPage] = useState(location.hash);
 
   /*----------- */
-
-  const isAuthorized = () => {
-    //Just a cheap API call
-    window.fetch("/sys/uptime").then(
-      (resp) => {
-        if (resp.status == 401) {
-          setPage("#/login");
-        } else {
-          setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
-        }
-      }
-    );
-  };
 
   const doLogout = () => {
     event.preventDefault();
@@ -209,18 +208,6 @@ export const DashboardComp = () => {
     );
   }
 
-  const reToken = () => {
-    wazigate.set<any>("auth/retoken", {}).then(
-      (res) => {
-        console.log("Referesh token", res);
-        setTimeout(reToken, 1000 * 60 * 8); // Referesh the token every 10-2 minutes
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
   /*----------- */
 
   const [apps, setApps] = useState(null);
@@ -228,8 +215,6 @@ export const DashboardComp = () => {
   const [clouds, setClouds] = useState(null as Cloud[]);
 
   useEffect(() => {
-    isAuthorized();
-    setTimeout(reToken, 1000 * 60 * 8);
 
     window.addEventListener("hashchange", () => {
       setPage(location.hash);
@@ -307,7 +292,6 @@ export const DashboardComp = () => {
           button
           key="logout"
           href="/#/logout"
-          onClick={doLogout}
           className={classes.a}>
           <ListItemIcon className={classes.drawerIcon}><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Logout" />
@@ -365,6 +349,10 @@ export const DashboardComp = () => {
     else if (page === "#/login") {
       return (
         <LoginPage />
+      );
+    } else if (page === "#/profile") {
+      body = (
+        <UserProfilePage />
       );
     } else if (page === "#/logout") {
       doLogout();

@@ -33,6 +33,40 @@ else if (navigator.platform.indexOf("Linux") != -1)
 //     if (data.byteLength !== 1) send.apply(this, arguments);
 // }
 
+
+const isAuthorized = () => {
+    //Just a cheap API call
+    window.fetch("/sys/uptime").then(
+        (resp) => {
+            if (resp.status == 401) {
+                window.location.href = "/#/login";
+            } else {
+                setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
+            }
+        }
+    );
+};
+isAuthorized();
+
+/*----------- */
+
+// We might make this optional in future
+const reToken = () => {
+    wazigate.set<any>("auth/retoken", {}).then(
+        (res) => {
+            // console.log("Referesh token", res);
+            setTimeout(reToken, 1000 * 60 * 8); // Referesh the token every 10-2 minutes
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+}
+setTimeout(reToken, 1000 * 60 * 8);
+
+
+/*----------- */
+
 waziup.connect().then(wazigate => {
     (window as any)["wazigate"] = wazigate;
 
