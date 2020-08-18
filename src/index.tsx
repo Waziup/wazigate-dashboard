@@ -43,6 +43,9 @@ const isAuthorized = () => {
             } else {
                 setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
             }
+        },
+        (error) => {
+            window.location.href = "/#/login";
         }
     );
 };
