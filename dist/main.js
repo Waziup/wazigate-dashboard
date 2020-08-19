@@ -80822,6 +80822,7 @@ function InstalledApp({ appInfo, className }) {
             setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
             clearTimeout(timeout);
             timeout = null;
+            load(); // Load again to see new version and looks
         }, (error) => {
             setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
             alert("There was an error updating the app:\n" + error);
@@ -83231,17 +83232,28 @@ else if (navigator.platform.indexOf("Linux") != -1)
 // WebSocket.prototype.send = function(data: ArrayBuffer) {
 //     if (data.byteLength !== 1) send.apply(this, arguments);
 // }
+var failedToAcc = false;
 const isAuthorized = () => {
     //Just a cheap API call
     window.fetch("/sys/uptime").then((resp) => {
+        if (failedToAcc) {
+            failedToAcc = false;
+            window.location.reload(); // Comming back from being disconnected
+            return;
+        }
         if (resp.status == 401) {
             window.location.href = "/#/login";
         }
         else {
-            setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
+            // Check every periodically if we need to show the login page 
+            // and if the gateway is reachable
+            setTimeout(isAuthorized, 1000 * 15);
         }
     }, (error) => {
-        window.location.href = "/#/login";
+        failedToAcc = true;
+        // console.log(error);
+        document.getElementById("dashboard").innerHTML = "<div style='margin-top: 20%;text-align: center;border: 1px solid #BBB;border-radius: 5px;padding: 5%;margin-left: 10%;margin-right: 10%;background-color: #EEE;'><h1>Wazigate is not accessible...</h1></div>";
+        setTimeout(isAuthorized, 1000 * 15);
     });
 };
 isAuthorized();
@@ -83255,7 +83267,7 @@ const reToken = () => {
         console.log(error);
     });
 };
-setTimeout(reToken, 1000 * 60 * 8);
+setTimeout(reToken, 1000 * 30); // Just call it after a while
 /*----------- */
 waziup.connect().then(wazigate => {
     window["wazigate"] = wazigate;

@@ -284,6 +284,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
         }));
         clearTimeout(timeout);
         timeout = null;
+        load(); // Load again to see new version and looks
       },
       (error) => {
         setUpdateStatus((status) => ({

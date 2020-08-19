@@ -33,19 +33,30 @@ else if (navigator.platform.indexOf("Linux") != -1)
 //     if (data.byteLength !== 1) send.apply(this, arguments);
 // }
 
-
+var failedToAcc = false;
 const isAuthorized = () => {
     //Just a cheap API call
     window.fetch("/sys/uptime").then(
         (resp) => {
+            if (failedToAcc) {
+                failedToAcc = false;
+                window.location.reload(); // Comming back from being disconnected
+                return;
+            }
             if (resp.status == 401) {
                 window.location.href = "/#/login";
             } else {
-                setTimeout(isAuthorized, 1000 * 30); // Check every 30s if we need to show the login page
+                // Check every periodically if we need to show the login page 
+                // and if the gateway is reachable
+                setTimeout(isAuthorized, 1000 * 15);
             }
         },
         (error) => {
-            window.location.href = "/#/login";
+            failedToAcc = true;
+            // console.log(error);
+
+            document.getElementById("dashboard").innerHTML = "<div style='margin-top: 20%;text-align: center;border: 1px solid #BBB;border-radius: 5px;padding: 5%;margin-left: 10%;margin-right: 10%;background-color: #EEE;'><h1>Wazigate is not accessible...</h1></div>";
+            setTimeout(isAuthorized, 1000 * 15);
         }
     );
 };
@@ -65,7 +76,7 @@ const reToken = () => {
         }
     );
 }
-setTimeout(reToken, 1000 * 60 * 8);
+setTimeout(reToken, 1000 * 30); // Just call it after a while
 
 
 /*----------- */
