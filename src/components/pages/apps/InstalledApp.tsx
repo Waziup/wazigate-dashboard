@@ -5,10 +5,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-import _wazigateLogo from "../../img/wazigate.svg";
+import _wazigateLogo from "../../../img/wazigate.svg";
 const wazigateLogo = `dist/${_wazigateLogo}`;
 
-import _defaultLogo from "../../img/default-app-logo.svg";
+import _defaultLogo from "../../../img/default-app-logo.svg";
 const defaultLogo = `dist/${_defaultLogo}`;
 
 import {
@@ -188,6 +188,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
           "The app [ " + (app?.name || app.id) + " ] has been uninstalled."
         );
         hideModalUninstall();
+        setTimeout(function () { window.location.reload() }, 1000);
       },
       (error) => {
         setUninstLoader(false);

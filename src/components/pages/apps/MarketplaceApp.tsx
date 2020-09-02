@@ -1,11 +1,12 @@
 import React, { useState, Fragment } from "react";
 import { App } from "waziup";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 
-import _wazigateLogo from "../../img/wazigate.svg";
+import _wazigateLogo from "../../../img/wazigate.svg";
 const wazigateLogo = `dist/${_wazigateLogo}`;
 
-import _defaultLogo from "../../img/default-app-logo.svg";
+import _defaultLogo from "../../../img/default-app-logo.svg";
 const defaultLogo = `dist/${_defaultLogo}`;
 
 import {
@@ -16,20 +17,21 @@ import {
   DialogActions,
   Button,
   CircularProgress,
-  FormGroup,
   Card,
   CardHeader,
-  Typography,
   CardContent,
-  CardActionArea,
   CardActions,
-  Fade,
+  TextField,
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import { green } from "@material-ui/core/colors";
+import { green, orange } from "@material-ui/core/colors";
 
 interface Props {
-  appInfo: App;
+  appInfo: App & {
+    customApp?: boolean;
+    description?: string;
+    image?: string;
+  };
   className?: string;
 }
 
@@ -42,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       marginLeft: 240,
     },
+  },
+  textarea: {
+    backgroundColor: "#000",
+    color: "#FFD",
+    borderRadius: "5px",
+    width: "100%",
   },
   buttonProgress: {
     color: green[500],
@@ -81,6 +89,14 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
 
   /*------------ */
 
+  const imageIdChange = (event: any) => {
+    appInfo.image = event.target.value;
+    appInfo.id = event.target.value.replace("/", ".").split(":")[0];
+    setApp(appInfo);
+  }
+
+  /*------------ */
+
   const [installStatus, setInstallStatus] = useState(null as InstallStatus);
 
   const [modal, setModal] = useState(false);
@@ -96,6 +112,7 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
   const [startLoading, setStartLoading] = useState(false);
 
   const install = () => {
+
     setInstallLoading(true);
     setInstallStatus({ log: "...", done: false });
 
@@ -142,7 +159,8 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
       (res) => {
         setStartLoading(false);
         setModal(false);
-        // TODO: navigate / reload
+        //navigate / reload
+        setTimeout(function () { window.location.reload() }, 500);
       },
       (error) => {
         alert("The app failed to start:\n" + error);
@@ -169,30 +187,34 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
 
   return (
     <Fragment>
-      <Card className={className}>
+      <Card className={className} style={appInfo.customApp && { backgroundColor: orange[50] }}>
         <CardHeader
           avatar={
-            <img
-              className={classes.logo}
-              src={(app as any)?.waziapp?.icon || wazigateLogo}
-              onError={getDefaultAppIcon}
-            />
+            appInfo.customApp ?
+              (<FiberNewIcon fontSize="large" style={{ color: orange[500] }} />)
+              :
+              (<img
+                className={classes.logo}
+                src={(app as any)?.waziapp?.icon || wazigateLogo}
+                onError={getDefaultAppIcon}
+              />)
           }
-          title={app?.id}
+          title={appInfo.customApp ? "Install a Custom App" : app?.id}
           subheader={
-            <a
-              href={
-                app.homepage ||
-                "https://hub.docker.com/r/" + app?.id?.replace(".", "/")
-              }
-              target={"_blank"}
-            >
-              {(app as any)?.image}
-            </a>
+            appInfo.customApp ? ("") :
+              (<a
+                href={
+                  app.homepage ||
+                  "https://hub.docker.com/r/" + app?.id?.replace(".", "/")
+                }
+                target={"_blank"}
+              >
+                {(app as any)?.image}
+              </a>)
           }
         />
         <CardContent>
-          <p>{`${(app as any)?.description || "."}`}</p>
+          <p>{`${(app as any)?.description || (appInfo.customApp ? "Install a custom App using docker image name" : ".")}`}</p>
           {/* <p>{(app as any)?.image}</p> */}
         </CardContent>
         <CardActions>
@@ -215,12 +237,22 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
         className={classes.modal}
       >
         <DialogTitle title={(app as any)?.image}>
-          Install [ {app.id} ]
+          Install [ {appInfo.customApp ? "Custom App" : app?.id}]
         </DialogTitle>
         <DialogContent dividers>
+          {appInfo.customApp && (
+            <TextField
+              id="imageId"
+              name="imageId"
+              onChange={imageIdChange}
+              fullWidth
+              required
+              label="Full docker image name" />
+          )
+          }
           <textarea
             rows={14}
-            className="bg-dark text-light form-control form-rounded"
+            className={classes.textarea}
             // spellCheck={false}
             // contentEditable={false}
             readOnly={true}

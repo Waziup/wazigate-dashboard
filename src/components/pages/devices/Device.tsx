@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ontologies from "../../../ontologies.json";
 import ontologiesSprite from "../../../img/ontologies.svg";
 import SVGSpriteIcon from "../../SVGSpriteIcon";
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { Device } from "waziup";
 
 import {
@@ -27,6 +28,7 @@ import {
 type Props = {
     device: Device;
     className?: string;
+    isGateway?: boolean;
     onDelete: () => void;
 }
 
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 const defaultSensorIcon = "meter";
 const defaultActuatorIcon = "crane";
 
-export const DeviceComp = ({ device, className, onDelete }: Props) => {
+export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) => {
     const classes = useStyles();
 
     const [deviceName, setDeviceName] = useState(device.name);
@@ -87,8 +89,27 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
             wazigate.set(`devices/${device.id}/name`, newDeviceName).then(() => {
                 // OK
             }, (err) => {
-                alert("The device name could not be saved:\n"+err);
+                alert("The device name could not be saved:\n" + err);
                 setDeviceName(oldName);
+            });
+        }
+        handleMenuClose();
+    }
+
+    const [gwID, setGwID] = useState(device.id);
+    const handleChangeIDClick = () => {
+        const oldID = gwID;
+        const newID = prompt("New Gateway ID:", oldID);
+        if (newID && newID != oldID) {
+            wazigate.set(`device/id`, newID).then(() => {
+                // OK
+                // setGwID(newID);
+                // setDeviceName("(NEW) " + device.name);
+                // Lert's reload it
+                window.location.reload();
+            }, (err) => {
+                alert("The device name could not be saved:\n" + err);
+                setGwID(oldID);
             });
         }
         handleMenuClose();
@@ -152,21 +173,21 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
     //     subheader={`ID ${device.id}`}
     // />
     return (
-        <Card className={`${classes.root} ${className||""}`}>
+        <Card className={`${classes.root} ${className || ""}`}>
             <List dense={true}>
                 <ListItem component="a" button href={`#/devices/${device.id}`}>
                     <ListItemIcon>
                         <Avatar
                             aria-label="recipe"
                             className={classes.avatar}
-                            style={{background: colorFromRune(deviceName[0])}}
+                            style={{ background: colorFromRune(deviceName[0]) }}
                         >
                             {deviceName[0]}
                         </Avatar>
                     </ListItemIcon>
                     <ListItemText
                         primary={deviceName}
-                        classes={{secondary: classes.id}}
+                        classes={{ secondary: classes.id }}
                         secondary={`ID ${device.id}`}
                     />
                     <IconButton
@@ -194,6 +215,15 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
+
+                {isGateway && (
+                    <MenuItem onClick={handleChangeIDClick}>
+                        <ListItemIcon>
+                            <FingerprintIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Change Gateway ID" />
+                    </MenuItem>)}
+
                 <MenuItem onClick={handleDeleteClick}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
@@ -217,7 +247,7 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
             <Divider />
             <CardContent>
                 <List dense={true}>
-                    { device.sensors.map(sensor => {
+                    {device.sensors.map(sensor => {
                         const kind = (sensor.meta.kind || "") as string;
                         const quantity = (sensor.meta.quantity || "") as string;
                         const unit = (sensor.meta.unit || "") as string;
@@ -240,14 +270,14 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                                 />
                                 <ListItemText
                                     className={classes.value}
-                                    primary={`${sensor.value}${unitLabel?` ${unitLabel}`:""}`}
+                                    primary={`${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`}
                                 />
                             </ListItem>
                         )
-                    }) }
+                    })}
                 </List>
                 <List dense={true}>
-                    { device.actuators.map(actuator => {
+                    {device.actuators.map(actuator => {
                         const kind = (actuator.meta.kind || "") as string;
                         const quantity = (actuator.meta.quantity || "") as string;
                         const unit = (actuator.meta.unit || "") as string;
@@ -270,11 +300,11 @@ export const DeviceComp = ({ device, className, onDelete }: Props) => {
                                 />
                                 <ListItemText
                                     className={classes.value}
-                                    primary={`${actuator.value}${unitLabel?` ${unitLabel}`:""}`}
+                                    primary={`${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`}
                                 />
                             </ListItem>
                         )
-                    }) }
+                    })}
                 </List>
             </CardContent>
         </Card>

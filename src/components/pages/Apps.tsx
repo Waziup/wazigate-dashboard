@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import waziup from "waziup";
 import MarketplaceApp from "./apps/MarketplaceApp";
-import ErrorView from "./Error";
+import ErrorView from "../Error";
 
 import AddIcon from "@material-ui/icons/Add";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -124,6 +124,12 @@ export default function AppsPage({ filter, handleDrawerToggle }: Props) {
       </span>
     );
   } else if (filter == "available") {
+    //Adding the custom App installation (Unofficial Apps)
+    var customApp = {
+      id: "",
+      customApp: true
+    } as waziup.App & { customApp: boolean; description: string; image: string; };
+    apps.push(customApp);
     body = apps.map((app) => (
       <MarketplaceApp key={app.id} appInfo={app} className={classes.app} />
     ));
@@ -161,7 +167,7 @@ export default function AppsPage({ filter, handleDrawerToggle }: Props) {
         style={{
           transitionDelay: `${
             filter == "available" ? transitionDuration.exit : 0
-          }ms`,
+            }ms`,
         }}
         unmountOnExit
       >
@@ -180,7 +186,7 @@ export default function AppsPage({ filter, handleDrawerToggle }: Props) {
         style={{
           transitionDelay: `${
             filter == "installed" ? transitionDuration.exit : 0
-          }ms`,
+            }ms`,
         }}
         unmountOnExit
       >

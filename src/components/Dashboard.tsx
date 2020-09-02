@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
-import AppsPage from "./Apps";
+import AppsPage from "./pages/Apps";
 import LoginPage from "./pages/Login";
 import SensorPage from "./pages/Sensor";
 import DevicePage from "./pages/Device";

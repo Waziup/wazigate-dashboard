@@ -37039,6 +37039,64 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/icons/FiberNew.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@material-ui/icons/FiberNew.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zM8.5 15H7.3l-2.55-3.5V15H3.5V9h1.25l2.5 3.5V9H8.5v6zm5-4.74H11v1.12h2.5v1.26H11v1.11h2.5V15h-4V9h4v1.26zm7 3.74c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1V9h1.25v4.51h1.13V9.99h1.25v3.51h1.12V9h1.25v5z"
+}), 'FiberNew');
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/icons/Fingerprint.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/Fingerprint.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72c-.1 0-.2-.03-.29-.09-.23-.16-.28-.47-.12-.7.99-1.4 2.25-2.5 3.75-3.27C9.98 4.04 14 4.03 17.15 5.65c1.5.77 2.76 1.86 3.75 3.25.16.22.11.54-.12.7-.23.16-.54.11-.7-.12-.9-1.26-2.04-2.25-3.39-2.94-2.87-1.47-6.54-1.47-9.4.01-1.36.7-2.5 1.7-3.4 2.96-.08.14-.23.21-.39.21zm6.25 12.07c-.13 0-.26-.05-.35-.15-.87-.87-1.34-1.43-2.01-2.64-.69-1.23-1.05-2.73-1.05-4.34 0-2.97 2.54-5.39 5.66-5.39s5.66 2.42 5.66 5.39c0 .28-.22.5-.5.5s-.5-.22-.5-.5c0-2.42-2.09-4.39-4.66-4.39-2.57 0-4.66 1.97-4.66 4.39 0 1.44.32 2.77.93 3.85.64 1.15 1.08 1.64 1.85 2.42.19.2.19.51 0 .71-.11.1-.24.15-.37.15zm7.17-1.85c-1.19 0-2.24-.3-3.1-.89-1.49-1.01-2.38-2.65-2.38-4.39 0-.28.22-.5.5-.5s.5.22.5.5c0 1.41.72 2.74 1.94 3.56.71.48 1.54.71 2.54.71.24 0 .64-.03 1.04-.1.27-.05.53.13.58.41.05.27-.13.53-.41.58-.57.11-1.07.12-1.21.12zM14.91 22c-.04 0-.09-.01-.13-.02-1.59-.44-2.63-1.03-3.72-2.1-1.4-1.39-2.17-3.24-2.17-5.22 0-1.62 1.38-2.94 3.08-2.94 1.7 0 3.08 1.32 3.08 2.94 0 1.07.93 1.94 2.08 1.94s2.08-.87 2.08-1.94c0-3.77-3.25-6.83-7.25-6.83-2.84 0-5.44 1.58-6.61 4.03-.39.81-.59 1.76-.59 2.8 0 .78.07 2.01.67 3.61.1.26-.03.55-.29.64-.26.1-.55-.04-.64-.29-.49-1.31-.73-2.61-.73-3.96 0-1.2.23-2.29.68-3.24 1.33-2.79 4.28-4.6 7.51-4.6 4.55 0 8.25 3.51 8.25 7.83 0 1.62-1.38 2.94-3.08 2.94s-3.08-1.32-3.08-2.94c0-1.07-.93-1.94-2.08-1.94s-2.08.87-2.08 1.94c0 1.71.66 3.31 1.87 4.51.95.94 1.86 1.46 3.27 1.85.27.07.42.35.35.61-.05.23-.26.38-.47.38z"
+}), 'Fingerprint');
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/icons/GetApp.js":
 /*!***************************************************!*\
   !*** ./node_modules/@material-ui/icons/GetApp.js ***!
@@ -79282,156 +79340,6 @@ global["hooks"] = new HookRegistry;
 
 /***/ }),
 
-/***/ "./src/components/Apps.tsx":
-/*!*********************************!*\
-  !*** ./src/components/Apps.tsx ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
-const MarketplaceApp_1 = __importDefault(__webpack_require__(/*! ./apps/MarketplaceApp */ "./src/components/apps/MarketplaceApp.tsx"));
-const Error_1 = __importDefault(__webpack_require__(/*! ./Error */ "./src/components/Error.tsx"));
-const Add_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Add */ "./node_modules/@material-ui/icons/Add.js"));
-const Settings_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Settings */ "./node_modules/@material-ui/icons/Settings.js"));
-const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js"));
-const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-const InstalledApp_1 = __importDefault(__webpack_require__(/*! ./apps/InstalledApp */ "./src/components/apps/InstalledApp.tsx"));
-const drawerWidth = 240;
-const useStyles = core_1.makeStyles((theme) => ({
-    page: {
-        marginTop: 64,
-        marginBottom: 64,
-    },
-    fab: {
-        background: "#f35e19",
-        color: "white",
-        outline: "none",
-        position: "fixed",
-        right: 16,
-        bottom: 16,
-        "&:hover": {
-            background: "#f38c5c",
-        },
-    },
-    appBar: {
-        [theme.breakpoints.up("sm")]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
-        },
-        background: "#f1f1f1",
-        color: "unset",
-        boxShadow: "0 0 2px #f1f1f1",
-        paddingLeft: theme.spacing(4),
-        paddingRight: theme.spacing(3),
-    },
-    loading: {
-        position: "fixed",
-        [theme.breakpoints.up("sm")]: {
-            marginLeft: drawerWidth,
-        },
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1200,
-    },
-    name: {
-        flexGrow: 1,
-    },
-    appBarInner: {
-        padding: "0",
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up("sm")]: {
-            display: "none",
-        },
-    },
-    body: {
-        padding: theme.spacing(1),
-        textAlign: "center",
-    },
-    app: {
-        margin: theme.spacing(1),
-        textAlign: "left",
-        width: 400,
-        maxWidth: "calc(100% - 16px)",
-        display: "inline-block",
-    },
-}));
-function AppsPage({ filter, handleDrawerToggle }) {
-    const classes = useStyles();
-    const theme = core_1.useTheme();
-    const transitionDuration = {
-        enter: theme.transitions.duration.enteringScreen,
-        exit: theme.transitions.duration.leavingScreen,
-    };
-    const [apps, setApps] = react_1.useState(null);
-    const [error, setError] = react_1.useState(null);
-    var [filter, setFilter] = react_1.useState(filter);
-    react_1.useEffect(() => {
-        if (filter == "available") {
-            wazigate.get("apps?available").then(setApps, setError);
-        }
-        else {
-            wazigate.getApps().then(setApps, setError);
-        }
-    }, [filter]);
-    var body;
-    if (error !== null) {
-        body = react_1.default.createElement(Error_1.default, { error: error });
-    }
-    else if (apps === null) {
-        body = react_1.default.createElement("span", null, "Loading, please wait...");
-    }
-    else if (apps.length === 0) {
-        body = (react_1.default.createElement("span", null,
-            react_1.default.createElement("h3", null, "\"There is no App.\"")));
-    }
-    else if (filter == "available") {
-        body = apps.map((app) => (react_1.default.createElement(MarketplaceApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
-    }
-    else {
-        body = apps.map((app) => (react_1.default.createElement(InstalledApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
-    }
-    const manageApps = filter == "installed";
-    return (react_1.default.createElement("div", { className: classes.page },
-        apps === null ? react_1.default.createElement(core_1.LinearProgress, { className: classes.loading }) : null,
-        react_1.default.createElement(core_1.AppBar, { position: "fixed", className: classes.appBar },
-            react_1.default.createElement(core_1.Toolbar, { className: classes.appBarInner },
-                react_1.default.createElement(core_1.IconButton, { color: "inherit", "aria-label": "open drawer", edge: "start", onClick: handleDrawerToggle, className: classes.menuButton },
-                    react_1.default.createElement(Menu_1.default, null)),
-                react_1.default.createElement(core_1.Typography, { variant: "h6", noWrap: true, className: classes.name }, "Apps"))),
-        react_1.default.createElement("div", { className: classes.body }, body),
-        react_1.default.createElement(core_1.Zoom, { in: filter == "available", timeout: transitionDuration, style: {
-                transitionDelay: `${filter == "available" ? transitionDuration.exit : 0}ms`,
-            }, unmountOnExit: true },
-            react_1.default.createElement(core_1.Fab, { className: classes.fab, onClick: () => setFilter("installed"), "aria-label": "edit", title: "Manage installed Apps" },
-                react_1.default.createElement(Settings_1.default, null))),
-        react_1.default.createElement(core_1.Zoom, { in: filter == "installed", timeout: transitionDuration, style: {
-                transitionDelay: `${filter == "installed" ? transitionDuration.exit : 0}ms`,
-            }, unmountOnExit: true },
-            react_1.default.createElement(core_1.Fab, { className: classes.fab, onClick: () => setFilter("available"), "aria-label": "add", title: "Install a new App" },
-                react_1.default.createElement(Add_1.default, null)))));
-}
-exports.default = AppsPage;
-
-
-/***/ }),
-
 /***/ "./src/components/AppsProxy.tsx":
 /*!**************************************!*\
   !*** ./src/components/AppsProxy.tsx ***!
@@ -79472,7 +79380,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
-const Apps_1 = __importDefault(__webpack_require__(/*! ./Apps */ "./src/components/Apps.tsx"));
+const Apps_1 = __importDefault(__webpack_require__(/*! ./pages/Apps */ "./src/components/pages/Apps.tsx"));
 const Login_1 = __importDefault(__webpack_require__(/*! ./pages/Login */ "./src/components/pages/Login.tsx"));
 const Sensor_1 = __importDefault(__webpack_require__(/*! ./pages/Sensor */ "./src/components/pages/Sensor.tsx"));
 const Device_1 = __importDefault(__webpack_require__(/*! ./pages/Device */ "./src/components/pages/Device.tsx"));
@@ -80624,10 +80532,10 @@ exports.default = SyncStatusIndicator;
 
 /***/ }),
 
-/***/ "./src/components/apps/InstalledApp.tsx":
-/*!**********************************************!*\
-  !*** ./src/components/apps/InstalledApp.tsx ***!
-  \**********************************************/
+/***/ "./src/components/pages/Apps.tsx":
+/*!***************************************!*\
+  !*** ./src/components/pages/Apps.tsx ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -80645,512 +80553,137 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
-const MenuItem_1 = __importDefault(__webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js"));
-const Select_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js"));
-const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
-const wazigateLogo = `dist/${wazigate_svg_1.default}`;
-const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
-const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
-const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
-const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
+const MarketplaceApp_1 = __importDefault(__webpack_require__(/*! ./apps/MarketplaceApp */ "./src/components/pages/apps/MarketplaceApp.tsx"));
+const Error_1 = __importDefault(__webpack_require__(/*! ../Error */ "./src/components/Error.tsx"));
+const Add_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Add */ "./node_modules/@material-ui/icons/Add.js"));
 const Settings_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Settings */ "./node_modules/@material-ui/icons/Settings.js"));
-const Update_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Update */ "./node_modules/@material-ui/icons/Update.js"));
-const Stop_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Stop */ "./node_modules/@material-ui/icons/Stop.js"));
-const PlayArrow_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/PlayArrow */ "./node_modules/@material-ui/icons/PlayArrow.js"));
-const useStyles = core_1.makeStyles((theme) => ({
-    page: {
-        marginTop: "64px",
-    },
-    modal: {
-        marginLeft: 0,
-        [theme.breakpoints.up("sm")]: {
-            marginLeft: 240,
-        },
-    },
-    buttonProgress: {
-        color: colors_1.green[500],
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: -12,
-        marginLeft: -12,
-    },
-    wrapper: {
-        margin: theme.spacing(1),
-        position: "relative",
-    },
-    logo: {
-        display: "inline-flex",
-        height: "2rem",
-        marginRight: 16,
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-}));
-function InstalledApp({ appInfo, className }) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-    const classes = useStyles();
-    /*------------ */
-    // Run stuff on load
-    react_1.useEffect(() => {
-        checkUpdates(false);
-    }, [] /* This makes it to run only once*/);
-    /*------------ */
-    const [app, setApp] = react_1.useState(appInfo);
-    const load = () => {
-        wazigate.getApp(app.id).then(setApp, (error) => {
-            alert("There was an error loading the app info:\n" + error);
-        });
-    };
-    /*------------ */
-    const [uninstallModal, setUninstallModal] = react_1.useState(null);
-    const showModalUninstall = () => {
-        setUninstallModal({
-            keepConfig: true,
-        });
-        hideModalSettings();
-    };
-    const hideModalUninstall = () => {
-        setUninstallModal(null);
-    };
-    const handleKeepConfigChange = (event) => {
-        setUninstallModal({
-            keepConfig: event.target.checked,
-        });
-    };
-    /*------------ */
-    const [updateModal, setUpdateModal] = react_1.useState(null);
-    const showModalUpdate = () => {
-        setUpdateModal({
-            keepConfig: false,
-        });
-        hideModalSettings();
-    };
-    const hideModalUpdate = () => {
-        setUpdateModal(null);
-    };
-    const [updateStatus, setUpdateStatus] = react_1.useState(null);
-    /*------------ */
-    const [settingsModal, setSettingsModal] = react_1.useState(null);
-    const showModalSettings = () => {
-        // console.log(app);
-        setSettingsModal({
-            /// ?
-            keepConfig: false,
-        });
-    };
-    const hideModalSettings = () => {
-        setSettingsModal(null);
-    };
-    /*------------ */
-    const [isUninstalling, setUninstLoader] = react_1.useState(false);
-    const uninstall = () => {
-        if (!confirm("Do you wan tot uninstall the App?"))
-            return;
-        setUninstLoader(true);
-        wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then((res) => {
-            setUninstLoader(false);
-            load();
-            alert("The app [ " + ((app === null || app === void 0 ? void 0 : app.name) || app.id) + " ] has been uninstalled.");
-            hideModalUninstall();
-        }, (error) => {
-            setUninstLoader(false);
-            alert("There was an error uninstalling the app [ " +
-                ((app === null || app === void 0 ? void 0 : app.name) || app.id) +
-                " ]:\n" +
-                error);
-        });
-    };
-    /*------------ */
-    const checkUpdates = (showAlert = true) => {
-        setUpdateStatus({
-            logs: null,
-            isChecking: true,
-            hasCheckedUpdates: false,
-            hasUpdate: false,
-            newVersion: null,
-        });
-        wazigate.get(`update/${app.id}`).then((res) => {
-            if (res.newUpdate) {
-                setUpdateStatus((status) => ({
-                    logs: status.logs,
-                    isChecking: false,
-                    hasCheckedUpdates: true,
-                    hasUpdate: true,
-                    newVersion: res.newUpdate,
-                }));
-            }
-            else {
-                setUpdateStatus((status) => ({
-                    logs: status.logs,
-                    isChecking: false,
-                    hasCheckedUpdates: true,
-                    hasUpdate: false,
-                    newVersion: null,
-                }));
-                if (showAlert)
-                    alert("The latest version is already installed.");
-            }
-        }, (error) => {
-            if (showAlert)
-                alert("There was an error checking for updates:\n" + error);
-        });
-    };
-    const update = () => {
-        setUpdateStatus({
-            logs: "Please wait...",
-            isChecking: true,
-            hasCheckedUpdates: false,
-            hasUpdate: false,
-            newVersion: null,
-        });
-        const pollStatus = () => {
-            wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
-                setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { logs: res === null || res === void 0 ? void 0 : res.log })));
-                if (timeout !== null) {
-                    timeout = setTimeout(pollStatus, 1000);
-                }
-            }, (error) => {
-                alert("There was an error getting the update status:\n" + error);
-            });
-        };
-        var timeout = setTimeout(pollStatus, 1000);
-        wazigate.set("update/" + app.id, {}).then(() => {
-            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
-            clearTimeout(timeout);
-            timeout = null;
-            load(); // Load again to see new version and looks
-        }, (error) => {
-            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
-            alert("There was an error updating the app:\n" + error);
-            clearTimeout(timeout);
-            timeout = null;
-        });
-    };
-    //
-    const [stopping, setStopping] = react_1.useState(false);
-    const stop = () => {
-        setStopping(true);
-        wazigate.setAppConfig(app.id, { action: "stop" }).then((res) => {
-            setStopping(false);
-            load();
-        }, (error) => {
-            setStopping(false);
-            alert("Can not perform action:\n" + error);
-        });
-    };
-    /*----------*/
-    const [starting, setStarting] = react_1.useState(false);
-    const start = () => {
-        var _a;
-        setStarting(true);
-        var startAction = ((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.startedAt) == "" ? "up -d --no-build" : "start";
-        wazigate.setAppConfig(app.id, { action: startAction }).then((res) => {
-            setStarting(false);
-            load();
-        }, (error) => {
-            setStarting(false);
-            alert("Can not perform action:\n" + error);
-        });
-    };
-    /*----------*/
-    const [rePolicyChaing, setResPolicyLoader] = react_1.default.useState(false);
-    const restartPolicyChange = (event) => {
-        if (rePolicyChaing)
-            return; // Already on progress
-        var newPolicy = event.target.value;
-        if (!newPolicy || newPolicy == "0")
-            return;
-        setResPolicyLoader(true);
-        wazigate.setAppConfig(app.id, { restart: newPolicy }).then((res) => {
-            setResPolicyLoader(false);
-            load();
-        }, (error) => {
-            setResPolicyLoader(false);
-        });
-    };
-    /*----------*/
-    var fallbackIcon = 0;
-    const getDefaultAppIcon = (event) => {
-        if (fallbackIcon > 1)
-            return; // we try twice to be sure
-        event.target.src = defaultLogo;
-        fallbackIcon++;
-    };
-    /*----------*/
-    // If I get uninstalled, I hide myself ;)
-    if (!app) {
-        return react_1.default.createElement("span", null);
-    }
-    /*----------*/
-    const running = !!((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.running);
-    const isSysApp = (app === null || app === void 0 ? void 0 : app.id) == "wazigate-edge" || (app === null || app === void 0 ? void 0 : app.id) == "waziup.wazigate-system";
-    /*----------*/
-    return (react_1.default.createElement(react_1.Fragment, null,
-        react_1.default.createElement(core_1.Card, { className: className },
-            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: app.id == "wazigate-edge"
-                        ? wazigateLogo
-                        : wazigate.toProxyURL(app.id, (_c = (_b = app) === null || _b === void 0 ? void 0 : _b.waziapp) === null || _c === void 0 ? void 0 : _c.icon), onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.name, subheader: react_1.default.createElement("a", { href: app.homepage ||
-                        "https://hub.docker.com/r/" + app.id.replace(".", "/"), target: "_blank" }, app.id) }),
-            react_1.default.createElement(core_1.CardContent, null,
-                app.state ? (react_1.default.createElement("span", { className: "text-capitalize" },
-                    "Status:",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, app.state.status || "Disabled"))) : null,
-                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || "."}`)),
-            react_1.default.createElement(core_1.CardActions, null,
-                react_1.default.createElement(core_1.Button, { className: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "orange"
-                        : (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) ? "animate-flicker"
-                            : "", title: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "New update available" : "", startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Settings_1.default, null), onClick: showModalSettings }, "Settings"),
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall, className: isUninstalling ? "animate-flicker" : "" }, "Uninstall"))),
-        react_1.default.createElement(core_1.Fade, { in: uninstallModal != null },
-            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, 
-                // open={uninstallModal !== null}
-                open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
-                react_1.default.createElement(core_1.DialogTitle, null,
-                    "Uninstall [ ", app === null || app === void 0 ? void 0 :
-                    app.name,
-                    " ]"),
-                react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                    react_1.default.createElement(core_1.FormGroup, null,
-                        react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange, checked: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig) }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
-                react_1.default.createElement(core_1.DialogActions, null,
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"),
-                        isUninstalling && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))),
-        react_1.default.createElement(core_1.Fade, { in: updateModal != null },
-            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
-                react_1.default.createElement(core_1.DialogTitle, null,
-                    "Update [ ", app === null || app === void 0 ? void 0 :
-                    app.name,
-                    " ]"),
-                react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                    "Current Version:",
-                    " ",
-                    react_1.default.createElement("span", { className: "font-weight-bold" }, app === null || app === void 0 ? void 0 : app.version),
-                    react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
-                        // spellCheck={false}
-                        // contentEditable={false}
-                        readOnly: true, hidden: !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs), value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "." })),
-                react_1.default.createElement(core_1.DialogActions, null,
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: () => checkUpdates(), color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Check for Updates")) : null,
-                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Update Now")) : null,
-                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) && (react_1.default.createElement(core_1.CircularProgress, { size: 34, className: classes.buttonProgress })))))),
-        react_1.default.createElement(core_1.Fade, { in: settingsModal != null },
-            react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
-                react_1.default.createElement(core_1.DialogTitle, null,
-                    "Settings [ ", app === null || app === void 0 ? void 0 :
-                    app.name,
-                    " ]"),
-                react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                    react_1.default.createElement("p", { className: "text-capitalize" },
-                        "Status:",
-                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_e = app === null || app === void 0 ? void 0 : app.state) === null || _e === void 0 ? void 0 : _e.status) || "Unknown"}`)),
-                    react_1.default.createElement("p", null,
-                        "Current Version:",
-                        " ",
-                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`)),
-                    react_1.default.createElement("p", null,
-                        "Author:",
-                        " ",
-                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_f = app === null || app === void 0 ? void 0 : app.author) === null || _f === void 0 ? void 0 : _f.name) || "Unknown"}`)),
-                    react_1.default.createElement("p", null,
-                        "Health:",
-                        " ",
-                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.health) || "Unknown"}`)),
-                    react_1.default.createElement("p", { className: "text-capitalize" },
-                        "Restart policy:",
-                        " ",
-                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.restartPolicy) || "Unknown"}`)),
-                    react_1.default.createElement("p", null, `${((_j = app) === null || _j === void 0 ? void 0 : _j.description) || ""}`)),
-                react_1.default.createElement(core_1.DialogActions, null,
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        react_1.default.createElement(Select_1.default, { disabled: isSysApp, 
-                            // labelId="restartPolicy"
-                            id: "select-restart-policy", value: ((_k = app === null || app === void 0 ? void 0 : app.state) === null || _k === void 0 ? void 0 : _k.restartPolicy) || "0", onChange: restartPolicyChange, color: "primary" },
-                            react_1.default.createElement(MenuItem_1.default, { value: "0" }, "Restart Policy"),
-                            react_1.default.createElement(MenuItem_1.default, { value: "always" }, "Always"),
-                            react_1.default.createElement(MenuItem_1.default, { value: "on-failure" }, "On-Failure"),
-                            react_1.default.createElement(MenuItem_1.default, { value: "unless-stopped" }, "Unless-Stopped"),
-                            react_1.default.createElement(MenuItem_1.default, { value: "no" }, "No")),
-                        rePolicyChaing && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
-                    react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
-                    react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        react_1.default.createElement(core_1.Button, { disabled: stopping || !running || isSysApp, onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
-                        stopping && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
-                    react_1.default.createElement("div", { className: classes.wrapper },
-                        react_1.default.createElement(core_1.Button, { disabled: starting || running, onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
-                        starting && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))))))));
-}
-exports.default = InstalledApp;
-
-
-/***/ }),
-
-/***/ "./src/components/apps/MarketplaceApp.tsx":
-/*!************************************************!*\
-  !*** ./src/components/apps/MarketplaceApp.tsx ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
-const GetApp_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/GetApp */ "./node_modules/@material-ui/icons/GetApp.js"));
-const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../img/wazigate.svg */ "./src/img/wazigate.svg"));
-const wazigateLogo = `dist/${wazigate_svg_1.default}`;
-const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
-const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
+const Menu_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-const Alert_1 = __importDefault(__webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js"));
-const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+const InstalledApp_1 = __importDefault(__webpack_require__(/*! ./apps/InstalledApp */ "./src/components/pages/apps/InstalledApp.tsx"));
+const drawerWidth = 240;
 const useStyles = core_1.makeStyles((theme) => ({
     page: {
-        marginTop: "64px",
+        marginTop: 64,
+        marginBottom: 64,
     },
-    modal: {
-        marginLeft: 0,
-        [theme.breakpoints.up("sm")]: {
-            marginLeft: 240,
+    fab: {
+        background: "#f35e19",
+        color: "white",
+        outline: "none",
+        position: "fixed",
+        right: 16,
+        bottom: 16,
+        "&:hover": {
+            background: "#f38c5c",
         },
     },
-    buttonProgress: {
-        color: colors_1.green[500],
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: -12,
-        marginLeft: -12,
+    appBar: {
+        [theme.breakpoints.up("sm")]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        background: "#f1f1f1",
+        color: "unset",
+        boxShadow: "0 0 2px #f1f1f1",
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(3),
     },
-    wrapper: {
+    loading: {
+        position: "fixed",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: drawerWidth,
+        },
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1200,
+    },
+    name: {
+        flexGrow: 1,
+    },
+    appBarInner: {
+        padding: "0",
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up("sm")]: {
+            display: "none",
+        },
+    },
+    body: {
+        padding: theme.spacing(1),
+        textAlign: "center",
+    },
+    app: {
         margin: theme.spacing(1),
-        position: "relative",
-    },
-    logo: {
-        display: "inline-flex",
-        height: "2rem",
-        marginRight: 16,
+        textAlign: "left",
+        width: 400,
+        maxWidth: "calc(100% - 16px)",
+        display: "inline-block",
     },
 }));
-function MarketplaceApp({ appInfo, className }) {
-    var _a, _b, _c, _d, _e, _f;
+function AppsPage({ filter, handleDrawerToggle }) {
     const classes = useStyles();
-    /*------------ */
-    const [app, setApp] = react_1.useState(appInfo);
-    const load = () => {
-        wazigate.getApp(app.id).then(setApp, (error) => {
-            alert("There was an error loading the app info:\n" + error);
-        });
+    const theme = core_1.useTheme();
+    const transitionDuration = {
+        enter: theme.transitions.duration.enteringScreen,
+        exit: theme.transitions.duration.leavingScreen,
     };
-    /*------------ */
-    const [installStatus, setInstallStatus] = react_1.useState(null);
-    const [modal, setModal] = react_1.useState(false);
-    const toggleModal = () => setModal(!modal);
-    const [modalMsg, setModalMsg] = react_1.useState("");
-    const [error, setError] = react_1.useState(Error);
-    const [installLoading, setInstallLoading] = react_1.useState(false);
-    const [installSuccess, setInstallSuccess] = react_1.useState(false);
-    const [startLoading, setStartLoading] = react_1.useState(false);
-    const install = () => {
-        var _a;
-        setInstallLoading(true);
-        setInstallStatus({ log: "...", done: false });
-        const pollStatus = () => {
-            wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
-                setInstallStatus(res);
-                if (timeout !== null) {
-                    timeout = setTimeout(pollStatus, 1000);
-                }
-            }, (error) => {
-                alert("There was an error getting the install status:\n" + error);
-            });
+    const [apps, setApps] = react_1.useState(null);
+    const [error, setError] = react_1.useState(null);
+    var [filter, setFilter] = react_1.useState(filter);
+    react_1.useEffect(() => {
+        if (filter == "available") {
+            wazigate.get("apps?available").then(setApps, setError);
+        }
+        else {
+            wazigate.getApps().then(setApps, setError);
+        }
+    }, [filter]);
+    var body;
+    if (error !== null) {
+        body = react_1.default.createElement(Error_1.default, { error: error });
+    }
+    else if (apps === null) {
+        body = react_1.default.createElement("span", null, "Loading, please wait...");
+    }
+    else if (apps.length === 0) {
+        body = (react_1.default.createElement("span", null,
+            react_1.default.createElement("h3", null, "\"There is no App.\"")));
+    }
+    else if (filter == "available") {
+        //Adding the custom App installation (Unofficial Apps)
+        var customApp = {
+            id: "",
+            customApp: true
         };
-        var timeout = setTimeout(pollStatus, 1000);
-        wazigate.installApp((_a = app) === null || _a === void 0 ? void 0 : _a.image).then((res) => {
-            setInstallLoading(false);
-            setModalMsg(`${res}`);
-            setError(null);
-            setInstallSuccess(true);
-            clearTimeout(timeout);
-            timeout = null;
-        }, (error) => {
-            setInstallLoading(false);
-            setModalMsg(`${error}`);
-            setError(error);
-            clearTimeout(timeout);
-            timeout = null;
-        });
-    };
-    /*------------ */
-    const start = () => {
-        setStartLoading(true);
-        wazigate.setAppConfig(app.id, { action: "up -d --no-build" }).then((res) => {
-            setStartLoading(false);
-            setModal(false);
-            // TODO: navigate / reload
-        }, (error) => {
-            alert("The app failed to start:\n" + error);
-            setStartLoading(false);
-        });
-    };
-    /*----------*/
-    var fallbackIcon = 0;
-    const getDefaultAppIcon = (event) => {
-        if (fallbackIcon > 1)
-            return; // Trying twice
-        event.target.src = defaultLogo;
-        fallbackIcon++;
-    };
-    /*----------*/
-    // Hide myself when install successfully
-    if (installSuccess && !modal)
-        return react_1.default.createElement("span", null);
-    /*----------*/
-    return (react_1.default.createElement(react_1.Fragment, null,
-        react_1.default.createElement(core_1.Card, { className: className },
-            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: ((_b = (_a = app) === null || _a === void 0 ? void 0 : _a.waziapp) === null || _b === void 0 ? void 0 : _b.icon) || wazigateLogo, onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.id, subheader: react_1.default.createElement("a", { href: app.homepage ||
-                        "https://hub.docker.com/r/" + ((_c = app === null || app === void 0 ? void 0 : app.id) === null || _c === void 0 ? void 0 : _c.replace(".", "/")), target: "_blank" }, (_d = app) === null || _d === void 0 ? void 0 : _d.image) }),
-            react_1.default.createElement(core_1.CardContent, null,
-                react_1.default.createElement("p", null, `${((_e = app) === null || _e === void 0 ? void 0 : _e.description) || "."}`)),
-            react_1.default.createElement(core_1.CardActions, null,
-                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal, disabled: installSuccess }, "Install"))),
-        react_1.default.createElement(core_1.Dialog, { onClose: toggleModal, open: modal, fullWidth: true, maxWidth: "xl", className: classes.modal },
-            react_1.default.createElement(core_1.DialogTitle, { title: (_f = app) === null || _f === void 0 ? void 0 : _f.image },
-                "Install [ ",
-                app.id,
-                " ]"),
-            react_1.default.createElement(core_1.DialogContent, { dividers: true },
-                react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
-                    // spellCheck={false}
-                    // contentEditable={false}
-                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || ".", hidden: !installStatus }),
-                modalMsg && (react_1.default.createElement(Alert_1.default, { severity: error ? "error" : "info", onClose: () => { } }, modalMsg))),
-            react_1.default.createElement(core_1.DialogActions, null,
-                react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { autoFocus: true, onClick: install, color: "primary", variant: "contained", startIcon: react_1.default.createElement(GetApp_1.default, null), disabled: installLoading || installSuccess }, "Download and Install"),
-                    installLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
-                react_1.default.createElement("div", { className: classes.wrapper },
-                    react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", disabled: !installSuccess || startLoading, startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App"),
-                    startLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))));
+        apps.push(customApp);
+        body = apps.map((app) => (react_1.default.createElement(MarketplaceApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
+    }
+    else {
+        body = apps.map((app) => (react_1.default.createElement(InstalledApp_1.default, { key: app.id, appInfo: app, className: classes.app })));
+    }
+    const manageApps = filter == "installed";
+    return (react_1.default.createElement("div", { className: classes.page },
+        apps === null ? react_1.default.createElement(core_1.LinearProgress, { className: classes.loading }) : null,
+        react_1.default.createElement(core_1.AppBar, { position: "fixed", className: classes.appBar },
+            react_1.default.createElement(core_1.Toolbar, { className: classes.appBarInner },
+                react_1.default.createElement(core_1.IconButton, { color: "inherit", "aria-label": "open drawer", edge: "start", onClick: handleDrawerToggle, className: classes.menuButton },
+                    react_1.default.createElement(Menu_1.default, null)),
+                react_1.default.createElement(core_1.Typography, { variant: "h6", noWrap: true, className: classes.name }, "Apps"))),
+        react_1.default.createElement("div", { className: classes.body }, body),
+        react_1.default.createElement(core_1.Zoom, { in: filter == "available", timeout: transitionDuration, style: {
+                transitionDelay: `${filter == "available" ? transitionDuration.exit : 0}ms`,
+            }, unmountOnExit: true },
+            react_1.default.createElement(core_1.Fab, { className: classes.fab, onClick: () => setFilter("installed"), "aria-label": "edit", title: "Manage installed Apps" },
+                react_1.default.createElement(Settings_1.default, null))),
+        react_1.default.createElement(core_1.Zoom, { in: filter == "installed", timeout: transitionDuration, style: {
+                transitionDelay: `${filter == "installed" ? transitionDuration.exit : 0}ms`,
+            }, unmountOnExit: true },
+            react_1.default.createElement(core_1.Fab, { className: classes.fab, onClick: () => setFilter("available"), "aria-label": "add", title: "Install a new App" },
+                react_1.default.createElement(Add_1.default, null)))));
 }
-exports.default = MarketplaceApp;
+exports.default = AppsPage;
 
 
 /***/ }),
@@ -81538,6 +81071,7 @@ function DevicesPage({ handleDrawerToggle }) {
     const classes = useStyles();
     const [devices, setDevices] = react_1.useState(null);
     react_1.useEffect(() => {
+        loadGwId();
         wazigate.getDevices().then(setDevices);
         const cb = (device) => {
             console.log("A device was created remotely.", device);
@@ -81546,6 +81080,12 @@ function DevicesPage({ handleDrawerToggle }) {
         wazigate.subscribe("devices", cb);
         return () => wazigate.unsubscribe("devices", cb);
     }, []);
+    const [gwID, setGwID] = react_1.useState(null);
+    const loadGwId = () => __awaiter(this, void 0, void 0, function* () {
+        var id = yield wazigate.getID();
+        console.log("Gateway ID:", id);
+        setGwID(id);
+    });
     const createDevice = () => __awaiter(this, void 0, void 0, function* () {
         var deviceName = prompt('Please insert a new device name:', '');
         if (deviceName) {
@@ -81564,7 +81104,7 @@ function DevicesPage({ handleDrawerToggle }) {
         }
     });
     var body;
-    if (devices === null) {
+    if (devices === null || gwID === null) {
         body = "Loading... please wait.";
     }
     else if (devices.length === 0) {
@@ -81575,7 +81115,7 @@ function DevicesPage({ handleDrawerToggle }) {
             const handleDeviceDelete = () => {
                 setDevices(devices => devices.filter(d => d.id != device.id));
             };
-            return (react_1.default.createElement(Device_1.DeviceComp, { key: device.id, className: classes.device, device: device, onDelete: handleDeviceDelete }));
+            return (react_1.default.createElement(Device_1.DeviceComp, { key: device.id, className: classes.device, device: device, isGateway: gwID == device.id, onDelete: handleDeviceDelete }));
         });
     }
     return (react_1.default.createElement("div", { className: classes.page },
@@ -82490,6 +82030,557 @@ exports.default = UserProfile;
 
 /***/ }),
 
+/***/ "./src/components/pages/apps/InstalledApp.tsx":
+/*!****************************************************!*\
+  !*** ./src/components/pages/apps/InstalledApp.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const MenuItem_1 = __importDefault(__webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js"));
+const Select_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js"));
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
+const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+const Delete_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js"));
+const Settings_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Settings */ "./node_modules/@material-ui/icons/Settings.js"));
+const Update_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Update */ "./node_modules/@material-ui/icons/Update.js"));
+const Stop_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Stop */ "./node_modules/@material-ui/icons/Stop.js"));
+const PlayArrow_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/PlayArrow */ "./node_modules/@material-ui/icons/PlayArrow.js"));
+const useStyles = core_1.makeStyles((theme) => ({
+    page: {
+        marginTop: "64px",
+    },
+    modal: {
+        marginLeft: 0,
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: 240,
+        },
+    },
+    buttonProgress: {
+        color: colors_1.green[500],
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    wrapper: {
+        margin: theme.spacing(1),
+        position: "relative",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+}));
+function InstalledApp({ appInfo, className }) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+    const classes = useStyles();
+    /*------------ */
+    // Run stuff on load
+    react_1.useEffect(() => {
+        checkUpdates(false);
+    }, [] /* This makes it to run only once*/);
+    /*------------ */
+    const [app, setApp] = react_1.useState(appInfo);
+    const load = () => {
+        wazigate.getApp(app.id).then(setApp, (error) => {
+            alert("There was an error loading the app info:\n" + error);
+        });
+    };
+    /*------------ */
+    const [uninstallModal, setUninstallModal] = react_1.useState(null);
+    const showModalUninstall = () => {
+        setUninstallModal({
+            keepConfig: true,
+        });
+        hideModalSettings();
+    };
+    const hideModalUninstall = () => {
+        setUninstallModal(null);
+    };
+    const handleKeepConfigChange = (event) => {
+        setUninstallModal({
+            keepConfig: event.target.checked,
+        });
+    };
+    /*------------ */
+    const [updateModal, setUpdateModal] = react_1.useState(null);
+    const showModalUpdate = () => {
+        setUpdateModal({
+            keepConfig: false,
+        });
+        hideModalSettings();
+    };
+    const hideModalUpdate = () => {
+        setUpdateModal(null);
+    };
+    const [updateStatus, setUpdateStatus] = react_1.useState(null);
+    /*------------ */
+    const [settingsModal, setSettingsModal] = react_1.useState(null);
+    const showModalSettings = () => {
+        // console.log(app);
+        setSettingsModal({
+            /// ?
+            keepConfig: false,
+        });
+    };
+    const hideModalSettings = () => {
+        setSettingsModal(null);
+    };
+    /*------------ */
+    const [isUninstalling, setUninstLoader] = react_1.useState(false);
+    const uninstall = () => {
+        if (!confirm("Do you wan tot uninstall the App?"))
+            return;
+        setUninstLoader(true);
+        wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then((res) => {
+            setUninstLoader(false);
+            load();
+            alert("The app [ " + ((app === null || app === void 0 ? void 0 : app.name) || app.id) + " ] has been uninstalled.");
+            hideModalUninstall();
+            setTimeout(function () { window.location.reload(); }, 1000);
+        }, (error) => {
+            setUninstLoader(false);
+            alert("There was an error uninstalling the app [ " +
+                ((app === null || app === void 0 ? void 0 : app.name) || app.id) +
+                " ]:\n" +
+                error);
+        });
+    };
+    /*------------ */
+    const checkUpdates = (showAlert = true) => {
+        setUpdateStatus({
+            logs: null,
+            isChecking: true,
+            hasCheckedUpdates: false,
+            hasUpdate: false,
+            newVersion: null,
+        });
+        wazigate.get(`update/${app.id}`).then((res) => {
+            if (res.newUpdate) {
+                setUpdateStatus((status) => ({
+                    logs: status.logs,
+                    isChecking: false,
+                    hasCheckedUpdates: true,
+                    hasUpdate: true,
+                    newVersion: res.newUpdate,
+                }));
+            }
+            else {
+                setUpdateStatus((status) => ({
+                    logs: status.logs,
+                    isChecking: false,
+                    hasCheckedUpdates: true,
+                    hasUpdate: false,
+                    newVersion: null,
+                }));
+                if (showAlert)
+                    alert("The latest version is already installed.");
+            }
+        }, (error) => {
+            if (showAlert)
+                alert("There was an error checking for updates:\n" + error);
+        });
+    };
+    const update = () => {
+        setUpdateStatus({
+            logs: "Please wait...",
+            isChecking: true,
+            hasCheckedUpdates: false,
+            hasUpdate: false,
+            newVersion: null,
+        });
+        const pollStatus = () => {
+            wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
+                setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { logs: res === null || res === void 0 ? void 0 : res.log })));
+                if (timeout !== null) {
+                    timeout = setTimeout(pollStatus, 1000);
+                }
+            }, (error) => {
+                alert("There was an error getting the update status:\n" + error);
+            });
+        };
+        var timeout = setTimeout(pollStatus, 1000);
+        wazigate.set("update/" + app.id, {}).then(() => {
+            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
+            clearTimeout(timeout);
+            timeout = null;
+            load(); // Load again to see new version and looks
+        }, (error) => {
+            setUpdateStatus((status) => (Object.assign(Object.assign({}, status), { isChecking: false })));
+            alert("There was an error updating the app:\n" + error);
+            clearTimeout(timeout);
+            timeout = null;
+        });
+    };
+    //
+    const [stopping, setStopping] = react_1.useState(false);
+    const stop = () => {
+        setStopping(true);
+        wazigate.setAppConfig(app.id, { action: "stop" }).then((res) => {
+            setStopping(false);
+            load();
+        }, (error) => {
+            setStopping(false);
+            alert("Can not perform action:\n" + error);
+        });
+    };
+    /*----------*/
+    const [starting, setStarting] = react_1.useState(false);
+    const start = () => {
+        var _a;
+        setStarting(true);
+        var startAction = ((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.startedAt) == "" ? "up -d --no-build" : "start";
+        wazigate.setAppConfig(app.id, { action: startAction }).then((res) => {
+            setStarting(false);
+            load();
+        }, (error) => {
+            setStarting(false);
+            alert("Can not perform action:\n" + error);
+        });
+    };
+    /*----------*/
+    const [rePolicyChaing, setResPolicyLoader] = react_1.default.useState(false);
+    const restartPolicyChange = (event) => {
+        if (rePolicyChaing)
+            return; // Already on progress
+        var newPolicy = event.target.value;
+        if (!newPolicy || newPolicy == "0")
+            return;
+        setResPolicyLoader(true);
+        wazigate.setAppConfig(app.id, { restart: newPolicy }).then((res) => {
+            setResPolicyLoader(false);
+            load();
+        }, (error) => {
+            setResPolicyLoader(false);
+        });
+    };
+    /*----------*/
+    var fallbackIcon = 0;
+    const getDefaultAppIcon = (event) => {
+        if (fallbackIcon > 1)
+            return; // we try twice to be sure
+        event.target.src = defaultLogo;
+        fallbackIcon++;
+    };
+    /*----------*/
+    // If I get uninstalled, I hide myself ;)
+    if (!app) {
+        return react_1.default.createElement("span", null);
+    }
+    /*----------*/
+    const running = !!((_a = app === null || app === void 0 ? void 0 : app.state) === null || _a === void 0 ? void 0 : _a.running);
+    const isSysApp = (app === null || app === void 0 ? void 0 : app.id) == "wazigate-edge" || (app === null || app === void 0 ? void 0 : app.id) == "waziup.wazigate-system";
+    /*----------*/
+    return (react_1.default.createElement(react_1.Fragment, null,
+        react_1.default.createElement(core_1.Card, { className: className },
+            react_1.default.createElement(core_1.CardHeader, { avatar: react_1.default.createElement("img", { className: classes.logo, src: app.id == "wazigate-edge"
+                        ? wazigateLogo
+                        : wazigate.toProxyURL(app.id, (_c = (_b = app) === null || _b === void 0 ? void 0 : _b.waziapp) === null || _c === void 0 ? void 0 : _c.icon), onError: getDefaultAppIcon }), title: app === null || app === void 0 ? void 0 : app.name, subheader: react_1.default.createElement("a", { href: app.homepage ||
+                        "https://hub.docker.com/r/" + app.id.replace(".", "/"), target: "_blank" }, app.id) }),
+            react_1.default.createElement(core_1.CardContent, null,
+                app.state ? (react_1.default.createElement("span", { className: "text-capitalize" },
+                    "Status:",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, app.state.status || "Disabled"))) : null,
+                react_1.default.createElement("p", null, `${((_d = app) === null || _d === void 0 ? void 0 : _d.description) || "."}`)),
+            react_1.default.createElement(core_1.CardActions, null,
+                react_1.default.createElement(core_1.Button, { className: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "orange"
+                        : (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) ? "animate-flicker"
+                            : "", title: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? "New update available" : "", startIcon: react_1.default.createElement(Update_1.default, null), onClick: showModalUpdate }, "Update"),
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Settings_1.default, null), onClick: showModalSettings }, "Settings"),
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(Delete_1.default, null), disabled: isSysApp, onClick: showModalUninstall, className: isUninstalling ? "animate-flicker" : "" }, "Uninstall"))),
+        react_1.default.createElement(core_1.Fade, { in: uninstallModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUninstall, 
+                // open={uninstallModal !== null}
+                open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Uninstall [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                    react_1.default.createElement(core_1.FormGroup, null,
+                        react_1.default.createElement(core_1.FormControlLabel, { control: react_1.default.createElement(core_1.Switch, { onChange: handleKeepConfigChange, checked: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig) }), value: !!(uninstallModal === null || uninstallModal === void 0 ? void 0 : uninstallModal.keepConfig), label: "Keep Config" }))),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { onClick: uninstall, color: "primary", disabled: isSysApp || isUninstalling, startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall now"),
+                        isUninstalling && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))),
+        react_1.default.createElement(core_1.Fade, { in: updateModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalUpdate, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Update [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                    "Current Version:",
+                    " ",
+                    react_1.default.createElement("span", { className: "font-weight-bold" }, app === null || app === void 0 ? void 0 : app.version),
+                    react_1.default.createElement("textarea", { rows: 14, className: "bg-dark text-light form-control form-rounded", 
+                        // spellCheck={false}
+                        // contentEditable={false}
+                        readOnly: true, hidden: !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs), value: (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.logs) || "." })),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        !(updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: () => checkUpdates(), color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Check for Updates")) : null,
+                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.hasUpdate) ? (react_1.default.createElement(core_1.Button, { onClick: update, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null), disabled: updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking }, "Update Now")) : null,
+                        (updateStatus === null || updateStatus === void 0 ? void 0 : updateStatus.isChecking) && (react_1.default.createElement(core_1.CircularProgress, { size: 34, className: classes.buttonProgress })))))),
+        react_1.default.createElement(core_1.Fade, { in: settingsModal != null },
+            react_1.default.createElement(core_1.Dialog, { onClose: hideModalSettings, open: true, fullWidth: true, maxWidth: "xl", className: classes.modal },
+                react_1.default.createElement(core_1.DialogTitle, null,
+                    "Settings [ ", app === null || app === void 0 ? void 0 :
+                    app.name,
+                    " ]"),
+                react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                    react_1.default.createElement("p", { className: "text-capitalize" },
+                        "Status:",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_e = app === null || app === void 0 ? void 0 : app.state) === null || _e === void 0 ? void 0 : _e.status) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Current Version:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${(app === null || app === void 0 ? void 0 : app.version) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Author:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_f = app === null || app === void 0 ? void 0 : app.author) === null || _f === void 0 ? void 0 : _f.name) || "Unknown"}`)),
+                    react_1.default.createElement("p", null,
+                        "Health:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_g = app === null || app === void 0 ? void 0 : app.state) === null || _g === void 0 ? void 0 : _g.health) || "Unknown"}`)),
+                    react_1.default.createElement("p", { className: "text-capitalize" },
+                        "Restart policy:",
+                        " ",
+                        react_1.default.createElement("span", { className: "font-weight-bold" }, `${((_h = app === null || app === void 0 ? void 0 : app.state) === null || _h === void 0 ? void 0 : _h.restartPolicy) || "Unknown"}`)),
+                    react_1.default.createElement("p", null, `${((_j = app) === null || _j === void 0 ? void 0 : _j.description) || ""}`)),
+                react_1.default.createElement(core_1.DialogActions, null,
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(Select_1.default, { disabled: isSysApp, 
+                            // labelId="restartPolicy"
+                            id: "select-restart-policy", value: ((_k = app === null || app === void 0 ? void 0 : app.state) === null || _k === void 0 ? void 0 : _k.restartPolicy) || "0", onChange: restartPolicyChange, color: "primary" },
+                            react_1.default.createElement(MenuItem_1.default, { value: "0" }, "Restart Policy"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "always" }, "Always"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "on-failure" }, "On-Failure"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "unless-stopped" }, "Unless-Stopped"),
+                            react_1.default.createElement(MenuItem_1.default, { value: "no" }, "No")),
+                        rePolicyChaing && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                    react_1.default.createElement(core_1.Button, { onClick: showModalUpdate, color: "primary", startIcon: react_1.default.createElement(Update_1.default, null) }, "Update"),
+                    react_1.default.createElement(core_1.Button, { onClick: showModalUninstall, disabled: isSysApp, color: "primary", startIcon: react_1.default.createElement(Delete_1.default, null) }, "Uninstall"),
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { disabled: stopping || !running || isSysApp, onClick: stop, color: "primary", startIcon: react_1.default.createElement(Stop_1.default, null) }, "Stop"),
+                        stopping && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                    react_1.default.createElement("div", { className: classes.wrapper },
+                        react_1.default.createElement(core_1.Button, { disabled: starting || running, onClick: start, color: "primary", startIcon: react_1.default.createElement(PlayArrow_1.default, null) }, "Start"),
+                        starting && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))))))));
+}
+exports.default = InstalledApp;
+
+
+/***/ }),
+
+/***/ "./src/components/pages/apps/MarketplaceApp.tsx":
+/*!******************************************************!*\
+  !*** ./src/components/pages/apps/MarketplaceApp.tsx ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importStar(__webpack_require__(/*! react */ "react"));
+const GetApp_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/GetApp */ "./node_modules/@material-ui/icons/GetApp.js"));
+const FiberNew_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/FiberNew */ "./node_modules/@material-ui/icons/FiberNew.js"));
+const wazigate_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/wazigate.svg */ "./src/img/wazigate.svg"));
+const wazigateLogo = `dist/${wazigate_svg_1.default}`;
+const default_app_logo_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/default-app-logo.svg */ "./src/img/default-app-logo.svg"));
+const defaultLogo = `dist/${default_app_logo_svg_1.default}`;
+const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+const Alert_1 = __importDefault(__webpack_require__(/*! @material-ui/lab/Alert */ "./node_modules/@material-ui/lab/esm/Alert/index.js"));
+const colors_1 = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+const useStyles = core_1.makeStyles((theme) => ({
+    page: {
+        marginTop: "64px",
+    },
+    modal: {
+        marginLeft: 0,
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: 240,
+        },
+    },
+    textarea: {
+        backgroundColor: "#000",
+        color: "#FFD",
+        borderRadius: "5px",
+        width: "100%",
+    },
+    buttonProgress: {
+        color: colors_1.green[500],
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    wrapper: {
+        margin: theme.spacing(1),
+        position: "relative",
+    },
+    logo: {
+        display: "inline-flex",
+        height: "2rem",
+        marginRight: 16,
+    },
+}));
+function MarketplaceApp({ appInfo, className }) {
+    var _a, _b, _c, _d, _e, _f;
+    const classes = useStyles();
+    /*------------ */
+    const [app, setApp] = react_1.useState(appInfo);
+    const load = () => {
+        wazigate.getApp(app.id).then(setApp, (error) => {
+            alert("There was an error loading the app info:\n" + error);
+        });
+    };
+    /*------------ */
+    const imageIdChange = (event) => {
+        appInfo.image = event.target.value;
+        appInfo.id = event.target.value.replace("/", ".").split(":")[0];
+        setApp(appInfo);
+    };
+    /*------------ */
+    const [installStatus, setInstallStatus] = react_1.useState(null);
+    const [modal, setModal] = react_1.useState(false);
+    const toggleModal = () => setModal(!modal);
+    const [modalMsg, setModalMsg] = react_1.useState("");
+    const [error, setError] = react_1.useState(Error);
+    const [installLoading, setInstallLoading] = react_1.useState(false);
+    const [installSuccess, setInstallSuccess] = react_1.useState(false);
+    const [startLoading, setStartLoading] = react_1.useState(false);
+    const install = () => {
+        var _a;
+        setInstallLoading(true);
+        setInstallStatus({ log: "...", done: false });
+        const pollStatus = () => {
+            wazigate.get(`apps/${app.id}?install_logs`).then((res) => {
+                setInstallStatus(res);
+                if (timeout !== null) {
+                    timeout = setTimeout(pollStatus, 1000);
+                }
+            }, (error) => {
+                alert("There was an error getting the install status:\n" + error);
+            });
+        };
+        var timeout = setTimeout(pollStatus, 1000);
+        wazigate.installApp((_a = app) === null || _a === void 0 ? void 0 : _a.image).then((res) => {
+            setInstallLoading(false);
+            setModalMsg(`${res}`);
+            setError(null);
+            setInstallSuccess(true);
+            clearTimeout(timeout);
+            timeout = null;
+        }, (error) => {
+            setInstallLoading(false);
+            setModalMsg(`${error}`);
+            setError(error);
+            clearTimeout(timeout);
+            timeout = null;
+        });
+    };
+    /*------------ */
+    const start = () => {
+        setStartLoading(true);
+        wazigate.setAppConfig(app.id, { action: "up -d --no-build" }).then((res) => {
+            setStartLoading(false);
+            setModal(false);
+            //navigate / reload
+            setTimeout(function () { window.location.reload(); }, 500);
+        }, (error) => {
+            alert("The app failed to start:\n" + error);
+            setStartLoading(false);
+        });
+    };
+    /*----------*/
+    var fallbackIcon = 0;
+    const getDefaultAppIcon = (event) => {
+        if (fallbackIcon > 1)
+            return; // Trying twice
+        event.target.src = defaultLogo;
+        fallbackIcon++;
+    };
+    /*----------*/
+    // Hide myself when install successfully
+    if (installSuccess && !modal)
+        return react_1.default.createElement("span", null);
+    /*----------*/
+    return (react_1.default.createElement(react_1.Fragment, null,
+        react_1.default.createElement(core_1.Card, { className: className, style: appInfo.customApp && { backgroundColor: colors_1.orange[50] } },
+            react_1.default.createElement(core_1.CardHeader, { avatar: appInfo.customApp ?
+                    (react_1.default.createElement(FiberNew_1.default, { fontSize: "large", style: { color: colors_1.orange[500] } }))
+                    :
+                        (react_1.default.createElement("img", { className: classes.logo, src: ((_b = (_a = app) === null || _a === void 0 ? void 0 : _a.waziapp) === null || _b === void 0 ? void 0 : _b.icon) || wazigateLogo, onError: getDefaultAppIcon })), title: appInfo.customApp ? "Install a Custom App" : app === null || app === void 0 ? void 0 : app.id, subheader: appInfo.customApp ? ("") :
+                    (react_1.default.createElement("a", { href: app.homepage ||
+                            "https://hub.docker.com/r/" + ((_c = app === null || app === void 0 ? void 0 : app.id) === null || _c === void 0 ? void 0 : _c.replace(".", "/")), target: "_blank" }, (_d = app) === null || _d === void 0 ? void 0 : _d.image)) }),
+            react_1.default.createElement(core_1.CardContent, null,
+                react_1.default.createElement("p", null, `${((_e = app) === null || _e === void 0 ? void 0 : _e.description) || (appInfo.customApp ? "Install a custom App using docker image name" : ".")}`)),
+            react_1.default.createElement(core_1.CardActions, null,
+                react_1.default.createElement(core_1.Button, { startIcon: react_1.default.createElement(GetApp_1.default, null), onClick: toggleModal, disabled: installSuccess }, "Install"))),
+        react_1.default.createElement(core_1.Dialog, { onClose: toggleModal, open: modal, fullWidth: true, maxWidth: "xl", className: classes.modal },
+            react_1.default.createElement(core_1.DialogTitle, { title: (_f = app) === null || _f === void 0 ? void 0 : _f.image },
+                "Install [ ",
+                appInfo.customApp ? "Custom App" : app === null || app === void 0 ? void 0 : app.id,
+                "]"),
+            react_1.default.createElement(core_1.DialogContent, { dividers: true },
+                appInfo.customApp && (react_1.default.createElement(core_1.TextField, { id: "imageId", name: "imageId", onChange: imageIdChange, fullWidth: true, required: true, label: "Full docker image name" })),
+                react_1.default.createElement("textarea", { rows: 14, className: classes.textarea, 
+                    // spellCheck={false}
+                    // contentEditable={false}
+                    readOnly: true, value: (installStatus === null || installStatus === void 0 ? void 0 : installStatus.log) || ".", hidden: !installStatus }),
+                modalMsg && (react_1.default.createElement(Alert_1.default, { severity: error ? "error" : "info", onClose: () => { } }, modalMsg))),
+            react_1.default.createElement(core_1.DialogActions, null,
+                react_1.default.createElement("div", { className: classes.wrapper },
+                    react_1.default.createElement(core_1.Button, { autoFocus: true, onClick: install, color: "primary", variant: "contained", startIcon: react_1.default.createElement(GetApp_1.default, null), disabled: installLoading || installSuccess }, "Download and Install"),
+                    installLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress }))),
+                react_1.default.createElement("div", { className: classes.wrapper },
+                    react_1.default.createElement(core_1.Button, { onClick: start, color: "primary", disabled: !installSuccess || startLoading, startIcon: react_1.default.createElement(GetApp_1.default, null) }, "Launch the App"),
+                    startLoading && (react_1.default.createElement(core_1.CircularProgress, { size: 24, className: classes.buttonProgress })))))));
+}
+exports.default = MarketplaceApp;
+
+
+/***/ }),
+
 /***/ "./src/components/pages/device/Actuator.tsx":
 /*!**************************************************!*\
   !*** ./src/components/pages/device/Actuator.tsx ***!
@@ -82724,6 +82815,7 @@ const List_1 = __importDefault(__webpack_require__(/*! @material-ui/core/List */
 const ontologies_json_1 = __importDefault(__webpack_require__(/*! ../../../ontologies.json */ "./src/ontologies.json"));
 const ontologies_svg_1 = __importDefault(__webpack_require__(/*! ../../../img/ontologies.svg */ "./src/img/ontologies.svg"));
 const SVGSpriteIcon_1 = __importDefault(__webpack_require__(/*! ../../SVGSpriteIcon */ "./src/components/SVGSpriteIcon.tsx"));
+const Fingerprint_1 = __importDefault(__webpack_require__(/*! @material-ui/icons/Fingerprint */ "./node_modules/@material-ui/icons/Fingerprint.js"));
 const core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 const useStyles = core_1.makeStyles((theme) => ({
     root: {
@@ -82768,7 +82860,7 @@ const useStyles = core_1.makeStyles((theme) => ({
 }));
 const defaultSensorIcon = "meter";
 const defaultActuatorIcon = "crane";
-exports.DeviceComp = ({ device, className, onDelete }) => {
+exports.DeviceComp = ({ device, className, isGateway, onDelete }) => {
     const classes = useStyles();
     const [deviceName, setDeviceName] = react_1.useState(device.name);
     const handleNameClick = () => {
@@ -82781,6 +82873,24 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
             }, (err) => {
                 alert("The device name could not be saved:\n" + err);
                 setDeviceName(oldName);
+            });
+        }
+        handleMenuClose();
+    };
+    const [gwID, setGwID] = react_1.useState(device.id);
+    const handleChangeIDClick = () => {
+        const oldID = gwID;
+        const newID = prompt("New Gateway ID:", oldID);
+        if (newID && newID != oldID) {
+            wazigate.set(`device/id`, newID).then(() => {
+                // OK
+                // setGwID(newID);
+                // setDeviceName("(NEW) " + device.name);
+                // Lert's reload it
+                window.location.reload();
+            }, (err) => {
+                alert("The device name could not be saved:\n" + err);
+                setGwID(oldID);
             });
         }
         handleMenuClose();
@@ -82853,6 +82963,10 @@ exports.DeviceComp = ({ device, className, onDelete }) => {
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Edit_1.default, { fontSize: "small" })),
                 react_1.default.createElement(core_1.ListItemText, { primary: "Rename" })),
+            isGateway && (react_1.default.createElement(core_1.MenuItem, { onClick: handleChangeIDClick },
+                react_1.default.createElement(core_1.ListItemIcon, null,
+                    react_1.default.createElement(Fingerprint_1.default, { fontSize: "small" })),
+                react_1.default.createElement(core_1.ListItemText, { primary: "Change Gateway ID" }))),
             react_1.default.createElement(core_1.MenuItem, { onClick: handleDeleteClick },
                 react_1.default.createElement(core_1.ListItemIcon, null,
                     react_1.default.createElement(Delete_1.default, { fontSize: "small" })),

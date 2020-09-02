@@ -41,15 +41,15 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     appBar: {
-      [theme.breakpoints.up('sm')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-      },
-      background: "#f1f1f1",
-      color: "unset",
-      boxShadow: "0 0 2px #f1f1f1",
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+        },
+        background: "#f1f1f1",
+        color: "unset",
+        boxShadow: "0 0 2px #f1f1f1",
+        paddingLeft: theme.spacing(3),
+        paddingRight: theme.spacing(3),
     },
     appBarInner: {
         padding: "0",
@@ -58,10 +58,10 @@ const useStyles = makeStyles((theme) => ({
         // fontWeight: "lighter",
     },
     menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
     },
 }));
 
@@ -69,12 +69,14 @@ type Props = {
     handleDrawerToggle: () => void;
 };
 
-export default function DevicesPage({handleDrawerToggle}: Props) {
+export default function DevicesPage({ handleDrawerToggle }: Props) {
     const classes = useStyles();
 
     const [devices, setDevices] = useState(null as Device[]);
     useEffect(() => {
+        loadGwId();
         wazigate.getDevices().then(setDevices);
+
         const cb = (device: Device) => {
             console.log("A device was created remotely.", device);
             wazigate.getDevices().then(setDevices);
@@ -82,6 +84,13 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
         wazigate.subscribe<Device>("devices", cb);
         return () => wazigate.unsubscribe("devices", cb);
     }, []);
+
+    const [gwID, setGwID] = useState(null as string);
+    const loadGwId = async () => {
+        var id = await wazigate.getID();
+        console.log("Gateway ID:", id);
+        setGwID(id);
+    }
 
     const createDevice = async () => {
         var deviceName = prompt('Please insert a new device name:', '');
@@ -102,9 +111,9 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
     }
 
     var body: React.ReactNode;
-    if(devices === null) {
+    if (devices === null || gwID === null) {
         body = "Loading... please wait.";
-    } else if(devices.length === 0) {
+    } else if (devices.length === 0) {
         body = "There are no devices yet. Click '+' to add a new device."
     } else {
         body = devices.map((device) => {
@@ -116,6 +125,7 @@ export default function DevicesPage({handleDrawerToggle}: Props) {
                     key={device.id}
                     className={classes.device}
                     device={device}
+                    isGateway={gwID == device.id}
                     onDelete={handleDeviceDelete}
                 />
             );
