@@ -82882,14 +82882,14 @@ exports.DeviceComp = ({ device, className, isGateway, onDelete }) => {
         const oldID = gwID;
         const newID = prompt("New Gateway ID:", oldID);
         if (newID && newID != oldID) {
-            wazigate.set(`device/id`, newID).then(() => {
+            wazigate.set(`device/id`, newID).then((res) => {
                 // OK
                 // setGwID(newID);
                 // setDeviceName("(NEW) " + device.name);
                 // Lert's reload it
                 window.location.reload();
             }, (err) => {
-                alert("The device name could not be saved:\n" + err);
+                alert("The device ID could not be saved:\n" + err);
                 setGwID(oldID);
             });
         }
