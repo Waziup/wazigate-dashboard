@@ -199,7 +199,7 @@ export const DashboardComp = () => {
     event.preventDefault();
     wazigate.set<any>("auth/logout", {}).then(
       (res) => {
-        window.location.href = "/";
+        location.replace("#");
       },
       (error) => {
         console.log(error);
@@ -291,7 +291,7 @@ export const DashboardComp = () => {
           component="a"
           button
           key="logout"
-          href="/#/logout"
+          href="#/logout"
           className={classes.a}>
           <ListItemIcon className={classes.drawerIcon}><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Logout" />

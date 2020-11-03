@@ -36,7 +36,7 @@ else if (navigator.platform.indexOf("Linux") != -1)
 var failedToAcc = false;
 const isAuthorized = () => {
     //Just a cheap API call
-    window.fetch("/sys/uptime").then(
+    fetch("sys/uptime").then(
         (resp) => {
             if (failedToAcc) {
                 failedToAcc = false;
@@ -44,7 +44,7 @@ const isAuthorized = () => {
                 return;
             }
             if (resp.status == 401) {
-                window.location.href = "/#/login";
+                window.location.href = "#/login";
             } else {
                 // Check every periodically if we need to show the login page 
                 // and if the gateway is reachable
@@ -81,7 +81,9 @@ setTimeout(reToken, 1000 * 30); // Just call it after a while
 
 /*----------- */
 
-waziup.connect().then(wazigate => {
+waziup.connect({
+    host: "."
+}).then(wazigate => {
     (window as any)["wazigate"] = wazigate;
 
     if (isDemo) {

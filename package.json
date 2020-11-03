@@ -5,8 +5,9 @@
 	"main": "src/index.tsx",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "npx webpack",
-		"watch": "npx webpack --watch",
+		"build-dev": "npx webpack --env dev",
+		"build": "npx webpack --env prod",
+		"watch": "npx webpack --watch --env prod",
 		"http-server": "http-server"
 	},
 	"repository": "github:Waziup/wazigate-dashboard",
@@ -31,13 +32,14 @@
 		"style-loader": "^1.2.0",
 		"ts-loader": "^7.0.1",
 		"typescript": "^3.8.3",
-		"waziup": "^1.0.9",
+		"waziup": "^1.1.0",
 		"webpack": "^4.43.0",
-		"webpack-cli": "^3.3.11"
+		"webpack-cli": "^3.3.11",
+		"webpack-merge": "^5.3.0"
 	},
 	"dependencies": {
 		"mqtt": "^3.0.0",
-		"node-fetch": "^2.6.0",
+		"node-fetch": "^2.6.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"url-loader": "^4.1.0"
