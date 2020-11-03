@@ -2,7 +2,7 @@ const path = require("path");
 const package = require("./package.json");
 const fs = require("fs");
 const childProcess = require("child_process");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { merge } = require("webpack-merge");
 
 var branch = "unknown";
 try {
@@ -10,7 +10,7 @@ try {
 		encoding: "utf8"
 	});
 	branch = branch.trim();
-} catch (err) {}
+} catch (err) { }
 
 const version = package.version;
 
@@ -25,10 +25,7 @@ export const branch = "${branch}";
 `
 );
 
-module.exports = {
-	mode: "development",
-
-	devtool: "source-map",
+const common = {
 
 	resolve: {
 		extensions: [".ts", ".tsx", ".scss", ".css", ".js"]
@@ -86,3 +83,18 @@ module.exports = {
 		},
 	]
 };
+
+module.exports = (env) => {
+
+	if (env === "dev") {
+		return merge(common, {
+			mode: "development",
+			devtool: "source-map",
+		});
+	}
+
+	return merge(common, {
+		mode: "production",
+	});
+}
+
