@@ -79,6 +79,24 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  textarea: {
+    backgroundColor: "#000",
+    color: "#FFD",
+    borderRadius: "5px",
+    width: "100%",
+  },
+  orange: {
+    background: "#f35e19",
+    color: "white",
+    outline: "none",
+    "&:hover": {
+      background: "#f38c5c",
+    },
+  },
+  boldCap:{
+    fontWeight: 500,
+    textTransform: "capitalize",
+  },
 }));
 
 type UninstallConfig = {
@@ -414,9 +432,9 @@ export default function InstalledApp({ appInfo, className }: Props) {
         />
         <CardContent>
           {app.state ? (
-            <span className="text-capitalize">
-              Status:
-              <span className="font-weight-bold">
+            <span>
+              Status:{" "}
+              <span className={classes.boldCap}>
                 {app.state.status || "Disabled"}
               </span>
             </span>
@@ -425,13 +443,9 @@ export default function InstalledApp({ appInfo, className }: Props) {
         </CardContent>
         <CardActions>
           <Button
-            className={
-              updateStatus?.hasUpdate
-                ? "orange"
-                : updateStatus?.isChecking
-                  ? "animate-flicker"
-                  : ""
-            }
+            className={updateStatus?.hasUpdate ? classes.orange : 
+                ( updateStatus?.isChecking ? "animate-flicker" : "")}
+            variant={updateStatus?.hasUpdate ? "contained" : "text"}
             title={updateStatus?.hasUpdate ? "New update available" : ""}
             startIcon={<UpdateIcon />}
             onClick={showModalUpdate}
@@ -509,10 +523,13 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <DialogTitle>Update [ {app?.name} ]</DialogTitle>
           <DialogContent dividers>
             Current Version:{" "}
-            <span className="font-weight-bold">{app?.version}</span>
+              <span className={classes.boldCap}>{app?.version} 
+                {updateStatus?.hasUpdate ? " (New update available)" : 
+                  (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
+              </span>
             <textarea
               rows={14}
-              className="bg-dark text-light form-control form-rounded"
+              className={classes.textarea}
               // spellCheck={false}
               // contentEditable={false}
               readOnly={true}
@@ -536,6 +553,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 <Button
                   onClick={update}
                   color="primary"
+                  variant="contained"
                   startIcon={<UpdateIcon />}
                   disabled={updateStatus?.isChecking}
                 >
@@ -564,33 +582,34 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <DialogTitle>Settings [ {app?.name} ]</DialogTitle>
           <DialogContent dividers>
             {/* <p>Status: {running ? "Running" : "Stopped"}</p> */}
-            <p className="text-capitalize">
+            <p>
               Status:
-              <span className="font-weight-bold">
+              <span className={classes.boldCap}>{" "}
                 {`${app?.state?.status || "Unknown"}`}
               </span>
             </p>
             <p>
               Current Version:{" "}
-              <span className="font-weight-bold">{`${
+              <span className={classes.boldCap}>{`${
                 app?.version || "Unknown"
-                }`}</span>
+                }`}</span> 
+                {updateStatus?.hasUpdate ? " (New update available)" : (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
             </p>
             <p>
               Author:{" "}
-              <span className="font-weight-bold">{`${
+              <span className={classes.boldCap}>{`${
                 app?.author?.name || "Unknown"
                 }`}</span>
             </p>
             <p>
               Health:{" "}
-              <span className="font-weight-bold">{`${
+              <span className={classes.boldCap}>{`${
                 app?.state?.health || "Unknown"
                 }`}</span>
             </p>
             <p className="text-capitalize">
               Restart policy:{" "}
-              <span className="font-weight-bold">{`${
+              <span className={classes.boldCap}>{`${
                 app?.state?.restartPolicy || "Unknown"
                 }`}</span>
             </p>
