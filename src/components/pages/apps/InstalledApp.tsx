@@ -267,7 +267,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
       logs: "Please wait...",
       isChecking: true,
       hasCheckedUpdates: false,
-      hasUpdate: false,
+      hasUpdate: updateStatus?.hasUpdate,
       newVersion: null,
     });
 
@@ -300,6 +300,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
         setUpdateStatus((status) => ({
           ...status,
           isChecking: false,
+          hasUpdate: false,
         }));
         clearTimeout(timeout);
         timeout = null;
@@ -548,8 +549,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 >
                   Check for Updates
                 </Button>
-              ) : null}
-              {updateStatus?.hasUpdate ? (
+              ) : (
                 <Button
                   onClick={update}
                   color="primary"
@@ -559,7 +559,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 >
                   Update Now
                 </Button>
-              ) : null}
+              )}
               {updateStatus?.isChecking && (
                 <CircularProgress
                   size={34}

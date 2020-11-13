@@ -216,20 +216,21 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                     <ListItemText primary="Rename" />
                 </MenuItem>
 
-                {isGateway && (
+                {isGateway ? (
                     <MenuItem onClick={handleChangeIDClick}>
                         <ListItemIcon>
                             <FingerprintIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Change Gateway ID" />
-                    </MenuItem>)}
-
+                    </MenuItem>)
+                : (
                 <MenuItem onClick={handleDeleteClick}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Delete" />
-                </MenuItem>
+                </MenuItem>)}
+                
                 {/* <Divider />
                 <MenuItem onClick={handleNameClick}>
                     <ListItemIcon>
