@@ -85,7 +85,7 @@ export default function Actuator({ deviceID, actuator, className }: Props) {
     return (
         <Card className={`${classes.root} ${className || ""}`}>
             <List dense={true}>
-                <ListItem component="a" button href={`#/devices/${deviceID}/actuators/${actuator.id}`}>
+                <ListItem>
                     <ListItemIcon>
                         <SVGSpriteIcon
                             className={classes.icon}
@@ -111,7 +111,9 @@ export default function Actuator({ deviceID, actuator, className }: Props) {
             </List>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Actuator Details</Typography>
+                    Value: {actuator.value === null ? "-" : `${actuator.value} ${unit}` }<br></br>
+                    Quantity: {actuator.meta.quantity || "-" }<br></br>
+                    Unit: {actuator.meta.unit || "-" }
                 </CardContent>
             </Collapse>
         </Card>

@@ -126,43 +126,15 @@ export default function Sensor({ deviceID, sensor, className }: Props) {
                     >
                         <ExpandMoreIcon />
                     </IconButton>
-
                 </ListItem>
             </List>
-            {/* <Menu
-                id="device-menu"
-                anchorEl={menuAnchorEl}
-                keepMounted
-                open={Boolean(menuAnchorEl)}
-                onClose={handleMenuClose}
-            >
-                <MenuItem onClick={handleNameClick}>
-                    <ListItemIcon>
-                        <EditIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Rename" />
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
-                    <ListItemIcon>
-                        <DeleteIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Delete" />
-                </MenuItem>
-            </Menu> */}
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Sensor Details</Typography>
-                    <Typography paragraph>Sensor Details</Typography>
-                    <Typography paragraph>Sensor Details</Typography>
-                    <Typography paragraph>Sensor Details</Typography>
-                    <Typography paragraph>Sensor Details</Typography>
-                    <Typography paragraph>Sensor Details</Typography>
+                    Value: {sensor.value === null ? "-" : `${sensor.value} ${unit}` }<br></br>
+                    Quantity: {sensor.meta.quantity || "-" }<br></br>
+                    Unit: {sensor.meta.unit || "-" }
                 </CardContent>
             </Collapse>
         </Card>
     );
-    //    <Divider />
-    //     <CardContent>
-    //         Huhu :D
-    //     </CardContent>
 }
