@@ -288,7 +288,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                         const unitLabel = ontologies.units[unit]?.label || unit;
 
                         return (
-                            <ListItem component="a" key={actuator.id} button href={`#/devices/${device.id}/actuators/${actuator.id}`}>
+                            <ListItem key={actuator.id}>
                                 <ListItemIcon>
                                     <SVGSpriteIcon
                                         className={classes.icon}
