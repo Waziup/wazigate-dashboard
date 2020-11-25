@@ -29,14 +29,16 @@ import {
   Switch,
   // LinearProgress,
   Fade,
+  Tooltip,
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 
-import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsIcon from "@material-ui/icons/Settings";
-import UpdateIcon from "@material-ui/icons/Update";
-import StopIcon from "@material-ui/icons/Stop";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import DeleteIcon from '@material-ui/icons/Delete';
+import SettingsIcon from '@material-ui/icons/Settings';
+import UpdateIcon from '@material-ui/icons/Update';
+import StopIcon from '@material-ui/icons/Stop';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import DetailsRoundedIcon from '@material-ui/icons/DetailsRounded';
 
 export declare type AppConfig = {
   action?: "start" | "stop" | "uninstal";
@@ -223,7 +225,6 @@ export default function InstalledApp({ appInfo, className }: Props) {
   /*------------ */
 
   const checkUpdates = (showAlert: boolean = true) => {
-    // TODO : remove 'any' for this AppUpdate
     type AppUpdate = {
       newUpdate: string;
     };
@@ -262,6 +263,8 @@ export default function InstalledApp({ appInfo, className }: Props) {
     );
   };
 
+  const [hideLogBox, setHideLogBox] = useState(true);
+
   const update = () => {
     setUpdateStatus({
       logs: "Please wait...",
@@ -288,7 +291,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
           }
         },
         (error) => {
-          alert("There was an error getting the update status:\n" + error);
+          console.log("There was an error getting the update status:", error);
         }
       );
     };
@@ -456,14 +459,18 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <Button startIcon={<SettingsIcon />} onClick={showModalSettings}>
             Settings
           </Button>
-          <Button
-            startIcon={<DeleteIcon />}
-            disabled={isSysApp}
-            onClick={showModalUninstall}
-            className={isUninstalling ? "animate-flicker" : ""}
-          >
-            Uninstall
-          </Button>
+          <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
+            <div>
+              <Button
+                startIcon={<DeleteIcon />}
+                disabled={isSysApp}
+                onClick={showModalUninstall}
+                className={isUninstalling ? "animate-flicker" : ""}
+                >
+                Uninstall
+              </Button>
+              </div>
+         </Tooltip>
         </CardActions>
       </Card>
 
@@ -493,6 +500,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
             {/* {isUninstalling && <LinearProgress />} */}
           </DialogContent>
           <DialogActions>
+          <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
             <div className={classes.wrapper}>
               <Button
                 onClick={uninstall}
@@ -508,7 +516,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                   className={classes.buttonProgress}
                 />
               )}
-            </div>
+            </div></Tooltip>
           </DialogActions>
         </Dialog>
       </Fade>
@@ -528,15 +536,29 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 {updateStatus?.hasUpdate ? " (New update available)" : 
                   (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
               </span>
+              <br />
             <textarea
               rows={14}
               className={classes.textarea}
               // spellCheck={false}
               // contentEditable={false}
               readOnly={true}
-              hidden={!updateStatus?.logs}
+              hidden={hideLogBox || !updateStatus?.logs}
               value={updateStatus?.logs || "."}
             ></textarea>
+            <div className={classes.wrapper}>
+            {hideLogBox && updateStatus?.logs ? (
+            <Button
+              onClick={() => setHideLogBox(false)}
+              color="primary"
+              // variant="contained"
+              startIcon={<DetailsRoundedIcon />}
+              
+            >
+              See details
+            </Button>) : "" }
+            </div>
+
           </DialogContent>
           <DialogActions>
             <div className={classes.wrapper}>
@@ -617,6 +639,9 @@ export default function InstalledApp({ appInfo, className }: Props) {
           </DialogContent>
           <DialogActions>
             {/* <InputLabel id="restartPolicy">Restart Policy</InputLabel> */}
+            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
+
+
             <div className={classes.wrapper}>
               <Select
                 disabled={isSysApp}
@@ -625,7 +650,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 value={app?.state?.restartPolicy || "0"}
                 onChange={restartPolicyChange}
                 color="primary"
-              >
+                >
                 <MenuItem value="0">Restart Policy</MenuItem>
                 <MenuItem value="always">Always</MenuItem>
                 <MenuItem value="on-failure">On-Failure</MenuItem>
@@ -634,11 +659,12 @@ export default function InstalledApp({ appInfo, className }: Props) {
               </Select>
               {rePolicyChaing && (
                 <CircularProgress
-                  size={24}
+                size={24}
                   className={classes.buttonProgress}
-                />
-              )}
+                  />
+                  )}
             </div>
+            </Tooltip>
 
             <Button
               onClick={showModalUpdate}
@@ -647,18 +673,24 @@ export default function InstalledApp({ appInfo, className }: Props) {
             >
               Update
             </Button>
-            <Button
+            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
+
+            <div><Button
               onClick={showModalUninstall}
               disabled={isSysApp}
               color="primary"
               startIcon={<DeleteIcon />}
-            >
+              >
               Uninstall
-            </Button>
+            </Button></div>
+              </Tooltip>
+            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
             <div className={classes.wrapper}>
+            
               <Button
                 disabled={stopping || !running || isSysApp}
                 onClick={stop}
+                
                 color="primary"
                 startIcon={<StopIcon />}
               >
@@ -671,6 +703,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 />
               )}
             </div>
+            </Tooltip>
             <div className={classes.wrapper}>
               <Button
                 disabled={starting || running}
@@ -687,6 +720,8 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 />
               )}
             </div>
+
+            
           </DialogActions>
         </Dialog>
       </Fade>

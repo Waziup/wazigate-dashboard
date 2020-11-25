@@ -36,6 +36,7 @@ else if (navigator.platform.indexOf("Linux") != -1)
 var failedToAcc = false;
 const isAuthorized = () => {
     //Just a cheap API call
+    console.log( "Checking Authorization...");
     fetch("sys/uptime").then(
         (resp) => {
             if (failedToAcc) {
