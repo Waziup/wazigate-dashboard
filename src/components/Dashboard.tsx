@@ -111,6 +111,9 @@ const useStyles = makeStyles((theme: Theme) =>
         color: "unset !important",
       },
     },
+    hidden: {
+      display: "none"
+    },
     menu: {
       flexGrow: 1,
     },
@@ -292,7 +295,7 @@ export const DashboardComp = () => {
           button
           key="logout"
           href="#/logout"
-          className={classes.a}>
+          className={window.document.location.hostname == "remote.waziup.io" ? classes.hidden : classes.a}>
           <ListItemIcon className={classes.drawerIcon}><ExitToAppIcon /></ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
