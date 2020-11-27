@@ -159,7 +159,7 @@ export const CloudComp = ({ cloud, className }: Props) => {
                 paused: enabled
             }));
             if(enabled) {
-                alert("There was an error activating the sync:\n" + err);
+                alert("There was an error activating the sync!\n Check your credentials and try again.\n\nThe server said:\n" + err);
             } else {
                 alert("There was an error saving the changes:\n" + err);
             }
