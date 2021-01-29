@@ -1,6 +1,6 @@
 {
 	"name": "wazigate-dashboard",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Wazigate Dashboard",
 	"main": "src/index.tsx",
 	"scripts": {

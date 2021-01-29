@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
       background: "#f38c5c",
     },
   },
-  boldCap:{
+  boldCap: {
     fontWeight: 500,
     textTransform: "capitalize",
   },
@@ -446,16 +446,20 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <p>{`${(app as any)?.description || "."}`}</p>
         </CardContent>
         <CardActions>
-          <Button
-            className={updateStatus?.hasUpdate ? classes.orange : 
-                ( updateStatus?.isChecking ? "animate-flicker" : "")}
-            variant={updateStatus?.hasUpdate ? "contained" : "text"}
-            title={updateStatus?.hasUpdate ? "New update available" : ""}
-            startIcon={<UpdateIcon />}
-            onClick={showModalUpdate}
-          >
-            Update
-          </Button>
+          <Tooltip title={updateStatus?.isChecking ? "Checking for new updates..." : (updateStatus?.hasUpdate ? "New update available" : "")}>
+            <div>
+              <Button
+                className={updateStatus?.hasUpdate ? classes.orange :
+                  (updateStatus?.isChecking ? "animate-flicker" : "")}
+                variant={updateStatus?.hasUpdate ? "contained" : "text"}
+                // title={updateStatus?.hasUpdate ? "New update available" : ""}
+                startIcon={<UpdateIcon />}
+                onClick={showModalUpdate}
+              >
+                Update
+              </Button>
+            </div>
+          </Tooltip>
           <Button startIcon={<SettingsIcon />} onClick={showModalSettings}>
             Settings
           </Button>
@@ -466,11 +470,11 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 disabled={isSysApp}
                 onClick={showModalUninstall}
                 className={isUninstalling ? "animate-flicker" : ""}
-                >
+              >
                 Uninstall
               </Button>
-              </div>
-         </Tooltip>
+            </div>
+          </Tooltip>
         </CardActions>
       </Card>
 
@@ -500,23 +504,23 @@ export default function InstalledApp({ appInfo, className }: Props) {
             {/* {isUninstalling && <LinearProgress />} */}
           </DialogContent>
           <DialogActions>
-          <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
-            <div className={classes.wrapper}>
-              <Button
-                onClick={uninstall}
-                color="primary"
-                disabled={isSysApp || isUninstalling}
-                startIcon={<DeleteIcon />}
-              >
-                Uninstall now
+            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
+              <div className={classes.wrapper}>
+                <Button
+                  onClick={uninstall}
+                  color="primary"
+                  disabled={isSysApp || isUninstalling}
+                  startIcon={<DeleteIcon />}
+                >
+                  Uninstall now
               </Button>
-              {isUninstalling && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div></Tooltip>
+                {isUninstalling && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div></Tooltip>
           </DialogActions>
         </Dialog>
       </Fade>
@@ -532,11 +536,11 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <DialogTitle>Update [ {app?.name} ]</DialogTitle>
           <DialogContent dividers>
             Current Version:{" "}
-              <span className={classes.boldCap}>{app?.version} 
-                {updateStatus?.hasUpdate ? " (New update available)" : 
-                  (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
-              </span>
-              <br />
+            <span className={classes.boldCap}>{app?.version}
+              {updateStatus?.hasUpdate ? " (New update available)" :
+                (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
+            </span>
+            <br />
             <textarea
               rows={14}
               className={classes.textarea}
@@ -547,16 +551,16 @@ export default function InstalledApp({ appInfo, className }: Props) {
               value={updateStatus?.logs || "."}
             ></textarea>
             <div className={classes.wrapper}>
-            {hideLogBox && updateStatus?.logs ? (
-            <Button
-              onClick={() => setHideLogBox(false)}
-              color="primary"
-              // variant="contained"
-              startIcon={<DetailsRoundedIcon />}
-              
-            >
-              See details
-            </Button>) : "" }
+              {hideLogBox && updateStatus?.logs ? (
+                <Button
+                  onClick={() => setHideLogBox(false)}
+                  color="primary"
+                  // variant="contained"
+                  startIcon={<DetailsRoundedIcon />}
+
+                >
+                  See details
+                </Button>) : ""}
             </div>
 
           </DialogContent>
@@ -572,16 +576,16 @@ export default function InstalledApp({ appInfo, className }: Props) {
                   Check for Updates
                 </Button>
               ) : (
-                <Button
-                  onClick={update}
-                  color="primary"
-                  variant="contained"
-                  startIcon={<UpdateIcon />}
-                  disabled={updateStatus?.isChecking}
-                >
-                  Update Now
-                </Button>
-              )}
+                  <Button
+                    onClick={update}
+                    color="primary"
+                    variant="contained"
+                    startIcon={<UpdateIcon />}
+                    disabled={updateStatus?.isChecking}
+                  >
+                    Update Now
+                  </Button>
+                )}
               {updateStatus?.isChecking && (
                 <CircularProgress
                   size={34}
@@ -612,27 +616,23 @@ export default function InstalledApp({ appInfo, className }: Props) {
             </p>
             <p>
               Current Version:{" "}
-              <span className={classes.boldCap}>{`${
-                app?.version || "Unknown"
-                }`}</span> 
-                {updateStatus?.hasUpdate ? " (New update available)" : (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
+              <span className={classes.boldCap}>{`${app?.version || "Unknown"
+                }`}</span>
+              {updateStatus?.hasUpdate ? " (New update available)" : (updateStatus?.hasCheckedUpdates ? " (Latest)" : "")}
             </p>
             <p>
               Author:{" "}
-              <span className={classes.boldCap}>{`${
-                app?.author?.name || "Unknown"
+              <span className={classes.boldCap}>{`${app?.author?.name || "Unknown"
                 }`}</span>
             </p>
             <p>
               Health:{" "}
-              <span className={classes.boldCap}>{`${
-                app?.state?.health || "Unknown"
+              <span className={classes.boldCap}>{`${app?.state?.health || "Unknown"
                 }`}</span>
             </p>
             <p className="text-capitalize">
               Restart policy:{" "}
-              <span className={classes.boldCap}>{`${
-                app?.state?.restartPolicy || "Unknown"
+              <span className={classes.boldCap}>{`${app?.state?.restartPolicy || "Unknown"
                 }`}</span>
             </p>
             <p>{`${(app as any)?.description || ""}`}</p>
@@ -642,28 +642,28 @@ export default function InstalledApp({ appInfo, className }: Props) {
             <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
 
 
-            <div className={classes.wrapper}>
-              <Select
-                disabled={isSysApp}
-                // labelId="restartPolicy"
-                id="select-restart-policy"
-                value={app?.state?.restartPolicy || "0"}
-                onChange={restartPolicyChange}
-                color="primary"
+              <div className={classes.wrapper}>
+                <Select
+                  disabled={isSysApp}
+                  // labelId="restartPolicy"
+                  id="select-restart-policy"
+                  value={app?.state?.restartPolicy || "0"}
+                  onChange={restartPolicyChange}
+                  color="primary"
                 >
-                <MenuItem value="0">Restart Policy</MenuItem>
-                <MenuItem value="always">Always</MenuItem>
-                <MenuItem value="on-failure">On-Failure</MenuItem>
-                <MenuItem value="unless-stopped">Unless-Stopped</MenuItem>
-                <MenuItem value="no">No</MenuItem>
-              </Select>
-              {rePolicyChaing && (
-                <CircularProgress
-                size={24}
-                  className={classes.buttonProgress}
+                  <MenuItem value="0">Restart Policy</MenuItem>
+                  <MenuItem value="always">Always</MenuItem>
+                  <MenuItem value="on-failure">On-Failure</MenuItem>
+                  <MenuItem value="unless-stopped">Unless-Stopped</MenuItem>
+                  <MenuItem value="no">No</MenuItem>
+                </Select>
+                {rePolicyChaing && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
                   />
-                  )}
-            </div>
+                )}
+              </div>
             </Tooltip>
 
             <Button
@@ -675,34 +675,34 @@ export default function InstalledApp({ appInfo, className }: Props) {
             </Button>
             <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
 
-            <div><Button
-              onClick={showModalUninstall}
-              disabled={isSysApp}
-              color="primary"
-              startIcon={<DeleteIcon />}
-              >
-              Uninstall
-            </Button></div>
-              </Tooltip>
-            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
-            <div className={classes.wrapper}>
-            
-              <Button
-                disabled={stopping || !running || isSysApp}
-                onClick={stop}
-                
+              <div><Button
+                onClick={showModalUninstall}
+                disabled={isSysApp}
                 color="primary"
-                startIcon={<StopIcon />}
+                startIcon={<DeleteIcon />}
               >
-                Stop
+                Uninstall
+            </Button></div>
+            </Tooltip>
+            <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
+              <div className={classes.wrapper}>
+
+                <Button
+                  disabled={stopping || !running || isSysApp}
+                  onClick={stop}
+
+                  color="primary"
+                  startIcon={<StopIcon />}
+                >
+                  Stop
               </Button>
-              {stopping && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
-                />
-              )}
-            </div>
+                {stopping && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
             </Tooltip>
             <div className={classes.wrapper}>
               <Button
@@ -721,7 +721,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
               )}
             </div>
 
-            
+
           </DialogActions>
         </Dialog>
       </Fade>
