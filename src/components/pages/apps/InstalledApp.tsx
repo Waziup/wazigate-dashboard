@@ -198,7 +198,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
 
   const [isUninstalling, setUninstLoader] = useState<boolean>(false);
   const uninstall = () => {
-    if (!confirm("Do you wan tot uninstall the App?")) return;
+    if (!confirm("Do you want to uninstall the App?")) return;
     setUninstLoader(true);
     wazigate.uninstallApp(app.id, uninstallModal.keepConfig).then(
       (res) => {

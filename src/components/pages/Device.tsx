@@ -1,10 +1,10 @@
-import React, { Fragment, useState, MouseEvent } from "react";
+import React, { Fragment, useState, MouseEvent, useEffect } from "react";
 import { Device, Waziup, Sensor, Actuator } from "waziup";
 import MenuIcon from '@material-ui/icons/Menu';
-import RemoveIcon from '@material-ui/icons/Remove';
+// import RemoveIcon from '@material-ui/icons/Remove';
 import Error from "../Error";
-import {default as SensorComp} from "./device/Sensor";
-import {default as ActuatorComp} from "./device/Actuator";
+import { default as SensorComp } from "./device/Sensor";
+import { default as ActuatorComp } from "./device/Actuator";
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -12,10 +12,10 @@ import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddIcon from '@material-ui/icons/Add';
-import RouterIcon from '@material-ui/icons/Router';
-import BluetoothIcon from '@material-ui/icons/Bluetooth';
+// import RouterIcon from '@material-ui/icons/Router';
+// import BluetoothIcon from '@material-ui/icons/Bluetooth';
 import HookRegistry, { DeviceHook, DeviceHookProps, DeviceMenuHook, MenuHookProps } from "../../HookRegistry";
-
+import SaveIcon from '@material-ui/icons/Save';
 
 import {
     AppBar,
@@ -33,9 +33,13 @@ import {
     Breadcrumbs,
     Link,
     Menu,
-    Paper,
-    Grow,
     colors,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Grow,
 } from '@material-ui/core';
 
 const drawerWidth = 240;
@@ -130,6 +134,14 @@ const useStyles = makeStyles((theme) => ({
         },
 
     },
+    codec: {
+        [theme.breakpoints.up('sm')]: {
+            width: "400px",
+        },
+        width: "calc(100% - 18px)",
+        verticalAlign: "top",
+        margin: "auto",
+    },
     margin: {
         margin: theme.spacing(1),
     },
@@ -169,6 +181,9 @@ const useStyles = makeStyles((theme) => ({
         left: '50%',
         marginTop: -12,
         marginLeft: -12,
+    },
+    submitChangesBtn: {
+        marginRight: theme.spacing(2),
     },
     submitHeadWrapper: {
         margin: theme.spacing(1),
@@ -333,14 +348,26 @@ type Props = {
     deviceID: string;
 };
 
-export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
+export default function SensorPage({ deviceID, handleDrawerToggle }: Props) {
     const classes = useStyles();
 
     const [device, setDevice] = useState<Device>(null);
     const [error, setError] = useState<Error>(null);
-    if (error === null && device === null) {
-        wazigate.getDevice(deviceID).then(setDevice, setError);
-    }
+    // if (error === null && device === null) {
+    //     wazigate.getDevice(deviceID).then(setDevice, setError);
+    // }
+
+    /*------------ */
+    // Run stuff on load
+    useEffect(
+        () => {
+            loadCodecsList();
+            wazigate.getDevice(deviceID).then(setDevice, setError);
+        },
+        [] /* This makes it to run only once*/
+    );
+
+    /*------------ */
 
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const handleMenuClick = (event: MouseEvent) => {
@@ -389,10 +416,10 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                 sensor.id = id;
                 setDevice(device => {
                     device.sensors.push(sensor);
-                    return {...device};
+                    return { ...device };
                 });
             }, (err: Error) => {
-                alert("There was an error creating the sensor:\n"+err);
+                alert("There was an error creating the sensor:\n" + err);
             });
         }
     }
@@ -414,17 +441,62 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                 actuator.id = id;
                 setDevice(device => {
                     device.actuators.push(actuator);
-                    return {...device};
+                    return { ...device };
                 });
             }, (err: Error) => {
-                alert("There was an error creating the actuator:\n"+err);
+                alert("There was an error creating the actuator:\n" + err);
             });
         }
     }
 
+    /**---------------------------- */
+
+    const [codecsList, setCodecsList] = useState(null);
+    const loadCodecsList = () => {
+        wazigate.get('/codecs').then(res => {
+            setCodecsList(res);
+        }, (err: Error) => {
+            console.error("There was an error loading codecs:\n" + err)
+        });
+    }
+
+    const setDeviceCodec = (codecId: string) => {
+
+        if (codecId == device?.meta?.codec) return;
+
+        setDevice(device => ({
+            ...device,
+            meta: {
+                ...device.meta,
+                codec: codecId
+            }
+        }));
+        setHasUnsavedCodecChanges(true)
+    };
+
+    const [hasUnsavedCodecChanges, setHasUnsavedCodecChanges] = useState(false);
+    const submitCodec = () => {
+        wazigate.setDeviceMeta(device.id, device.meta).then(res => {
+            setHasUnsavedCodecChanges(false)
+        }, (err: Error) => {
+            console.error("There was an error saving the codec:\n" + err)
+        });
+    }
+
+    // const [codecId, setCodecId] = useState(null);
+    // const loadCodecsList = () => {
+    //     wazigate.getDeviceMeta(device.id).then(res => {
+    //         setCodecsList(res);
+    //     }, (err: Error) => {
+    //         console.error("There was an error loading codecs:\n" + err)
+    //     });
+    // }
+
+    /**---------------------------- */
+
 
     var body: React.ReactNode;
-    if(device === null && error === null) {
+    if (device === null && error === null) {
         body = "Loading... please wait.";
     } else if (error != null) {
         body = <Error error={error} />
@@ -432,27 +504,29 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
         body = (
             <>
                 <div className={classes.sensors}>
-                    { device.sensors.map(sensor => (
+                    {device.sensors.map(sensor => (
                         <SensorComp
                             key={sensor.id}
                             className={classes.sensor}
                             deviceID={deviceID}
                             sensor={sensor}
                         />
-                    )) }
+                    ))}
                 </div>
                 <div className={classes.actuators}>
-                    { device.actuators.map(actuator => (
+                    {device.actuators.map(actuator => (
                         <ActuatorComp
                             key={actuator.id}
                             className={classes.sensor}
                             deviceID={deviceID}
                             actuator={actuator}
                         />
-                    )) }
+                    ))}
                 </div>
             </>
         )
+
+        // console.log(device.meta)
     }
 
 
@@ -470,7 +544,7 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.name}>
-                        { error ? `Device ${deviceID}` : (device ? device.name : "...") }
+                        {error ? `Device ${deviceID}` : (device ? device.name : "...")}
                     </Typography>
                     <IconButton
                         aria-label="settings"
@@ -503,14 +577,14 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                     <ListItemText primary="Delete" />
                 </MenuItem>
 
-                { hooks.get<DeviceMenuHook>("device.menu").map((Hook, i) =>
+                {hooks.get<DeviceMenuHook>("device.menu").map((Hook, i) =>
                     <Hook
                         key={i}
                         device={device}
                         handleMenuClose={handleMenuClose}
                         setDevice={setDevice}
                     />
-                ) }
+                )}
 
             </Menu>
             <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
@@ -526,7 +600,7 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
             <SpeedDial
                 ariaLabel="Create Entity"
                 className={classes.speedDial}
-                FabProps={{className: classes.speedDialIcon}}
+                FabProps={{ className: classes.speedDialIcon }}
                 icon={<SpeedDialIcon />}
                 onClose={handleSpeedDialClose}
                 onOpen={handleSpeedDialOpen}
@@ -546,7 +620,7 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                 />
             </SpeedDial>
 
-            { body }
+            { body}
 
             { hooks.get<DeviceHook>("device").map((Hook, i) =>
                 <Hook
@@ -554,7 +628,43 @@ export default function SensorPage({deviceID, handleDrawerToggle}: Props) {
                     device={device}
                     setDevice={setDevice as (device: Device) => Device}
                 />
-            ) }
-        </div>
+            )}
+
+
+            <Card className={classes.codec}>
+                <CardHeader
+                    title="Device Codec"
+                //   subheader={}
+                />
+                <CardContent>
+                    {(codecsList && device) &&
+                        <Select
+                            labelId="codec-select-lebel"
+                            id="codec-select"
+                            value={device?.meta?.codec}
+                            onChange={(event: any) => { setDeviceCodec(event.target.value); }}
+                        >
+                            {codecsList.map((codec: any) => (
+                                <MenuItem value={codec.id}>{codec.name}</MenuItem>
+                            ))}
+                        </Select>}
+                </CardContent>
+                <CardActions>
+                    <Grow in={hasUnsavedCodecChanges}>
+                        <Button
+                            className={classes.submitChangesBtn}
+                            variant="contained"
+                            color="primary"
+                            onClick={submitCodec}
+                            startIcon={<SaveIcon />}
+                        >
+                            Save
+                        </Button>
+                    </Grow>
+                </CardActions>
+            </Card>
+
+
+        </div >
     );
 }
