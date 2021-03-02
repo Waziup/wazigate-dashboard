@@ -3,12 +3,13 @@ import { InputAdornment, makeStyles, TextField } from "@material-ui/core";
 import SVGSpriteIcon from "./SVGSpriteIcon";
 
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
-import ontologies from "../ontologies.json";
+import ontologies, { ActingDevice, SensingDevice } from "../ontologies.json";
 import ontologiesSprite from "../img/ontologies.svg";
 
 type Props = {
     value: string;
     onChange: (event: any, newValue: string) => void;
+    deviceType?: string;
 }
 
 const defaultKindIcon = "meter";
@@ -45,97 +46,104 @@ const filter = createFilterOptions<Kind>();
 
 export function OntologyKindInput(props: Props) {
     const classes = useStyles();
-    const {value, onChange} = props;
-    const ontology = ontologies.sensingDevices;
+    const { value, onChange } = props;
+
+    var ontology: { [x: string]: ActingDevice | SensingDevice } = null
+    switch (props.deviceType) {
+        case "actuator": ontology = ontologies.actingDevices; break;
+
+        default:
+        case "sensor": ontology = ontologies.sensingDevices; break;
+    }
 
     return (
         <Autocomplete
-                value={value}
-                className={classes.root}
-                id="kind-select"
-                options={Object.keys(ontology) as Kind[]}
-                onChange={(event: any, newValue: Kind) => {
-                    if (typeof newValue === "string") {
-                        onChange(event, newValue);
-                    } else {
-                        onChange(event, "");
+            value={value}
+            className={classes.root}
+            id="kind-select"
+            options={Object.keys(ontology) as Kind[]}
+            onChange={(event: any, newValue: Kind) => {
+                if (typeof newValue === "string") {
+                    onChange(event, newValue);
+                } else {
+                    onChange(event, "");
+                }
+            }}
+            filterOptions={(options, params) => {
+                const filtered = filter(options, params) as Kind[];
+                if (params.inputValue !== '') {
+                    filtered.push(params.inputValue);
+                }
+                return filtered;
+            }}
+            getOptionLabel={(kind: Kind) => {
+                if (typeof kind === "string") {
+                    if (kind in ontology) {
+                        return ontology[kind].label;
                     }
-                }}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params) as Kind[];
-                    if (params.inputValue !== '') {
-                        filtered.push(params.inputValue);
-                    }
-                    return filtered;
-                }}
-                getOptionLabel={(kind: Kind) => {
-                    if (typeof kind === "string") {
-                        if (kind in ontologies.sensingDevices) {
-                            return ontologies.sensingDevices[kind].label;
-                        }
-                        return kind;
-                    }
-                    return "";
-                }}
-                renderOption={(kind: Kind) => {
-                    var icon: string;
-                    var label: string;
-                    if (typeof kind === "string") {
-                        if (kind in ontologies.sensingDevices) {
-                            icon = ontologies.sensingDevices[kind].icon;
-                            label = ontologies.sensingDevices[kind].label;
-                        } else {
-                            icon = defaultKindIcon;
-                            label = `Use \"${kind}\"`;
-                        }
+                    return kind;
+                }
+                return "";
+            }}
+            renderOption={(kind: Kind) => {
+                var icon: string;
+                var label: string;
+                if (typeof kind === "string") {
+                    if (kind in ontology) {
+                        icon = ontology[kind].icon;
+                        label = ontology[kind].label;
                     } else {
                         icon = defaultKindIcon;
-                        label = "null value option";
+                        label = `Use \"${kind}\"`;
                     }
-                    return (
-                        <Fragment>
+                } else {
+                    icon = defaultKindIcon;
+                    label = "null value option";
+                }
+                return (
+                    <Fragment>
+                        <SVGSpriteIcon
+                            className={classes.icon}
+                            src={`dist/${ontologiesSprite}#${icon}`}
+                        />
+                        {label}
+                    </Fragment>
+                );
+            }}
+            // filterSelectedOptions
+            freeSolo
+            renderInput={(params) => {
+                var icon: string;
+                var label: string;
+                if (value in ontology) {
+                    icon = ontology[value].icon;
+                    label = ontology[value].label;
+                } else {
+                    icon = defaultKindIcon;
+                    label = value;
+                }
+                params.InputProps.startAdornment = (
+                    <Fragment>
+                        {params.InputProps.startAdornment || null}
+                        <InputAdornment position="start">
                             <SVGSpriteIcon
-                                className={classes.icon}
+                                className={classes.kindIcon}
                                 src={`dist/${ontologiesSprite}#${icon}`}
                             />
-                            {label}
-                        </Fragment>
-                    );
-                }}
-                // filterSelectedOptions
-                freeSolo
-                renderInput={(params) => {
-                    var icon: string;
-                    var label: string;
-                    if (value in ontologies.sensingDevices) {
-                        icon = ontologies.sensingDevices[value].icon;
-                        label = ontologies.sensingDevices[value].label;
-                    } else {
-                        icon = defaultKindIcon;
-                        label = value;
-                    }
-                    params.InputProps.startAdornment = (
-                        <Fragment>
-                            {params.InputProps.startAdornment || null}
-                            <InputAdornment position="start">
-                                <SVGSpriteIcon
-                                    className={classes.kindIcon}
-                                    src={`dist/${ontologiesSprite}#${icon}`}
-                                />
-                            </InputAdornment>
-                        </Fragment>
-                    );
-                    (params.inputProps as any)["className"] = `${(params.inputProps as any)["className"]} ${classes.input}`;
-                    return (
-                        <Fragment>
-                            <TextField
-                                {...params}
-                                label="Sensor Kind"
-                                placeholder="no sensor kind"
-                            />
-                        </Fragment>
-                    )
-                }}
-            />
+                        </InputAdornment>
+                    </Fragment>
+                );
+                (params.inputProps as any)["className"] = `${(params.inputProps as any)["className"]} ${classes.input}`;
+                return (
+                    <Fragment>
+                        <TextField
+                            {...params}
+                            label={props.deviceType == "actuator" ? "Actuator Kind" : "Sensor Kind"}
+                            placeholder="no kind"
+                        />
+                    </Fragment>
+                )
+            }}
+        />
     )
 }

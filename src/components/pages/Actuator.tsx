@@ -1,5 +1,5 @@
 import React, { Fragment, useState, MouseEvent, useEffect } from "react";
-import { Waziup, Sensor, CloudStatus, CloudAction, Cloud } from "waziup";
+import { Waziup, CloudStatus, CloudAction, Cloud, Actuator } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
 import ontologies from "../../ontologies.json";
@@ -17,7 +17,10 @@ import HourglassIcon from '@material-ui/icons/HourglassEmpty';
 import DoneIcon from '@material-ui/icons/Done';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ErrorIcon from '@material-ui/icons/ErrorOutline';
+import SendRoundedIcon from '@material-ui/icons/SendRounded';
+import CheckIcon from '@material-ui/icons/Check';
 import clsx from "clsx";
+
 
 import {
     AppBar,
@@ -179,13 +182,16 @@ const useStyles = makeStyles((theme) => ({
     tabPanel: {
         display: "flex",
         flexDirection: "column",
+    }, wrapper: {
+        margin: theme.spacing(1),
+        position: "relative",
     }
 }));
 
 type Props = {
     handleDrawerToggle: () => void;
     deviceID: string;
-    sensorID: string;
+    actuatorID: string;
     clouds: Cloud[],
 };
 
@@ -208,8 +214,8 @@ function TabPanel(props: TabPanelProps) {
             square
             role="tabpanel"
             hidden={value !== index}
-            id={`sensor-tabpanel-${index}`}
-            aria-labelledby={`sensor-tab-${index}`}
+            id={`actuator-tabpanel-${index}`}
+            aria-labelledby={`actuator-tab-${index}`}
             {...other}
         >
             {value === index && (
@@ -248,8 +254,8 @@ function DirtyIndicator(props: DirtyIndicatorProps) {
 
 function tabProps(index: any) {
     return {
-        id: `sensor-tab-${index}`,
-        'aria-controls': `sensor-tabpanel-${index}`,
+        id: `actuator-tab-${index}`,
+        'aria-controls': `actuator-tabpanel-${index}`,
     };
 }
 
@@ -260,82 +266,91 @@ type EntityStatus = {
     wakeup: Date;
 }
 
-export default function SensorPage(props: Props) {
-    const { sensorID, deviceID, handleDrawerToggle, clouds } = props;
+export default function ActuatorPage(props: Props) {
+    const { actuatorID, deviceID, handleDrawerToggle, clouds } = props;
     const classes = useStyles();
 
-    const [rSensor, setRemoteSensor] = useState(null as Sensor);
-    const [sensor, setSensor] = useState(null as Sensor);
+    const [rActuator, setRemoteActuator] = useState(null as Actuator);
+    const [actuator, setActuator] = useState(null as Actuator);
     const [error, setError] = useState(null as Error);
 
     const [status, setStatus] = useState(null as EntityStatus);
     const [deviceName, setDeviceName] = useState(null);
 
     useEffect(() => {
-        wazigate.getSensor(deviceID, sensorID).then(sensor => {
-            setSensor(sensor)
-            setRemoteSensor(sensor);
-        }, setError);
-        const cb = (status: CloudStatus) => {
-            if (status.entity.device === deviceID && status.entity.sensor == sensorID) {
-                setStatus(status.status);
-            }
-        };
-        wazigate.getDevice(deviceID).then(device => { setDeviceName(device.name) }, setError);
-        wazigate.subscribe<CloudStatus>("clouds/+/status", cb);
-        return () => {
-            wazigate.unsubscribe("clouds/+/status", cb);
-        }
 
+        load();
+
+        // const cb = (status: CloudStatus) => {
+        //     // if (status.entity.device === deviceID && status.entity. == actuatorID) {
+        //     //     setStatus(status.status);
+        //     // }
+        // };
+        // wazigate.subscribe<CloudStatus>("clouds/+/status", cb);
+        // return () => {
+        //     wazigate.unsubscribe("clouds/+/status", cb);
+        // }
     }, []);
 
-    const [sensorMenuAnchor, setSensorMenuAnchor] = useState(null);
-    const handleSensorMenuClick = (event: MouseEvent) => {
+    /**------------------- */
+
+    const load = () => {
+        wazigate.getActuator(deviceID, actuatorID).then(actuator => {
+            setActuator(actuator)
+            setRemoteActuator(actuator);
+        }, setError);
+        wazigate.getDevice(deviceID).then(device => { setDeviceName(device.name) }, setError);
+    }
+
+    /**------------------- */
+
+    const [actuatorMenuAnchor, setActuatorMenuAnchor] = useState(null);
+    const handleActuatorMenuClick = (event: MouseEvent) => {
         event.stopPropagation();
         event.preventDefault();
-        setSensorMenuAnchor(event.currentTarget);
+        setActuatorMenuAnchor(event.currentTarget);
     };
     const handleMenuMouseDown = (event: MouseEvent) => {
         event.stopPropagation();
     };
-    const handleSensorMenuClose = () => {
-        setSensorMenuAnchor(null);
+    const handleActuatorMenuClose = () => {
+        setActuatorMenuAnchor(null);
     };
     const handleRenameClick = () => {
-        handleSensorMenuClose();
-        const oldSensorName = sensor.name;
-        const newSensorName = prompt("New sensor name:", oldSensorName);
-        if (newSensorName) {
-            setSensor(sensor => ({
-                ...sensor,
-                name: newSensorName
+        handleActuatorMenuClose();
+        const oldActuatorName = actuator.name;
+        const newActuatorName = prompt("New actuator name:", oldActuatorName);
+        if (newActuatorName) {
+            setActuator(actuator => ({
+                ...actuator,
+                name: newActuatorName
             }));
-            wazigate.setSensorName(deviceID, sensorID, newSensorName).then(() => {
+            wazigate.setActuatorName(deviceID, actuatorID, newActuatorName).then(() => {
                 // OK
             }, (err: Error) => {
-                setSensor(sensor => ({
-                    ...sensor,
+                setActuator(actuator => ({
+                    ...actuator,
                     // revert changes
-                    name: oldSensorName
+                    name: oldActuatorName
                 }));
-                alert("There was an error changing the sensor name:\n" + err);
+                alert("There was an error changing the actuator name:\n" + err);
             });
         }
     }
     const handleDeleteClick = () => {
-        handleSensorMenuClose();
-        if (confirm(`Delete sensor '${sensorID}'?\nThis will delete the sensor and all sensor values.\n\nThis cannot be undone!`)) {
-            wazigate.deleteSensor(deviceID, sensorID).then(() => {
+        handleActuatorMenuClose();
+        if (confirm(`Delete actuator '${actuatorID}'?\nThis will delete the actuator and all actuator values.\n\nThis cannot be undone!`)) {
+            wazigate.deleteActuator(deviceID, actuatorID).then(() => {
                 location.href = `#/devices/${deviceID}`;
             }, (err: Error) => {
-                alert("There was an error deleting the sensor:\n" + err);
+                alert("There was an error deleting the actuator:\n" + err);
             });
         }
     }
 
-    var kind: Kind = sensor?.meta.kind || "";
-    var quantity: Quantity = sensor?.meta.quantity || "";
-    var unit: Unit = sensor?.meta.unit || "";
+    var kind: Kind = actuator?.meta.kind || "";
+    var quantity: Quantity = actuator?.meta.quantity || "";
+    var unit: Unit = actuator?.meta.unit || "";
 
     const [snackBarOpen, setSnackBarOpen] = useState(false);
     const handleSnackbarClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
@@ -351,18 +366,18 @@ export default function SensorPage(props: Props) {
     };
 
     const submitOntology = () => {
-        wazigate.setSensorMeta(deviceID, sensorID, {
+        wazigate.setActuatorMeta(deviceID, actuatorID, {
             kind: kind || null,
             quantity: quantity || null,
             unit: unit || null
         }).then(() => {
-            setRemoteSensor(rSensor => ({
-                ...rSensor,
+            setRemoteActuator(rActuator => ({
+                ...rActuator,
                 meta: {
-                    ...rSensor.meta,
-                    kind: sensor.meta.kind,
-                    quantity: sensor.meta.quantity,
-                    unit: sensor.meta.unit,
+                    ...rActuator.meta,
+                    kind: actuator.meta.kind,
+                    quantity: actuator.meta.quantity,
+                    unit: actuator.meta.unit,
                 }
             }))
         }, (err: Error) => {
@@ -371,69 +386,56 @@ export default function SensorPage(props: Props) {
     }
 
     const resetOntology = () => {
-        setSensor(sensor => ({
-            ...sensor,
+        setActuator(actuator => ({
+            ...actuator,
             meta: {
-                ...sensor.meta,
-                kind: rSensor.meta.kind,
-                quantity: rSensor.meta.quantity,
-                unit: rSensor.meta.unit,
+                ...actuator.meta,
+                kind: rActuator.meta.kind,
+                type: rActuator.meta.type,
             }
         }))
     }
 
-    const resetSync = () => {
-        setSensor(sensor => ({
-            ...sensor,
-            meta: {
-                ...sensor.meta,
-                syncInterval: rSensor.meta.syncInterval,
-                doNotSync: rSensor.meta.doNotSync,
-            }
+    /**-------------------- */
+
+
+    const [newValue, setNewValue] = useState(null);
+    const [vlauePushing, setValuePushing] = useState(false);
+    const submitValue = () => {
+
+        setValuePushing(true);
+        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", newValue).then(
+            () => {
+                // setRemoteActuator(rActuator => ({
+                //     ...rActuator,
+                //     value: actuator.value,
+                // }))
+
+
+
+                load();
+                // Syncing the actuator value with the cloud does not make sense. 
+                // Maybe we need to use some additional sensor values to keep the status of the target device
+
+            }, (err: Error) => {
+                alert("There was an error pushing the actuator value:\n" + err)
+            }).finally(() => {
+                setValuePushing(false)
+            })
+    }
+
+    /**-------------------- */
+
+    const resetValue = () => {
+        setActuator(actuator => ({
+            ...actuator
         }))
     }
 
-    const submitSync = () => {
-        wazigate.setSensorMeta(deviceID, sensorID, {
-            syncInterval: sensor.meta.syncInterval,
-            doNotSync: sensor.meta.doNotSync,
-        }).then(() => {
-            setRemoteSensor(rSensor => ({
-                ...rSensor,
-                meta: {
-                    ...rSensor.meta,
-                    syncInterval: sensor.meta.syncInterval,
-                    doNotSync: sensor.meta.doNotSync,
-                }
-            }))
-        }, (err: Error) => {
-            alert("There was an error saving the metadata:\n" + err)
-        });
-    }
-
-    const handleEnableSyncChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const enabled = event.target.checked;
-        const doNotSync = enabled ? null : true;
-        setSensor(sensor => ({
-            ...sensor,
-            meta: {
-                ...sensor.meta,
-                doNotSync: doNotSync,
-            }
-        }));
-    }
-    const handleSyncIntervalChange = (event: React.ChangeEvent<{}>, value: string) => {
-        setSensor(sensor => ({
-            ...sensor,
-            meta: {
-                ...sensor.meta,
-                syncInterval: value,
-            }
-        }));
-    }
+    /**-------------------- */
 
     var body: React.ReactNode;
-    if (sensor === null && error === null) {
+    if (actuator === null && error === null) {
         body = "Loading... please wait.";
     } else if (error != null) {
         body = <Error error={error} />
@@ -441,12 +443,16 @@ export default function SensorPage(props: Props) {
         const kindInput = (
             <OntologyKindInput
                 value={kind}
+                deviceType="actuator"
                 onChange={(event: any, kind: Kind) => {
-                    if (kind in ontologies.sensingDevices) {
-                        const quantities = ontologies.sensingDevices[kind].quantities;
+                    if (kind in ontologies.actingDevices) {
+                        const quantities = ontologies.actingDevices[kind].quantities;
                         if (!quantities.includes(quantity)) {
                             quantity = quantities[0];
                             if (quantity) {
+                                if (!!!ontologies.quantities[quantity].units) {
+                                    console.log(kind, quantities, ontologies.quantities[quantity])
+                                }
                                 const units = ontologies.quantities[quantity].units
                                 unit = units[0] || "";
                             } else {
@@ -455,10 +461,10 @@ export default function SensorPage(props: Props) {
                             }
                         }
                     }
-                    setSensor(sensor => ({
-                        ...sensor,
+                    setActuator(actuator => ({
+                        ...actuator,
                         meta: {
-                            ...sensor.meta,
+                            ...actuator.meta,
                             kind: kind,
                             quantity: quantity,
                             unit: unit,
@@ -468,8 +474,8 @@ export default function SensorPage(props: Props) {
             />
         )
         var quantities: Quantity[] = [];
-        if (kind in ontologies.sensingDevices) {
-            quantities = ontologies.sensingDevices[kind].quantities;
+        if (kind in ontologies.actingDevices) {
+            quantities = ontologies.actingDevices[kind].quantities;
         }
         var quantityInput: JSX.Element = null;
         if (quantities.length !== 0) {
@@ -482,10 +488,10 @@ export default function SensorPage(props: Props) {
                         value={quantity}
                         onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                             if (event.target.value !== quantity) {
-                                setSensor(sensor => ({
-                                    ...sensor,
+                                setActuator(actuator => ({
+                                    ...actuator,
                                     meta: {
-                                        ...sensor.meta,
+                                        ...actuator.meta,
                                         quantity: event.target.value as Quantity,
                                     }
                                 }));
@@ -493,7 +499,7 @@ export default function SensorPage(props: Props) {
                         }}
                     >
                         {quantities.map((quantity) => (
-                            <MenuItem value={quantity}>{ontologies.quantities[quantity].label}</MenuItem>
+                            <MenuItem value={quantity}>{ontologies.quantities[quantity]?.label}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -501,7 +507,7 @@ export default function SensorPage(props: Props) {
         }
 
         var unitInput: JSX.Element = null;
-        if (kind in ontologies.sensingDevices && quantity) {
+        if (kind in ontologies.actingDevices && quantity) {
             const units = ontologies.quantities[quantity].units;
             if (units.length !== 0) {
                 unitInput = (
@@ -513,10 +519,10 @@ export default function SensorPage(props: Props) {
                             value={unit}
                             onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
                                 if (event.target.value !== unit) {
-                                    setSensor(sensor => ({
-                                        ...sensor,
+                                    setActuator(actuator => ({
+                                        ...actuator,
                                         meta: {
-                                            ...sensor.meta,
+                                            ...actuator.meta,
                                             unit: event.target.value as Unit,
                                         }
                                     }));
@@ -533,15 +539,15 @@ export default function SensorPage(props: Props) {
         }
 
         const hasUnsavedOntChanges = (
-            rSensor?.meta.unit !== sensor?.meta.unit ||
-            rSensor?.meta.kind !== sensor?.meta.kind ||
-            rSensor?.meta.quantity !== sensor?.meta.quantity
+            rActuator?.meta.unit !== actuator?.meta.unit ||
+            rActuator?.meta.kind !== actuator?.meta.kind ||
+            rActuator?.meta.quantity !== actuator?.meta.quantity
         )
 
-        const hasUnsavedSyncChanges = (
-            (!!rSensor?.meta.doNotSync) !== (!!sensor?.meta.doNotSync) ||
-            (rSensor?.meta.syncInterval || null) !== (sensor?.meta.syncInterval || null)
-        )
+        // const hasUnsavedValueChanges = (
+        //     rActuator?.value !== actuator?.value
+        // )
+        const hasUnsavedValueChanges = false
 
         body = (
             <Fragment>
@@ -554,7 +560,7 @@ export default function SensorPage(props: Props) {
                         } {...tabProps(0)} />
                         <Tab label={
                             <Fragment>
-                                <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedValueChanges}>Value</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(1)} />
                     </Tabs>
@@ -589,45 +595,40 @@ export default function SensorPage(props: Props) {
 
                 <TabPanel value={tab} index={1}>
                     <FormGroup>
-                        <FormControlLabel
-                            className={classes.normalMargin}
-                            control={
-                                <Switch
-                                    checked={!sensor.meta.doNotSync}
-                                    onChange={handleEnableSyncChange}
-                                    name="sensor-sync"
-                                    color="primary"
+                        {/* <FormControl className={classes.unit}> */}
+                        {/* <InputLabel id="value-label">Value</InputLabel> */}
+                        <TextField
+                            label={"Actuator Value"}
+                            placeholder="no value"
+                            value={newValue}
+                            onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                                if (event.target.value !== newValue) {
+                                    setNewValue(event.target.value as any);
+                                }
+                            }}
+                        />
+                        {/* </FormControl> */}
+                        {/* <div className={classes.submitChanges}> */}
+                        <div className={classes.wrapper}>
+                            <Button
+                                className={classes.submitChangesBtn}
+                                variant="contained"
+                                color="primary"
+                                onClick={submitValue}
+                                startIcon={<SendRoundedIcon />}
+                                disabled={vlauePushing}
+                            >
+                                Push
+                                </Button>
+                            {vlauePushing && (
+                                <CircularProgress
+                                    size={24}
+                                    className={classes.buttonProgress}
                                 />
-                            }
-                            label="Sync Sensor"
-                        />
-
-                        <SyncIntervalInput
-                            value={sensor?.meta.syncInterval || "5s"}
-                            onChange={handleSyncIntervalChange}
-                        />
-
-                        <div className={classes.submitChanges}>
-                            <Grow in={hasUnsavedSyncChanges}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.submitChangesBtn}
-                                    onClick={submitSync}
-                                    startIcon={<SaveIcon />}
-                                >
-                                    Save
-                                </Button>
-                            </Grow>
-                            <Grow in={hasUnsavedSyncChanges} timeout={({ enter: 500, exit: 200 })}>
-                                <Button
-                                    className={classes.submitChangesBtn}
-                                    onClick={resetSync}
-                                >
-                                    Reset
-                                </Button>
-                            </Grow>
+                            )}
                         </div>
+                        {/* </div> */}
+
                     </FormGroup>
                 </TabPanel>
 
@@ -651,8 +652,6 @@ export default function SensorPage(props: Props) {
         )
     }
 
-    const doNotSync = !!rSensor?.meta.doNotSync;
-
     return (
         <div className={classes.page}>
             <AppBar position="fixed" className={classes.appBar}>
@@ -667,21 +666,14 @@ export default function SensorPage(props: Props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.name}>
-                        {error ? `Sensor ${sensorID}` : (sensor ? sensor.name : "...")}
+                        {error ? `Actuator ${actuatorID}` : (actuator ? actuator.name : "...")}
                     </Typography>
-
-                    <SyncStatusIndicator
-                        doNotSync={rSensor ? !!rSensor.meta.doNotSync : true}
-                        sensorID={sensorID}
-                        deviceID={deviceID}
-                        clouds={clouds}
-                    />
 
                     <IconButton
                         aria-label="settings"
                         aria-controls="device-menu"
                         aria-haspopup="true"
-                        onClick={handleSensorMenuClick}
+                        onClick={handleActuatorMenuClick}
                         onMouseDown={handleMenuMouseDown}
                     >
                         <MoreVertIcon />
@@ -690,11 +682,11 @@ export default function SensorPage(props: Props) {
             </AppBar>
 
             <Menu
-                id="sensor-menu"
-                anchorEl={sensorMenuAnchor}
+                id="actuator-menu"
+                anchorEl={actuatorMenuAnchor}
                 keepMounted
-                open={!!sensorMenuAnchor}
-                onClose={handleSensorMenuClose}
+                open={!!actuatorMenuAnchor}
+                onClose={handleActuatorMenuClose}
             >
                 <MenuItem onClick={handleRenameClick}>
                     <ListItemIcon>
@@ -712,13 +704,13 @@ export default function SensorPage(props: Props) {
             <Breadcrumbs aria-label="breadcrumb" className={classes.breadcrumbs}>
                 <Link color="inherit" href="#">Devices</Link>
                 <Link color="inherit" href={`#/devices/${deviceID}`}>{deviceName ? deviceName : deviceID}</Link>
-                <span>Sensors</span>
+                <span>Actuators</span>
                 <Link
                     color="textPrimary"
-                    href={`#/devices/${deviceID}/sensors/${sensorID}`}
+                    href={`#/devices/${deviceID}/actuators/${actuatorID}`}
                     aria-current="page"
                 >
-                    {sensor && sensor?.name}
+                    {actuator && actuator?.name}
                 </Link>
             </Breadcrumbs>
             {body}

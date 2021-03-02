@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import AppsPage from "./pages/Apps";
 import LoginPage from "./pages/Login";
 import SensorPage from "./pages/Sensor";
+import ActuatorPage from "./pages/Actuator";
 import DevicePage from "./pages/Device";
 import DevicesPage from "./pages/Devices";
 import UserProfilePage from "./pages/UserProfile";
@@ -42,6 +43,7 @@ import HookMenu from "./HookMenu";
 
 const appsRegExp = /^#\/apps\/([\.a-zA-Z0-9_-]+)\/(.*)/;
 const sensorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/sensors\/([\.a-zA-Z0-9_-]+)$/;
+const actuatorRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)\/actuators\/([\.a-zA-Z0-9_-]+)$/;
 const deviceRegExp = /^#\/devices\/([\.a-zA-Z0-9_-]+)$/;
 
 const drawerWidth = 240;
@@ -335,6 +337,15 @@ export const DashboardComp = () => {
         <SensorPage
           deviceID={match[1]}
           sensorID={match[2]}
+          clouds={clouds}
+          handleDrawerToggle={handleDrawerToggle}
+        />
+      );
+    } else if ((match = page.match(actuatorRegExp))) {
+      body = (
+        <ActuatorPage
+          deviceID={match[1]}
+          actuatorID={match[2]}
           clouds={clouds}
           handleDrawerToggle={handleDrawerToggle}
         />

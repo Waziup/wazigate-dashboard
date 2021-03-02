@@ -825,6 +825,62 @@
       "icon": "wind"
     }
   },
+  "actingDevices": {
+    "Motor": {
+      "label": "Motor",
+      "quantities": [
+        "Boolean",
+        "AnalogeValue"
+      ],
+      "icon": "motor"
+    },
+    "Switch": {
+      "label": "ON/OFF Switch",
+      "quantities": [
+        "Boolean"
+      ],
+      "icon": "switch"
+    },
+    "Lamp": {
+      "label": "Lamp",
+      "quantities": [
+        "Boolean",
+        "Illuminance"
+      ],
+      "icon": "sun"
+    },
+    "Generic": {
+      "label": "Generic Actuator",
+      "quantities": [
+        "Acceleration",
+        "AnalogeValue",
+        "Array",
+        "AtmosphericPressure",
+        "Binary",
+        "Boolean",
+        "Color",
+        "ChemicalAgentConcentration",
+        "ElectricCurrent",
+        "DigitalValue",
+        "WindDirection",
+        "Distance",
+        "Energy",
+        "Frequency",
+        "Position",
+        "RotationalSpeed",
+        "Illuminance",
+        "Object",
+        "ActivePower",
+        "Presence",
+        "RelativeHumidity",
+        "String",
+        "Temperature",
+        "Timestamp",
+        "Voltage"
+      ],
+      "icon": "arm"
+    }
+  },
   "quantities": {
     "Acceleration": {
       "label": "Acceleration",
@@ -892,6 +948,14 @@
         "MillimetreMercure"
       ]
     },
+    "AnalogeValue": {
+      "label": "Analoge Value",
+      "units": [
+        "Volt",
+        "Millivolt",
+        "Microvolt"
+      ]
+    },
     "BatteryLevel": {
       "label": "Battery level",
       "units": [
@@ -912,6 +976,10 @@
         "MillimetreMercure",
         "Pascal"
       ]
+    },
+    "Boolean": {
+      "label": "Boolean",
+      "units": []
     },
     "BoardTemperature": {
       "label": "Board temperature",

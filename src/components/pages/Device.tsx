@@ -348,7 +348,7 @@ type Props = {
     deviceID: string;
 };
 
-export default function SensorPage({ deviceID, handleDrawerToggle }: Props) {
+export default function DevicePage({ deviceID, handleDrawerToggle }: Props) {
     const classes = useStyles();
 
     const [device, setDevice] = useState<Device>(null);
@@ -594,7 +594,7 @@ export default function SensorPage({ deviceID, handleDrawerToggle }: Props) {
                     href={`#/devices/${deviceID}`}
                     aria-current="page"
                 >
-                    {deviceID}
+                    {device ? device?.name : deviceID}
                 </Link>
             </Breadcrumbs>
             <SpeedDial

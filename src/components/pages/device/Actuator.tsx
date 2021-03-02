@@ -71,8 +71,8 @@ export default function Actuator({ deviceID, actuator, className }: Props) {
     const quantity = (actuator.meta.quantity || "") as string;
     const unit = (actuator.meta.unit || "") as string;
 
-    const icon = ontologies.sensingDevices[kind]?.icon || defaultKindIcon;
-    const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
+    const icon = ontologies.actingDevices[kind]?.icon || defaultKindIcon;
+    const kindLabel = ontologies.actingDevices[kind]?.label || kind;
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -85,7 +85,7 @@ export default function Actuator({ deviceID, actuator, className }: Props) {
     return (
         <Card className={`${classes.root} ${className || ""}`}>
             <List dense={true}>
-                <ListItem>
+                <ListItem component="a" button href={`#/devices/${deviceID}/actuators/${actuator.id}`}>
                     <ListItemIcon>
                         <SVGSpriteIcon
                             className={classes.icon}
@@ -111,9 +111,9 @@ export default function Actuator({ deviceID, actuator, className }: Props) {
             </List>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    Value: {actuator.value === null ? "-" : `${actuator.value} ${unit}` }<br></br>
-                    Quantity: {actuator.meta.quantity || "-" }<br></br>
-                    Unit: {actuator.meta.unit || "-" }
+                    Value: {actuator.value === null ? "-" : `${actuator.value} ${unit}`}<br></br>
+                    Quantity: {actuator.meta.quantity || "-"}<br></br>
+                    Unit: {actuator.meta.unit || "-"}
                 </CardContent>
             </Collapse>
         </Card>
