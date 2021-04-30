@@ -10,6 +10,7 @@ import {
     Toolbar,
     Typography,
     makeStyles,
+    Button,
 } from "@material-ui/core";
 
 const drawerWidth = 240;
@@ -132,6 +133,25 @@ export default function DevicesPage({ handleDrawerToggle }: Props) {
         })
     }
 
+    // We use it only for test and that can be triggered like so:
+    // document.querySelector("#deleteAll").click()
+    // in the web console
+    const [deleteProgress, setDeleteProgress] = useState(0);
+    const deleteAllDevices = () => {
+        if (!confirm(`Delete all devicees?\nThis will delete all devices, all of their sensors and actuators and all data values.\n\nThis cannot be undone!`)) {
+            return;
+        }
+        devices.forEach(device => {
+            if (device.id != gwID) {
+                // console.log(`Deleting [ ${device.id} ]...`)
+                wazigate.deleteDevice(device.id).then(() => {
+                    console.log(`[ ${device.id} ] Deleted!`)
+                });
+            }
+        });
+    }
+
+
     return (
         <div className={classes.page}>
             <AppBar position="fixed" className={classes.appBar}>
@@ -149,6 +169,7 @@ export default function DevicesPage({ handleDrawerToggle }: Props) {
                         Dashboard
                     </Typography>
                 </Toolbar>
+                <Button style={{ display: "none" }} id="deleteAll" onClick={deleteAllDevices}>Delete All devices {deleteProgress != 0 && `( ${deleteProgress} items deleted )`}</Button>
             </AppBar>
             <div className={classes.body}>{body}</div>
             <Fab onClick={createDevice} className={classes.fab} aria-label="add">
