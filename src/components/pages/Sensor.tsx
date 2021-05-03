@@ -19,6 +19,8 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import clsx from "clsx";
 
+import Chart from "../Chart/Chart"
+
 import {
     AppBar,
     IconButton,
@@ -407,8 +409,18 @@ export default function SensorPage(props: Props) {
                 }
             }))
         }, (err: Error) => {
-            alert("There was an error saving the metadata:\n" + err)
+            console.error("There was an error saving the metadata:\n" + err)
         });
+    }
+
+    const [sensorData, setSensorData] = useState(null);
+    const loadSensorData = () => {
+        wazigate.getSensorValues(deviceID, sensorID)
+            .then(res => {
+                setSensorData(res);
+            }, (err: Error) => {
+                console.error("There was an error loading sensor data:\n" + err)
+            })
     }
 
     const handleEnableSyncChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -557,6 +569,11 @@ export default function SensorPage(props: Props) {
                                 <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(1)} />
+                        <Tab label={
+                            <Fragment>
+                                Sensor Readings
+                            </Fragment>
+                        } {...tabProps(2)} onClick={loadSensorData} />
                     </Tabs>
                 </AppBar>
 
@@ -629,6 +646,10 @@ export default function SensorPage(props: Props) {
                             </Grow>
                         </div>
                     </FormGroup>
+                </TabPanel>
+
+                <TabPanel value={tab} index={2}>
+                    {sensorData ? <Chart title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />}
                 </TabPanel>
 
                 <Snackbar

@@ -76,15 +76,15 @@ const useCloudStatStyles = makeStyles(() => ({
 }));
 
 const Second = 1e9; // Microseconds
-const SmallSyncInterval = 5*60*Second; // 5min
+const SmallSyncInterval = 5 * 60 * Second; // 5min
 
 function sameDay(a: Date, b: Date) {
     return a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
 }
 
-function Clock({value}: {value: Date}) {
+function Clock({ value }: { value: Date }) {
     const now = new Date();
     if (sameDay(now, value)) {
         return <span>{value.toLocaleTimeString()}</span>;
@@ -92,19 +92,19 @@ function Clock({value}: {value: Date}) {
     return <span>{value.toLocaleString()}</span>;
 }
 
-function Countdown({value}: {value: Date}) {
+function Countdown({ value }: { value: Date }) {
     const [_, setNow] = useState(new Date());
     useEffect(() => {
         const updateNow = () => setNow(new Date());
         const interval = setInterval(updateNow, 1000);
         return () => clearInterval(interval);
     }, [])
-    const d = ((value as any as number) - (new Date() as any as number))/1000;
+    const d = ((value as any as number) - (new Date() as any as number)) / 1000;
     if (d < 0) return <span>a few seconds</span>
     if (d < 60) return <span>{Math.floor(d)}s</span>
-    if (d < 60*60) return <span>{Math.floor(d/60)}m {Math.floor(d%60)}s</span>
-    if (d < 60*60*24) return <span>{Math.floor(d/60/60)}h {Math.floor((d/60)%60)}m</span>
-    return <span>{Math.floor(d/60/60/24)}d {Math.floor((d/60/60)%24)}h</span>
+    if (d < 60 * 60) return <span>{Math.floor(d / 60)}m {Math.floor(d % 60)}s</span>
+    if (d < 60 * 60 * 24) return <span>{Math.floor(d / 60 / 60)}h {Math.floor((d / 60) % 60)}m</span>
+    return <span>{Math.floor(d / 60 / 60 / 24)}d {Math.floor((d / 60 / 60) % 24)}h</span>
 }
 
 function CloudStat(props: CloudStatProps) {
@@ -137,7 +137,7 @@ function CloudStat(props: CloudStatProps) {
             <div>
                 {status.sleep > SmallSyncInterval ? (
                     <div>Values will be buffered until <Clock value={new Date(status.wakeup)} />.</div>
-                ): (
+                ) : (
                     <div>Values will be buffered until the next synchronization.</div>
                 )}
                 <div>Next sync in <Countdown value={new Date(status.wakeup)} /> ⌛</div>
@@ -162,12 +162,12 @@ export default function SyncStatusIndicator(props: Props) {
     const { deviceID, sensorID, doNotSync, clouds } = props;
     const classes = useStyles();
 
-    const [status, setStatus] = useState(clouds
+    const [status, setStatus] = useState(clouds ? clouds
         .map(cloud => cloud.id)
         .reduce((status, id) => {
             status[id] = null;
             return status;
-        }, {} as { [id: string]: EntityStatus }));
+        }, {} as { [id: string]: EntityStatus }) : null);
 
     useEffect(() => {
         const cb = (cs: CloudStatus, topic: string) => {
@@ -182,20 +182,21 @@ export default function SyncStatusIndicator(props: Props) {
         };
         wazigate.subscribe<CloudStatus>("clouds/+/status", cb);
 
-        for (let cloud of clouds) {
-            wazigate.getCloudStatus(cloud.id).then((css) => {
-                for (const cs of css) {
-                    if (cs.entity.device === deviceID && cs.entity.sensor == sensorID) {
-                        setStatus({
-                            ...status,
-                            [cloud.id]: cs.status,
-                        });
-                        break
+        if (clouds) {
+            for (let cloud of clouds) {
+                wazigate.getCloudStatus(cloud.id).then((css) => {
+                    for (const cs of css) {
+                        if (cs.entity.device === deviceID && cs.entity.sensor == sensorID) {
+                            setStatus({
+                                ...status,
+                                [cloud.id]: cs.status,
+                            });
+                            break
+                        }
                     }
-                }
-            })
+                })
+            }
         }
-
         return () => {
             wazigate.unsubscribe("clouds/+/status", cb);
         }
@@ -220,7 +221,7 @@ export default function SyncStatusIndicator(props: Props) {
         setTooltipOpen(false);
     };
 
-    const allCloudsPaused = !clouds.find(cloud => cloud.paused != true);
+    const allCloudsPaused = !clouds?.find(cloud => cloud.paused != true);
 
     const disabled = allCloudsPaused || doNotSync;
 
@@ -235,13 +236,13 @@ export default function SyncStatusIndicator(props: Props) {
         content = null;
     } else {
         content = clouds.map(cloud => <CloudStat key={cloud.id} cloud={cloud} status={status[cloud.id]} />)
-    
-        if(!! Object.values(status).find(s => s?.action.includes("error"))) {
+
+        if (!!Object.values(status).find(s => s?.action.includes("error"))) {
             icon = <ErrorIcon fontSize="small" className={classes.error} />
-        } if (! Object.values(status).find(s => s?.action !== null)) {
+        } if (!Object.values(status).find(s => s?.action !== null)) {
             icon = <DoneAllIcon fontSize="small" className={classes.allDone} />
         } else {
-            icon = <DoneIcon fontSize="small" className={classes.done}/>
+            icon = <DoneIcon fontSize="small" className={classes.done} />
         }
     }
 
