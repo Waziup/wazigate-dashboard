@@ -5,13 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "type": "pwa-chrome",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/index.tsx"
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost/",
+            "webRoot": "${workspaceFolder}",
+            "sourceMaps": true
         }
     ]
 }
