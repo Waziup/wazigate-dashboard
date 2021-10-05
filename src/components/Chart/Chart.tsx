@@ -4,6 +4,7 @@ import Chart from "react-apexcharts";
 
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import { ApexOptions } from 'apexcharts';
 
 TimeAgo.addDefaultLocale(en)
 
@@ -51,7 +52,7 @@ export default function _Chart(props: Props) {
 
     /**---------------- */
 
-    const options = {
+    const options: ApexOptions = {
         chart: {
             id: "chart1",
         },
