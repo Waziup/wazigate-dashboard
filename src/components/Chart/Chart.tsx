@@ -6,7 +6,7 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { ApexOptions } from 'apexcharts';
 
-TimeAgo.addDefaultLocale(en)
+// TimeAgo.addDefaultLocale(en)
 
 
 
