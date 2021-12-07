@@ -3,6 +3,7 @@ const package = require("./package.json");
 const fs = require("fs");
 const childProcess = require("child_process");
 const { merge } = require("webpack-merge");
+const webpack = require("webpack");
 
 var branch = "unknown";
 try {
@@ -30,15 +31,23 @@ const common = {
 	resolve: {
 		extensions: [".ts", ".tsx", ".scss", ".css", ".js"],
 		fallback: {
-			buffer: require.resolve('buffer'),
+			buffer: require.resolve('buffer/'),
 			url: require.resolve('url'),
 			util: require.resolve("util")
+		},
+		alias: {
+			process: "process/browser"
 		},
 	},
 
 	entry: ["./src/index.tsx"],
 
-	plugins: [],
+	plugins: [
+		new webpack.ProvidePlugin({
+			Buffer: ['buffer', 'Buffer'],
+			process: 'process/browser',
+		}),
+	],
 
 	module: {
 		rules: [
