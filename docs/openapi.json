@@ -2016,7 +2016,7 @@
         }
       }
     },
-    "/devices/{deviceID}/sensors/{actuatorID}/value": {
+    "/devices/{deviceID}/actuators/{actuatorID}/value": {
       "get": {
         "tags": [
           "Actuators"
