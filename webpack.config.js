@@ -103,14 +103,15 @@ const common = {
 };
 
 module.exports = (env) => {
-
-	if (env === "dev") {
+	if (env.dev) {
+		console.log("Build mode: development");
 		return merge(common, {
 			mode: "development",
 			devtool: "source-map",
 		});
 	}
 
+	console.log("Build mode: production");
 	return merge(common, {
 		mode: "production",
 	});
