@@ -3,10 +3,10 @@ import Chart from "react-apexcharts";
 
 
 import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
+import en from 'javascript-time-ago/locale/en.json'
 import { ApexOptions } from 'apexcharts';
 
-// TimeAgo.addDefaultLocale(en)
+ TimeAgo.addDefaultLocale(en)
 
 
 
@@ -28,12 +28,14 @@ type Props = {
 export default function _Chart(props: Props) {
 
     const timeAgo = new TimeAgo('en-US')
+    
+   //TimeAgo.locale(en)
 
     // Preparing data
     let chartData = [];
     for (let item of props.data) {
         chartData.push({ x: new Date(item.time), y: item.value });
-        // console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
+        console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
     }
 
     /**---------------- */

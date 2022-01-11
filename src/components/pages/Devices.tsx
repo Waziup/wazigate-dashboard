@@ -138,7 +138,7 @@ export default function DevicesPage({ handleDrawerToggle }: Props) {
     // in the web console
     const [deleteProgress, setDeleteProgress] = useState(0);
     const deleteAllDevices = () => {
-        if (!confirm(`Delete all devicees?\nThis will delete all devices, all of their sensors and actuators and all data values.\n\nThis cannot be undone!`)) {
+        if (!confirm(`Delete all devices?\nThis will delete all devices, all of their sensors and actuators and all data values.\n\nThis cannot be undone!`)) {
             return;
         }
         devices.forEach(device => {

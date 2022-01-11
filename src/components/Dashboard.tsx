@@ -236,6 +236,8 @@ export const DashboardComp = () => {
       }
     );
 
+    var apps = wazigate.getApps()
+
     wazigate.getApps().then(
       (apps) => {
         if (apps === null) {

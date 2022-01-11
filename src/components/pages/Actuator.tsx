@@ -21,6 +21,8 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import clsx from "clsx";
 
+import Chart from "../Chart/Chart"
+
 
 import {
     AppBar,
@@ -396,6 +398,16 @@ export default function ActuatorPage(props: Props) {
         }))
     }
 
+    const [actuatorData, setActuatorData] = useState(null);
+    const loadActuatorData = () => {
+        wazigate.getActuatorValues(deviceID, actuatorID)
+            .then(res => {
+                setActuatorData(res);
+            }, (err: Error) => {
+                console.error("There was an error loading actuator data:\n" + err)
+            })
+    }
+
     /**-------------------- */
 
 
@@ -548,6 +560,8 @@ export default function ActuatorPage(props: Props) {
         //     rActuator?.value !== actuator?.value
         // )
         const hasUnsavedValueChanges = false
+        const hasUnsavedChartChanges = false
+        
 
         body = (
             <Fragment>
@@ -563,6 +577,11 @@ export default function ActuatorPage(props: Props) {
                                 <DirtyIndicator visible={hasUnsavedValueChanges}>Value</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(1)} />
+                        <Tab label={
+                            <Fragment>
+                                <DirtyIndicator visible={hasUnsavedChartChanges}>Chart</DirtyIndicator>
+                            </Fragment>
+                        } {...tabProps(2)} onClick={loadActuatorData} />
                     </Tabs>
                 </AppBar>
 
@@ -630,6 +649,10 @@ export default function ActuatorPage(props: Props) {
                         {/* </div> */}
 
                     </FormGroup>
+                </TabPanel>
+
+                <TabPanel value={tab} index={2}>
+                    {actuatorData ? <Chart title="Actuator data" data={actuatorData.slice(-200)} /> : <CircularProgress />}
                 </TabPanel>
 
                 <Snackbar
