@@ -54,6 +54,7 @@ import {
 } from '@material-ui/core';
 import SyncIntervalInput from "../SyncIntervalInput";
 import { OntologyKindInput } from "../OntologyKindInput";
+import _ReactTable from "../Chart/ReactTable";
 
 
 const drawerWidth = 240;
@@ -649,7 +650,8 @@ export default function SensorPage(props: Props) {
                 </TabPanel>
 
                 <TabPanel value={tab} index={2}>
-                    {sensorData ? <Chart title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />}
+                    {sensorData ? <Chart title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />} 
+                    {sensorData ? <_ReactTable title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />}
                 </TabPanel>
 
                 <Snackbar

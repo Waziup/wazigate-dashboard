@@ -261,7 +261,7 @@ export default function SyncStatusIndicator(props: Props) {
     return (
         <Fragment>
             <Badge
-                overlap="circle"
+                overlap="circular"
                 badgeContent={icon}
             >
                 <Tooltip

@@ -6,7 +6,9 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { ApexOptions } from 'apexcharts';
 
- TimeAgo.addDefaultLocale(en)
+import colors from '@material-ui/core';
+
+TimeAgo.addDefaultLocale(en)
 
 
 
@@ -28,14 +30,12 @@ type Props = {
 export default function _Chart(props: Props) {
 
     const timeAgo = new TimeAgo('en-US')
-    
-   //TimeAgo.locale(en)
 
     // Preparing data
     let chartData = [];
     for (let item of props.data) {
         chartData.push({ x: new Date(item.time), y: item.value });
-        console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
+        //console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
     }
 
     /**---------------- */
@@ -56,7 +56,7 @@ export default function _Chart(props: Props) {
 
     const options: ApexOptions = {
         chart: {
-            id: "chart1",
+            id: "chart1"
         },
         title: {
             text: props.title,
@@ -70,7 +70,8 @@ export default function _Chart(props: Props) {
             x: {
                 formatter: (val: any) => dateFormatter(val)
             }
-        }
+        },
+        colors: ['#3F51B5'] //Johann fragen #3F51B5
     };
     const series = [{
         name: "",
@@ -87,7 +88,8 @@ export default function _Chart(props: Props) {
                         options={options}
                         series={series}
                         type="line"
-                        width={props.width || "100%"}
+                        width={props.width || "90%"}
+                        align='center'
                     />
                 </div>
             </div>
