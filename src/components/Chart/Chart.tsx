@@ -6,16 +6,25 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { ApexOptions } from 'apexcharts';
 
-import colors from '@material-ui/core';
+import {
+    makeStyles,
+    colors,
+} from '@material-ui/core';
+import { ValueWithTime } from 'waziup';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '90%',
+        align: 'center',
+        margin: '0 auto'
+        // display: "inline-block",
+        // verticalAlign: "top",
+    }
+}));
 
 TimeAgo.addDefaultLocale(en)
 
-
-
-type TimeSeriesDataType = {
-    time: string;
-    value: number;
-};
+export type TimeSeriesDataType = ValueWithTime;
 
 type Props = {
     // handleDrawerToggle: () => void;
@@ -28,8 +37,9 @@ type Props = {
 
 
 export default function _Chart(props: Props) {
-
     const timeAgo = new TimeAgo('en-US')
+
+    const classes = useStyles();
 
     // Preparing data
     let chartData = [];
@@ -71,7 +81,7 @@ export default function _Chart(props: Props) {
                 formatter: (val: any) => dateFormatter(val)
             }
         },
-        colors: ['#3F51B5'] //Johann fragen #3F51B5
+        colors: ['#3F51B5'] //Johann fragen #3F51B5 
     };
     const series = [{
         name: "",
@@ -79,16 +89,14 @@ export default function _Chart(props: Props) {
     }];
 
     return (
-        <div className="app">
-            <div className="row">
-                <div className="mixed-chart">
+        <div>
+            <div>
+                <div className={`${classes.root}`}>
                     <Chart
-
-                        className={props.className}
+                        className="chart" //{props.className}
                         options={options}
                         series={series}
                         type="line"
-                        width={props.width || "90%"}
                         align='center'
                     />
                 </div>

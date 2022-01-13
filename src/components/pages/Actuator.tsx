@@ -1,5 +1,5 @@
 import React, { Fragment, useState, MouseEvent, useEffect } from "react";
-import { Waziup, CloudStatus, CloudAction, Cloud, Actuator } from "waziup";
+import { Waziup, CloudStatus, CloudAction, Cloud, Actuator, Value, ValueWithTime } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
 import ontologies from "../../ontologies.json";
@@ -21,8 +21,8 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import clsx from "clsx";
 
-import Chart from "../Chart/Chart"
-
+import Chart, { TimeSeriesDataType } from "../Chart/Chart"
+import ReactTable from "../Chart/ReactTable";
 
 import {
     AppBar,
@@ -398,15 +398,23 @@ export default function ActuatorPage(props: Props) {
         }))
     }
 
-    const [actuatorData, setActuatorData] = useState(null);
+    const [actuatorData, setActuatorData] = useState<ValueWithTime[]>(null);
     const loadActuatorData = () => {
+        // wazigate.getActuatorValues(deviceID, actuatorID)
+        //     .then(res => {
+        //         setActuatorData(res);
+        //     }, (err: Error) => {
+        //         console.error("There was an error loading actuator data:\n" + err)
+        //     })
+    }
+    useEffect(() => {
         wazigate.getActuatorValues(deviceID, actuatorID)
             .then(res => {
                 setActuatorData(res);
             }, (err: Error) => {
                 console.error("There was an error loading actuator data:\n" + err)
             })
-    }
+    }, [])
 
     /**-------------------- */
 
@@ -561,7 +569,7 @@ export default function ActuatorPage(props: Props) {
         // )
         const hasUnsavedValueChanges = false
         const hasUnsavedChartChanges = false
-        
+
 
         body = (
             <Fragment>
@@ -574,12 +582,12 @@ export default function ActuatorPage(props: Props) {
                         } {...tabProps(0)} />
                         <Tab label={
                             <Fragment>
-                                <DirtyIndicator visible={hasUnsavedValueChanges}>Value</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedValueChanges}>Add Value</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(1)} />
                         <Tab label={
                             <Fragment>
-                                <DirtyIndicator visible={hasUnsavedChartChanges}>Chart</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedChartChanges}>Actuator Readings</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(2)} onClick={loadActuatorData} />
                     </Tabs>
@@ -638,7 +646,7 @@ export default function ActuatorPage(props: Props) {
                                 disabled={vlauePushing}
                             >
                                 Push
-                                </Button>
+                            </Button>
                             {vlauePushing && (
                                 <CircularProgress
                                     size={24}
@@ -652,7 +660,13 @@ export default function ActuatorPage(props: Props) {
                 </TabPanel>
 
                 <TabPanel value={tab} index={2}>
-                    {actuatorData ? <Chart title="Actuator data" data={actuatorData.slice(-200)} /> : <CircularProgress />}
+                    {(actuatorData) ? <>
+                        <Chart title="Actuator data" data={actuatorData.slice(-200)} />
+                        <ReactTable title="Actuator data" data={actuatorData.slice(-200)} />
+                    </>
+                        :
+                        <CircularProgress />
+                    }
                 </TabPanel>
 
                 <Snackbar

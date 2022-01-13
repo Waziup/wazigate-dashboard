@@ -20,6 +20,7 @@ import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import clsx from "clsx";
 
 import Chart from "../Chart/Chart"
+import ReactTable from "../Chart/ReactTable";
 
 import {
     AppBar,
@@ -54,7 +55,6 @@ import {
 } from '@material-ui/core';
 import SyncIntervalInput from "../SyncIntervalInput";
 import { OntologyKindInput } from "../OntologyKindInput";
-import _ReactTable from "../Chart/ReactTable";
 
 
 const drawerWidth = 240;
@@ -561,20 +561,12 @@ export default function SensorPage(props: Props) {
                 <AppBar position="static" className={classes.headBar}>
                     <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
                         <Tab label={
-                            <Fragment>
-                                <DirtyIndicator visible={hasUnsavedOntChanges}>Ontology</DirtyIndicator>
-                            </Fragment>
+                            <DirtyIndicator visible={hasUnsavedOntChanges}>Ontology</DirtyIndicator>
                         } {...tabProps(0)} />
                         <Tab label={
-                            <Fragment>
-                                <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
-                            </Fragment>
+                            <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
                         } {...tabProps(1)} />
-                        <Tab label={
-                            <Fragment>
-                                Sensor Readings
-                            </Fragment>
-                        } {...tabProps(2)} onClick={loadSensorData} />
+                        <Tab label="Sensor Readings" {...tabProps(2)} onClick={loadSensorData} />
                     </Tabs>
                 </AppBar>
 
@@ -650,8 +642,13 @@ export default function SensorPage(props: Props) {
                 </TabPanel>
 
                 <TabPanel value={tab} index={2}>
-                    {sensorData ? <Chart title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />} 
-                    {sensorData ? <_ReactTable title="Sensor data" data={sensorData.slice(-200)} /> : <CircularProgress />}
+                    {(sensorData) ? <>
+                        <Chart title="Sensor data" data={sensorData.slice(-200)} />
+                        <ReactTable title="Sensor data" data={sensorData.slice(-200)} />
+                    </>
+                        :
+                        <CircularProgress />
+                    }
                 </TabPanel>
 
                 <Snackbar

@@ -3,16 +3,25 @@ import { useTable, useSortBy } from 'react-table';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import { Collapse } from '@material-ui/core';
+import {
+  makeStyles,
+  colors,
+} from '@material-ui/core';
+import { ValueWithTime } from 'waziup';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '90%',
+    align: 'center',
+    margin: '0 auto'
+  }
+}));
 
 TimeAgo.addDefaultLocale(en)
 
 
 
-type TimeSeriesDataType = {
-  time: string;
-  value: number;
-};
+type TimeSeriesDataType = ValueWithTime;
 
 type Props = {
   // handleDrawerToggle: () => void;
@@ -24,22 +33,24 @@ type Props = {
 };
 
 
-function _ReactTable(props: Props) {
+function ReactTable(props: Props) {
 
   const timeAgo = new TimeAgo('en-US')
 
+  const classes = useStyles();
+
   /**---------------- */
 
-    const dateFormatter = (inDate: Date) => {
-      const addZero = (n: number) => (n <= 9 ? ("0" + n) : String(n));
-      const dateObj = new Date(inDate);
-      return timeAgo.format(inDate)
-          + " - " + dateObj.getFullYear()
-          + "-" + addZero(dateObj.getMonth() + 1)
-          + "-" + addZero(dateObj.getDate())
-          + " " + addZero(dateObj.getHours())
-          + ":" + addZero(dateObj.getMinutes())
-          + ":" + addZero(dateObj.getSeconds())
+  const dateFormatter = (inDate: Date) => {
+    const addZero = (n: number) => (n <= 9 ? ("0" + n) : String(n));
+    const dateObj = new Date(inDate);
+    return timeAgo.format(inDate)
+      + " - " + dateObj.getFullYear()
+      + "-" + addZero(dateObj.getMonth() + 1)
+      + "-" + addZero(dateObj.getDate())
+      + " " + addZero(dateObj.getHours())
+      + ":" + addZero(dateObj.getMinutes())
+      + ":" + addZero(dateObj.getSeconds())
   }
 
   /**---------------- */
@@ -47,8 +58,8 @@ function _ReactTable(props: Props) {
   // Preparing data
   let tableData = [];
   for (let item of props.data) {
-      tableData.push({ x: dateFormatter(new Date(item.time)), y: item.value });
-      //console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
+    tableData.push({ x: dateFormatter(item.time), y: item.value });
+    //console.log(timeAgo.format(new Date(item.time)), new Date(item.time));
   }
 
   const columns = [
@@ -69,30 +80,24 @@ function _ReactTable(props: Props) {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: tableData/*, autoResetSortBy: false, autoResetPage: false */}, useSortBy);
+  } = useTable({ columns, data: tableData/*, autoResetSortBy: false, autoResetPage: false */ }, useSortBy);
+
 
   return (
-    <div>
-      <table {...getTableProps()} style={{ border: 'solid 1px black', width: '90%', textAlign: 'center' }}>
+    <div className={`${classes.root}`}>
+      <table className={`${classes.root}`}{...getTableProps()} style={{ border: 'solid 1px black', width: '90%', textAlign: 'center' }}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th
-                  {...column.getHeaderProps((column as any).getSortByToggleProps())}
+                  {...column.getHeaderProps()}
                   style={{
                     backgroundColor: '#f35e19',
                     color: 'white',
                   }}
                 >
                   {column.render('Header')}
-                  <span>
-                    {(column as any).isSorted
-                      ? (column as any).isSortedDesc
-                        ? '🔽'
-                        : '🔼'
-                      : ''}
-                  </span>
                 </th>
               ))}
             </tr>
@@ -125,4 +130,4 @@ function _ReactTable(props: Props) {
   );
 }
 
-export default _ReactTable;
+export default ReactTable;
