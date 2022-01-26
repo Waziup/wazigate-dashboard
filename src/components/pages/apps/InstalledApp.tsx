@@ -224,7 +224,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
 
   /*------------ */
 
-  const checkUpdates = (showAlert: boolean = true) => {
+  const checkUpdates = (showAlert: boolean = false) => {
     type AppUpdate = {
       newUpdate: string;
     };
@@ -446,7 +446,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
           <p>{`${(app as any)?.description || "."}`}</p>
         </CardContent>
         <CardActions>
-          <Tooltip title={updateStatus?.isChecking ? "Checking for new updates..." : (updateStatus?.hasUpdate ? "New update available" : "")}>
+          {/* <Tooltip title={updateStatus?.isChecking ? "Checking for new updates..." : (updateStatus?.hasUpdate ? "New update available" : "")}>
             <div>
               <Button
                 className={updateStatus?.hasUpdate ? classes.orange :
@@ -459,7 +459,7 @@ export default function InstalledApp({ appInfo, className }: Props) {
                 Update
               </Button>
             </div>
-          </Tooltip>
+          </Tooltip> */}
           <Button startIcon={<SettingsIcon />} onClick={showModalSettings}>
             Settings
           </Button>
