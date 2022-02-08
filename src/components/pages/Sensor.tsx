@@ -1,5 +1,5 @@
 import React, { Fragment, useState, MouseEvent, useEffect } from "react";
-import { Waziup, Sensor, CloudStatus, CloudAction, Cloud } from "waziup";
+import { Waziup, Sensor, CloudStatus, CloudAction, Cloud, ValueWithTime } from "waziup";
 import Error from "../Error";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete/Autocomplete";
 import ontologies from "../../ontologies.json";
@@ -55,6 +55,7 @@ import {
 } from '@material-ui/core';
 import SyncIntervalInput from "../SyncIntervalInput";
 import { OntologyKindInput } from "../OntologyKindInput";
+import { timeAgo } from "../../tools";
 
 
 const drawerWidth = 240;
@@ -263,6 +264,26 @@ type EntityStatus = {
     wakeup: Date;
 }
 
+type DataPoint = {
+    x: Date;
+    y: number;
+  };
+
+type TimeSeriesDataType = ValueWithTime;
+
+// For table and chart
+// const dateFormatter = (inDate: Date) => {
+//     const addZero = (n: number) => (n <= 9 ? ("0" + n) : String(n));
+//     const dateObj = new Date(inDate);
+//     return timeAgo.format(inDate)
+//         + " - " + dateObj.getFullYear()
+//         + "-" + addZero(dateObj.getMonth() + 1)
+//         + "-" + addZero(dateObj.getDate())
+//         + " " + addZero(dateObj.getHours())
+//         + ":" + addZero(dateObj.getMinutes())
+//         + ":" + addZero(dateObj.getSeconds())
+//     }
+
 export default function SensorPage(props: Props) {
     const { sensorID, deviceID, handleDrawerToggle, clouds } = props;
     const classes = useStyles();
@@ -414,11 +435,12 @@ export default function SensorPage(props: Props) {
         });
     }
 
-    const [sensorData, setSensorData] = useState(null);
+    const [sensorData, setSensorData] = useState<DataPoint[]>([]);
     const loadSensorData = () => {
         wazigate.getSensorValues(deviceID, sensorID)
-            .then(res => {
-                setSensorData(res);
+            .then((data : TimeSeriesDataType[]) => {
+                const points = data.map(item => ({ x: item.time, y: item.value }));
+                setSensorData(points);
             }, (err: Error) => {
                 console.error("There was an error loading sensor data:\n" + err)
             })
@@ -506,7 +528,7 @@ export default function SensorPage(props: Props) {
                         }}
                     >
                         {quantities.map((quantity) => (
-                            <MenuItem value={quantity}>{ontologies.quantities[quantity].label}</MenuItem>
+                            <MenuItem key={quantity} value={quantity}>{ontologies.quantities[quantity].label}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -537,7 +559,7 @@ export default function SensorPage(props: Props) {
                             }}
                         >
                             {ontologies.quantities[quantity].units.map((unit) => (
-                                <MenuItem value={unit}>{ontologies.units[unit].label}</MenuItem>
+                                <MenuItem key={unit} value={unit}>{ontologies.units[unit].label}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -555,6 +577,7 @@ export default function SensorPage(props: Props) {
             (!!rSensor?.meta.doNotSync) !== (!!sensor?.meta.doNotSync) ||
             (rSensor?.meta.syncInterval || null) !== (sensor?.meta.syncInterval || null)
         )
+        
 
         body = (
             <Fragment>
@@ -566,7 +589,7 @@ export default function SensorPage(props: Props) {
                         <Tab label={
                             <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
                         } {...tabProps(1)} />
-                        <Tab label="Sensor Readings" {...tabProps(2)} onClick={loadSensorData} />
+                        <Tab label="Sensor Readings" {...tabProps(2)} onClick={loadSensorData} /> 
                     </Tabs>
                 </AppBar>
 
@@ -643,8 +666,8 @@ export default function SensorPage(props: Props) {
 
                 <TabPanel value={tab} index={2}>
                     {(sensorData) ? <>
-                        <Chart title="Sensor data" data={sensorData.slice(-200)} />
-                        <ReactTable title="Sensor data" data={sensorData.slice(-200)} />
+                        <Chart title="Sensor data" data={sensorData} />
+                        <ReactTable title="Sensor data" data={sensorData} />
                     </>
                         :
                         <CircularProgress />

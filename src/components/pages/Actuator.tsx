@@ -21,7 +21,7 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import CheckIcon from '@material-ui/icons/Check';
 import clsx from "clsx";
 
-import Chart, { TimeSeriesDataType } from "../Chart/Chart"
+import Chart from "../Chart/Chart"
 import ReactTable from "../Chart/ReactTable";
 
 import {
@@ -57,6 +57,7 @@ import {
 } from '@material-ui/core';
 import SyncIntervalInput from "../SyncIntervalInput";
 import { OntologyKindInput } from "../OntologyKindInput";
+import { timeAgo } from "../../tools";
 
 
 const drawerWidth = 240;
@@ -268,6 +269,13 @@ type EntityStatus = {
     wakeup: Date;
 }
 
+type DataPoint = {
+    x: Date;
+    y: number;
+  };
+
+type TimeSeriesDataType = ValueWithTime;
+
 export default function ActuatorPage(props: Props) {
     const { actuatorID, deviceID, handleDrawerToggle, clouds } = props;
     const classes = useStyles();
@@ -398,41 +406,27 @@ export default function ActuatorPage(props: Props) {
         }))
     }
 
-    const [actuatorData, setActuatorData] = useState<ValueWithTime[]>(null);
+    const [actuatorData, setActuatorData] = useState<DataPoint[]>([]);
     const loadActuatorData = () => {
-        // wazigate.getActuatorValues(deviceID, actuatorID)
-        //     .then(res => {
-        //         setActuatorData(res);
-        //     }, (err: Error) => {
-        //         console.error("There was an error loading actuator data:\n" + err)
-        //     })
-    }
-    useEffect(() => {
         wazigate.getActuatorValues(deviceID, actuatorID)
-            .then(res => {
-                setActuatorData(res);
+            .then((data : TimeSeriesDataType[]) => {
+                const points = data.map(item => ({ x: item.time, y: item.value }));
+                setActuatorData(points);
             }, (err: Error) => {
                 console.error("There was an error loading actuator data:\n" + err)
             })
-    }, [])
+    }
 
     /**-------------------- */
 
 
     const [newValue, setNewValue] = useState(null);
-    const [vlauePushing, setValuePushing] = useState(false);
+    const [valuePushing, setValuePushing] = useState(false);
     const submitValue = () => {
 
         setValuePushing(true);
         wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", newValue).then(
             () => {
-                // setRemoteActuator(rActuator => ({
-                //     ...rActuator,
-                //     value: actuator.value,
-                // }))
-
-
-
                 load();
                 // Syncing the actuator value with the cloud does not make sense. 
                 // Maybe we need to use some additional sensor values to keep the status of the target device
@@ -519,7 +513,7 @@ export default function ActuatorPage(props: Props) {
                         }}
                     >
                         {quantities.map((quantity) => (
-                            <MenuItem value={quantity}>{ontologies.quantities[quantity]?.label}</MenuItem>
+                            <MenuItem key={quantity} value={quantity}>{ontologies.quantities[quantity]?.label}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -550,7 +544,7 @@ export default function ActuatorPage(props: Props) {
                             }}
                         >
                             {ontologies.quantities[quantity].units.map((unit) => (
-                                <MenuItem value={unit}>{ontologies.units[unit].label}</MenuItem>
+                                <MenuItem key={unit} value={unit}>{ontologies.units[unit].label}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -643,11 +637,11 @@ export default function ActuatorPage(props: Props) {
                                 color="primary"
                                 onClick={submitValue}
                                 startIcon={<SendRoundedIcon />}
-                                disabled={vlauePushing}
+                                disabled={valuePushing}
                             >
                                 Push
                             </Button>
-                            {vlauePushing && (
+                            {valuePushing && (
                                 <CircularProgress
                                     size={24}
                                     className={classes.buttonProgress}
@@ -661,8 +655,8 @@ export default function ActuatorPage(props: Props) {
 
                 <TabPanel value={tab} index={2}>
                     {(actuatorData) ? <>
-                        <Chart title="Actuator data" data={actuatorData.slice(-200)} />
-                        <ReactTable title="Actuator data" data={actuatorData.slice(-200)} />
+                        <Chart title="Actuator data" data={actuatorData} />
+                        <ReactTable title="Actuator data" data={actuatorData} />
                     </>
                         :
                         <CircularProgress />
