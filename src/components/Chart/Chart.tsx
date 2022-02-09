@@ -5,16 +5,16 @@ import { ApexOptions } from 'apexcharts';
 
 import {
     makeStyles,
-    colors,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter, timeAgo } from '../../tools';
+import { dateFormatter} from '../../tools';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '90%',
         align: 'center',
-        margin: '0 auto'
+        margin: '0 auto',
+        maxWidth: '1000px'
         // display: "inline-block",
         // verticalAlign: "top",
     }
@@ -41,8 +41,6 @@ type DataPoint = {
 export default function _Chart(props: Props) {
 
     const classes = useStyles();
-
-    /**---------------- */
 
     const options: ApexOptions = {
         chart: {

@@ -16,12 +16,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '90%',
     align: 'center',
-    margin: '0 auto'
+    margin: '0 auto',
+    maxWidth: '1000px'
   },
   table:{
     border: 'solid 1px black', 
-    width: '90%', 
-    textAlign: 'center'
+    width: '100%',
+    align: 'center', 
+    textAlign: 'center',
+    maxWidth: '1000px'
   },
 
 }));
