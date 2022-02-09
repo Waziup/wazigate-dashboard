@@ -310,6 +310,7 @@ export default function ActuatorPage(props: Props) {
             setRemoteActuator(actuator);
         }, setError);
         wazigate.getDevice(deviceID).then(device => { setDeviceName(device.name) }, setError);
+        loadActuatorData();
     }
 
     /**------------------- */
@@ -561,33 +562,23 @@ export default function ActuatorPage(props: Props) {
         // const hasUnsavedValueChanges = (
         //     rActuator?.value !== actuator?.value
         // )
-        const hasUnsavedValueChanges = false
-        const hasUnsavedChartChanges = false
 
 
         body = (
             <Fragment>
                 <AppBar position="static" className={classes.headBar}>
                     <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
+                        <Tab label="Actuator Readings" {...tabProps(0)} onClick={loadActuatorData} />
                         <Tab label={
                             <Fragment>
-                                <DirtyIndicator visible={hasUnsavedOntChanges}>Ontology</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedOntChanges}>Set Unit</DirtyIndicator>
                             </Fragment>
-                        } {...tabProps(0)} />
-                        <Tab label={
-                            <Fragment>
-                                <DirtyIndicator visible={hasUnsavedValueChanges}>Add Value</DirtyIndicator>
-                            </Fragment>
-                        } {...tabProps(1)} />
-                        <Tab label={
-                            <Fragment>
-                                <DirtyIndicator visible={hasUnsavedChartChanges}>Actuator Readings</DirtyIndicator>
-                            </Fragment>
-                        } {...tabProps(2)} onClick={loadActuatorData} />
+                        } {...tabProps(2)} />
+                        <Tab label="Add Value" {...tabProps(1)} />
                     </Tabs>
                 </AppBar>
 
-                <TabPanel value={tab} index={0} className={classes.tabPanel}>
+                <TabPanel value={tab} index={1} className={classes.tabPanel}>
                     {kindInput}
                     {quantityInput}
                     {unitInput}
@@ -614,7 +605,7 @@ export default function ActuatorPage(props: Props) {
                     </div>
                 </TabPanel>
 
-                <TabPanel value={tab} index={1}>
+                <TabPanel value={tab} index={2}>
                     <FormGroup>
                         {/* <FormControl className={classes.unit}> */}
                         {/* <InputLabel id="value-label">Value</InputLabel> */}
@@ -653,7 +644,7 @@ export default function ActuatorPage(props: Props) {
                     </FormGroup>
                 </TabPanel>
 
-                <TabPanel value={tab} index={2}>
+                <TabPanel value={tab} index={0}>
                     {(actuatorData) ? <>
                         <Chart title="Actuator data" data={actuatorData} />
                         <ReactTable title="Actuator data" data={actuatorData} />

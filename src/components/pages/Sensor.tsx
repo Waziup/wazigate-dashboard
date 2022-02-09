@@ -271,19 +271,6 @@ type DataPoint = {
 
 type TimeSeriesDataType = ValueWithTime;
 
-// For table and chart
-// const dateFormatter = (inDate: Date) => {
-//     const addZero = (n: number) => (n <= 9 ? ("0" + n) : String(n));
-//     const dateObj = new Date(inDate);
-//     return timeAgo.format(inDate)
-//         + " - " + dateObj.getFullYear()
-//         + "-" + addZero(dateObj.getMonth() + 1)
-//         + "-" + addZero(dateObj.getDate())
-//         + " " + addZero(dateObj.getHours())
-//         + ":" + addZero(dateObj.getMinutes())
-//         + ":" + addZero(dateObj.getSeconds())
-//     }
-
 export default function SensorPage(props: Props) {
     const { sensorID, deviceID, handleDrawerToggle, clouds } = props;
     const classes = useStyles();
@@ -307,11 +294,12 @@ export default function SensorPage(props: Props) {
         };
         wazigate.getDevice(deviceID).then(device => { setDeviceName(device.name) }, setError);
         wazigate.subscribe<CloudStatus>("clouds/+/status", cb);
+        loadSensorData();
         return () => {
             wazigate.unsubscribe("clouds/+/status", cb);
         }
-
     }, []);
+        
 
     const [sensorMenuAnchor, setSensorMenuAnchor] = useState(null);
     const handleSensorMenuClick = (event: MouseEvent) => {
@@ -583,17 +571,17 @@ export default function SensorPage(props: Props) {
             <Fragment>
                 <AppBar position="static" className={classes.headBar}>
                     <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
+                        <Tab label="Sensor Readings" {...tabProps(0)} onClick={loadSensorData} /> 
                         <Tab label={
-                            <DirtyIndicator visible={hasUnsavedOntChanges}>Ontology</DirtyIndicator>
-                        } {...tabProps(0)} />
+                            <DirtyIndicator visible={hasUnsavedOntChanges}>Set Unit</DirtyIndicator>
+                        } {...tabProps(1)} />
                         <Tab label={
                             <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
-                        } {...tabProps(1)} />
-                        <Tab label="Sensor Readings" {...tabProps(2)} onClick={loadSensorData} /> 
+                        } {...tabProps(2)} />
                     </Tabs>
                 </AppBar>
 
-                <TabPanel value={tab} index={0} className={classes.tabPanel}>
+                <TabPanel value={tab} index={1} className={classes.tabPanel}>
                     {kindInput}
                     {quantityInput}
                     {unitInput}
@@ -620,7 +608,7 @@ export default function SensorPage(props: Props) {
                     </div>
                 </TabPanel>
 
-                <TabPanel value={tab} index={1}>
+                <TabPanel value={tab} index={2}>
                     <FormGroup>
                         <FormControlLabel
                             className={classes.normalMargin}
@@ -664,7 +652,7 @@ export default function SensorPage(props: Props) {
                     </FormGroup>
                 </TabPanel>
 
-                <TabPanel value={tab} index={2}>
+                <TabPanel value={tab} index={0}>
                     {(sensorData) ? <>
                         <Chart title="Sensor data" data={sensorData} />
                         <ReactTable title="Sensor data" data={sensorData} />

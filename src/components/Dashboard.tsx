@@ -231,7 +231,7 @@ export const DashboardComp = () => {
         setClouds(Object.values(clouds));
       },
       (err: Error) => {
-        console.error("There was an error loading the cloads:", err);
+        console.error("There was an error loading the clouds:", err);
         setClouds([]);
       }
     );

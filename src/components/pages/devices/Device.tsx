@@ -24,6 +24,8 @@ import {
     ListItem,
     colors
 } from '@material-ui/core';
+import { time_ago } from "../../../tools";
+
 
 type Props = {
     device: Device;
@@ -72,6 +74,19 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 0,
         marginLeft: "1.5em",
     },
+    actualValue: {
+        fontFamily: "monospace",
+        padding: "5px",
+        margin: "-10px 0px 0px -10px",
+        backgroundColor: "#f1f1f1",
+    },
+    flex: {
+        display: "flex",
+        gap: "8px",
+    },
+    flexGrow: {
+        flexGrow: 1,
+    },
 }));
 
 const defaultSensorIcon = "meter";
@@ -105,7 +120,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                 // OK
                 // setGwID(newID);
                 // setDeviceName("(NEW) " + device.name);
-                // Lert's reload it
+                // Let's reload it
                 window.location.reload();
             }, (err) => {
                 alert("The device ID could not be saved:\n" + err);
@@ -252,6 +267,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                         const kind = (sensor.meta.kind || "") as string;
                         const quantity = (sensor.meta.quantity || "") as string;
                         const unit = (sensor.meta.unit || "") as string;
+                        const time = (sensor.time || "") as string;
 
                         const icon = ontologies.sensingDevices[kind]?.icon || defaultSensorIcon;
                         const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
@@ -266,12 +282,16 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                                     />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={sensor.name}
-                                    secondary={kindLabel}
-                                />
-                                <ListItemText
-                                    className={classes.value}
-                                    primary={`${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`}
+                                    primary={<>
+                                        <div className={classes.flexGrow}>{sensor.name}</div>
+                                        <div className={classes.actualValue}>{sensor.value === null ? null : `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`}</div>
+                                    </>}
+                                    primaryTypographyProps={{className: classes.flex}}
+                                    secondary={<>
+                                        <div className={classes.flexGrow}>{kindLabel}</div>
+                                        <div>{time_ago(time)}</div>
+                                    </>}
+                                    secondaryTypographyProps={{className: classes.flex}}
                                 />
                             </ListItem>
                         )
@@ -282,6 +302,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                         const kind = (actuator.meta.kind || "") as string;
                         const quantity = (actuator.meta.quantity || "") as string;
                         const unit = (actuator.meta.unit || "") as string;
+                        const time = (actuator.time || "") as string;
 
                         const icon = ontologies.sensingDevices[kind]?.icon || defaultActuatorIcon;
                         const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
@@ -296,13 +317,23 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                                     />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary={actuator.name}
-                                    secondary={kindLabel}
+                                    primary={<>
+                                        <div className={classes.flexGrow}>{actuator.name}</div>
+                                        <div className={classes.actualValue}>{actuator.value === null ? null : `${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`}</div>
+                                    </>}
+                                    primaryTypographyProps={{className: classes.flex}}
+                                    secondary={<>
+                                        <div className={classes.flexGrow}>{kindLabel}</div>
+                                        <div>{time_ago(time)}</div>
+                                    </>}
+                                    secondaryTypographyProps={{className: classes.flex}}
                                 />
-                                <ListItemText
+                                {/* <ListItemText
                                     className={classes.value}
                                     primary={`${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`}
-                                />
+                                    // secondary={String("edited:\n" + time_ago(modified))}
+                                    secondary={<>edited:<br/>{time_ago(modified)}</>}
+                                /> */}
                             </ListItem>
                         )
                     })}
@@ -332,3 +363,4 @@ function randomColor(): string {
     }
     return color;
 }
+
