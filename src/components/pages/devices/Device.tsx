@@ -25,6 +25,7 @@ import {
     colors
 } from '@material-ui/core';
 import { time_ago } from "../../../tools";
+import { values } from "underscore";
 
 
 type Props = {
@@ -79,6 +80,9 @@ const useStyles = makeStyles((theme) => ({
         padding: "5px",
         margin: "-10px 0px 0px -10px",
         backgroundColor: "#f1f1f1",
+    },
+    noActualValue: {
+        backgroundColor: "#ffffff",
     },
     flex: {
         display: "flex",
@@ -148,7 +152,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
             wazigate.deleteDevice(device.id);
             onDelete();
         }
-    }
+    };
 
     // const sensors = device.sensors.map(sensor => {
     //     const ont = ontologies.sensingDevices[sensor.kind]
@@ -273,6 +277,12 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                         const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
                         const unitLabel = ontologies.units[unit]?.label || unit;
 
+                        let valueElm: JSX.Element;
+                        if(sensor.value !== null) {
+                            const valueText = `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`;
+                            valueElm = <div className={classes.actualValue}>{valueText}</div>;
+                        }
+
                         return (
                             <ListItem component="a" key={sensor.id} button href={`#/devices/${device.id}/sensors/${sensor.id}`}>
                                 <ListItemIcon>
@@ -284,7 +294,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                                 <ListItemText
                                     primary={<>
                                         <div className={classes.flexGrow}>{sensor.name}</div>
-                                        <div className={classes.actualValue}>{sensor.value === null ? null : `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`}</div>
+                                        {valueElm}
                                     </>}
                                     primaryTypographyProps={{className: classes.flex}}
                                     secondary={<>
@@ -308,6 +318,12 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                         const kindLabel = ontologies.sensingDevices[kind]?.label || kind;
                         const unitLabel = ontologies.units[unit]?.label || unit;
 
+                        let valueElm: JSX.Element;
+                        if(actuator.value !== null) {
+                            const valueText = `${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`;
+                            valueElm = <div className={classes.actualValue}>{valueText}</div>;
+                        }
+
                         return (
                             <ListItem component="a" key={actuator.id} button href={`#/devices/${device.id}/actuators/${actuator.id}`}>
                                 <ListItemIcon>
@@ -319,7 +335,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                                 <ListItemText
                                     primary={<>
                                         <div className={classes.flexGrow}>{actuator.name}</div>
-                                        <div className={classes.actualValue}>{actuator.value === null ? null : `${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`}</div>
+                                        {valueElm}
                                     </>}
                                     primaryTypographyProps={{className: classes.flex}}
                                     secondary={<>
