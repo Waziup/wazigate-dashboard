@@ -41,7 +41,7 @@ export function time_ago(time : any) {
       case 'number':
         break;
       case 'string':
-        if (time == "")
+        if (!time || time == "")
             return "";
         else
             time = +new Date(time);

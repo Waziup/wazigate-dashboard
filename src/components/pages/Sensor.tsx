@@ -573,15 +573,25 @@ export default function SensorPage(props: Props) {
                     <Tabs value={tab} onChange={handleTabChange} indicatorColor="primary" textColor="primary">
                         <Tab label="Sensor Readings" {...tabProps(0)} onClick={loadSensorData} /> 
                         <Tab label={
-                            <DirtyIndicator visible={hasUnsavedOntChanges}>Set Unit</DirtyIndicator>
+                            <DirtyIndicator visible={hasUnsavedOntChanges}>Settings</DirtyIndicator>
                         } {...tabProps(1)} />
-                        <Tab label={
-                            <DirtyIndicator visible={hasUnsavedSyncChanges}>Sync</DirtyIndicator>
-                        } {...tabProps(2)} />
                     </Tabs>
                 </AppBar>
 
+                <TabPanel value={tab} index={0}>
+                    {(sensorData) ? <>
+                        <Chart title="Sensor data" data={sensorData} />
+                        <ReactTable title="Sensor data" data={sensorData} />
+                    </>
+                        :
+                        <CircularProgress />
+                    }
+                </TabPanel>
+
                 <TabPanel value={tab} index={1} className={classes.tabPanel}>
+                    <Typography variant="h6" noWrap className={classes.headBar}>
+                        <span>Set sensor kind, quantity and unit &nbsp;</span>
+                    </Typography>
                     {kindInput}
                     {quantityInput}
                     {unitInput}
@@ -606,9 +616,9 @@ export default function SensorPage(props: Props) {
                             </Button>
                         </Grow>
                     </div>
-                </TabPanel>
-
-                <TabPanel value={tab} index={2}>
+                    <Typography variant="h6" noWrap className={classes.headBar}>
+                        <span>Set sync and sync interval &nbsp;</span>
+                    </Typography>
                     <FormGroup>
                         <FormControlLabel
                             className={classes.normalMargin}
@@ -650,16 +660,6 @@ export default function SensorPage(props: Props) {
                             </Grow>
                         </div>
                     </FormGroup>
-                </TabPanel>
-
-                <TabPanel value={tab} index={0}>
-                    {(sensorData) ? <>
-                        <Chart title="Sensor data" data={sensorData} />
-                        <ReactTable title="Sensor data" data={sensorData} />
-                    </>
-                        :
-                        <CircularProgress />
-                    }
                 </TabPanel>
 
                 <Snackbar

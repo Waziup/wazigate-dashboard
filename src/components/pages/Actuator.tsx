@@ -571,14 +571,26 @@ export default function ActuatorPage(props: Props) {
                         <Tab label="Actuator Readings" {...tabProps(0)} onClick={loadActuatorData} />
                         <Tab label={
                             <Fragment>
-                                <DirtyIndicator visible={hasUnsavedOntChanges}>Set Unit</DirtyIndicator>
+                                <DirtyIndicator visible={hasUnsavedOntChanges}>Settings</DirtyIndicator>
                             </Fragment>
                         } {...tabProps(2)} />
-                        <Tab label="Add Value" {...tabProps(1)} />
                     </Tabs>
                 </AppBar>
 
+                <TabPanel value={tab} index={0}>
+                    {(actuatorData) ? <>
+                        <Chart title="Actuator data" data={actuatorData} />
+                        <ReactTable title="Actuator data" data={actuatorData} />
+                    </>
+                        :
+                        <CircularProgress />
+                    }
+                </TabPanel>
+
                 <TabPanel value={tab} index={1} className={classes.tabPanel}>
+                    <Typography variant="h6" noWrap className={classes.headBar}>
+                        <span>Set actuator kind, quantity and unit &nbsp;</span>
+                    </Typography>
                     {kindInput}
                     {quantityInput}
                     {unitInput}
@@ -603,10 +615,11 @@ export default function ActuatorPage(props: Props) {
                             </Button>
                         </Grow>
                     </div>
-                </TabPanel>
 
-                <TabPanel value={tab} index={2}>
                     <FormGroup>
+                    <Typography variant="h6" noWrap className={classes.headBar}>
+                        <span>Add a value with current timestamp &nbsp;</span>
+                    </Typography>
                         {/* <FormControl className={classes.unit}> */}
                         {/* <InputLabel id="value-label">Value</InputLabel> */}
                         <TextField
@@ -642,16 +655,6 @@ export default function ActuatorPage(props: Props) {
                         {/* </div> */}
 
                     </FormGroup>
-                </TabPanel>
-
-                <TabPanel value={tab} index={0}>
-                    {(actuatorData) ? <>
-                        <Chart title="Actuator data" data={actuatorData} />
-                        <ReactTable title="Actuator data" data={actuatorData} />
-                    </>
-                        :
-                        <CircularProgress />
-                    }
                 </TabPanel>
 
                 <Snackbar

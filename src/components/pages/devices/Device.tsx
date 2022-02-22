@@ -344,12 +344,6 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
                                     </>}
                                     secondaryTypographyProps={{className: classes.flex}}
                                 />
-                                {/* <ListItemText
-                                    className={classes.value}
-                                    primary={`${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`}
-                                    // secondary={String("edited:\n" + time_ago(modified))}
-                                    secondary={<>edited:<br/>{time_ago(modified)}</>}
-                                /> */}
                             </ListItem>
                         )
                     })}
