@@ -167,15 +167,17 @@ hooks.setMenuHook(
 //   icon: <WifiIcon />,
 //   href: "#/settings",
 // });
-hooks.setMenuHook(
-  "apps",
-  {
-    primary: "Apps",
-    icon: <AppsIcon />,
-    href: "#/apps",
-  },
-  80
-);
+
+// Uncomment to display apps
+// hooks.setMenuHook(
+//   "apps",
+//   {
+//     primary: "Apps",
+//     icon: <AppsIcon />,
+//     href: "#/apps",
+//   },
+//   80
+// );
 
 hooks.setMenuHook(
   "profile",
