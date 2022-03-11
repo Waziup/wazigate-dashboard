@@ -37,8 +37,9 @@ export function dateFormatter(date: Date) {
 
 export function time_ago(time: any) {
 
-  if (!time)
+  if (!time)// || time === null || time === '') //should be all the same
     return "";
+
   switch (typeof time) {
     case 'number':
       break;
