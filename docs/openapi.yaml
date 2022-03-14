@@ -290,7 +290,7 @@ paths:
                     time:
                       type: string
                       format: date-time
-                      description: Time this value was recieved.
+                      description: Time this value was received.
                     value: 
                       description: Can be any value - string, number, boolean, array or object.
                 example:
@@ -1018,7 +1018,7 @@ paths:
                     time:
                       type: string
                       format: date-time
-                      description: Time this value was recieved.
+                      description: Time this value was received.
                     value: 
                       description: Can be any value - string, number, boolean, array or object.
                 example:
@@ -1269,7 +1269,7 @@ paths:
         '404':
           description: No device with that ID found.
 
-  '/devices/{deviceID}/actuators/{actuatorID}/value':
+  '/devices/{deviceID}/sensors/{actuatorID}/value':
     get:
       tags:
         - Actuators
@@ -1560,7 +1560,7 @@ paths:
         Get details about the synchronization status of all entities.
         
         
-        You can subscribe to this topic to recieve new statuses in realtime!
+        You can subscribe to this topic to receive new statuses in realtime!
       parameters:
         - name: id
           in: path
@@ -1625,10 +1625,10 @@ paths:
       tags:
         - Clouds
       summary: Events
-      description: The events lists holds Events that happend during the synchronization like errors or successes, communication errors, pause & resume details and more.
+      description: The events lists holds Events that happened during the synchronization like errors or successes, communication errors, pause & resume details and more.
       
       
-        You can subscribe to this topic to recieve new events in realtime!
+        You can subscribe to this topic to receive new events in realtime!
       parameters:
         - name: id
           in: path
@@ -1669,6 +1669,119 @@ paths:
                     msg: "Gateway already registered."
                     time: "2019-11-04T09:05:55.9602334+01:00"
         '404':
+          description: Bad Request. There may be no cloud with that id.
+
+  '/clouds/{id}/rest':
+    post:
+      tags:
+        - Clouds
+      summary: Change Rest address
+      description: Sets the WaziCloud REST address. You can subscribe to this topic to
+        receive new events in realtime!
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cloud
+          required: true
+          schema:
+            type: string
+            example: waziup
+      requestBody:
+        description: Set a new REST api endpoint.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: //api.staging.waziup.io/api/v2
+      responses:
+        "200":
+          description: The REST API endpoint was changed successfully.
+        "404":
+          description: Bad Request. There may be no cloud with that id.
+  '/clouds/{id}/mqtt':
+    post:
+      tags:
+        - Clouds
+      summary: Sets MQTT address
+      description: Sets the WaziCloud MQTT address. You can subscribe to this topic to
+        receive new events in realtime!
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cloud
+          required: true
+          schema:
+            type: string
+            example: waziup
+      requestBody:
+        description: Set a new MQTT api endpoint.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: null
+      responses:
+        "200":
+          description: The MQTT API endpoint was changed successfully.
+        "404":
+          description: Bad Request. There may be no cloud with that id.
+  '/clouds/{id}/username':
+    post:
+      tags:
+        - Clouds
+      summary: Sets a cloud username
+      description: Sets the username of cloud. You can subscribe to this topic to
+        receive new events in realtime!
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cloud
+          required: true
+          schema:
+            type: string
+            example: waziup
+      requestBody:
+        description: Set a new username.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: my_new_awesome_username
+      responses:
+        "200":
+          description: The username was changed successfully.
+        "404":
+          description: Bad Request. There may be no cloud with that id.
+  '/clouds/{id}/token':
+    post:
+      tags:
+        - Clouds
+      summary: Sets a cloud token
+      description: Sets the token of cloud. You can subscribe to this topic to receive
+        new events in realtime!
+      parameters:
+        - name: id
+          in: path
+          description: ID of the cloud
+          required: true
+          schema:
+            type: string
+            example: waziup
+      requestBody:
+        description: Set a new token.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: ""
+      responses:
+        "200":
+          description: The token was changed successfully.
+        "404":
           description: Bad Request. There may be no cloud with that id.
 
 # Apps ##########################################################################################
@@ -1863,7 +1976,7 @@ components:
           example: "2019-10-14T11:41:10.814Z"
         time:
           type: string
-          description: Last time a value was recieved.
+          description: Last time a value was received.
           format: date-time
           example: "2019-10-14T11:41:10.814Z"
         value:
@@ -1891,7 +2004,7 @@ components:
           example: "2019-10-14T11:41:10.814Z"
         time:
           type: string
-          description: Last time a value was recieved.
+          description: Last time a value was received.
           format: date-time
           example: "2019-10-14T11:41:10.814Z"
         value:
