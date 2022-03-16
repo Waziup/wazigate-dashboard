@@ -129,7 +129,7 @@ export default function Login() {
           <ListItem>
             <img className={classes.logo} src={wazigateLogo} />
             <ListItemText
-              primary="Login to the Wazigate dahsboard"
+              primary="Login to the Wazigate dashboard"
             />
           </ListItem>
         </List>
