@@ -359,11 +359,15 @@ export default function DevicePage({ deviceID, handleDrawerToggle }: Props) {
     // }
 
     /*------------ */
+    const [gwID, setGwID] = useState(null as string);
+    const isGateway = gwID === deviceID;
+
     // Run stuff on load
     useEffect(
         () => {
             loadCodecsList();
             wazigate.getDevice(deviceID).then(setDevice, setError);
+            wazigate.getID().then(setGwID, setError);
         },
         [] /* This makes it to run only once*/
     );
@@ -483,7 +487,12 @@ export default function DevicePage({ deviceID, handleDrawerToggle }: Props) {
             console.error("There was an error saving the codec:\n" + err)
         });
     }
-
+    const handleDeleteClick = () => {
+        if (confirm(`Delete device '${device.id}'?\nThis will delete the device, all of its sensors and actuators and all data values.\n\nThis cannot be undone!`)) {
+            wazigate.deleteDevice(device.id);
+            window.location.assign("/");
+        }
+    };
     // const [codecId, setCodecId] = useState(null);
     // const loadCodecsList = () => {
     //     wazigate.getDeviceMeta(device.id).then(res => {
@@ -571,12 +580,13 @@ export default function DevicePage({ deviceID, handleDrawerToggle }: Props) {
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                {!isGateway ? (
+                <MenuItem onClick={handleDeleteClick}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Delete" />
-                </MenuItem>
+                </MenuItem>) : (null)}
 
                 {hooks.get<DeviceMenuHook>("device.menu").map((Hook, i) =>
                     <Hook
