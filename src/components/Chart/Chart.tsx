@@ -7,7 +7,7 @@ import {
     makeStyles,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter} from '../../tools';
+import { dateFormatter } from '../../tools';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,9 +33,37 @@ type Props = {
 };
 
 type DataPoint = {
-  x: Date;
-  y: number;
+    x: Date;
+    y: number;
 };
+
+function numbersOnly(point: DataPoint) {
+    //console.log (value);  // it will show all the values.
+
+    if (typeof point.y === 'number') {
+        return true;
+    }
+    return false;
+}
+
+function isBool(p: DataPoint) {
+    return typeof p.y === "boolean"; 
+}
+
+function boolTo01(p: DataPoint) {
+    return {
+        x: p.x,
+        y: p.y ? 1 : 0
+    }
+}
+
+function checkValidValues(points: DataPoint[]) {
+    var newPoints; 
+    newPoints = points.filter(isBool).map(boolTo01);
+    //newPoints = points.filter(numbersOnly);
+
+    return newPoints;
+}
 
 
 export default function _Chart(props: Props) {
@@ -63,23 +91,22 @@ export default function _Chart(props: Props) {
     };
     const series = [{
         name: "",
-        data: props.data
+        data: checkValidValues(props.data)
     }];
 
+    // if (!checkValidValues(props.data)) {
+    //     return null;
+    // }
+
     return (
-        <div>
-            <div>
-                <div className={`${classes.root}`}>
-                    <Chart
-                        className="chart" //{props.className}
-                        options={options}
-                        series={series}
-                        type="line"
-                        align='center'
-                    />
-                </div>
-            </div>
+        <div className={classes.root}>
+            <Chart
+                className="chart" //{props.className}
+                options={options}
+                series={series}
+                type="line"
+                align='center'
+            />
         </div>
     );
-
 }

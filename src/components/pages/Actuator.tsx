@@ -58,6 +58,7 @@ import {
 import SyncIntervalInput from "../SyncIntervalInput";
 import { OntologyKindInput } from "../OntologyKindInput";
 import { timeAgo } from "../../tools";
+import { json } from "d3";
 
 
 const drawerWidth = 240;
@@ -262,6 +263,28 @@ function tabProps(index: any) {
     };
 }
 
+function checkValueValidity(newValue: any) {
+    if(isNaN(newValue)){
+        if(newValue == "true")
+            return 1;
+        else if(newValue == "false")
+            return 0;
+        else
+            return null;
+    }
+    else
+        return newValue;
+}
+
+function maybeJSON(s: string): any {
+    try {
+        return JSON.parse(s);
+    } catch(err) {
+        return s;
+    }
+}
+
+
 type EntityStatus = {
     action: CloudAction[];
     remote: Date;
@@ -419,18 +442,21 @@ export default function ActuatorPage(props: Props) {
     }
 
     /**-------------------- */
-
-
     const [newValue, setNewValue] = useState(null);
     const [valuePushing, setValuePushing] = useState(false);
     const submitValue = () => {
 
         setValuePushing(true);
-        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", newValue).then(
+        const value = maybeJSON(newValue);
+        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", value).then(
             () => {
-                load();
+                // loadActuatorData();
+                // const newValue = checkValueValidity(newValue)
+                // if(newValue != null)
+                //     load();
                 // Syncing the actuator value with the cloud does not make sense. 
                 // Maybe we need to use some additional sensor values to keep the status of the target device
+                setActuatorData([...actuatorData, {x: new Date(), y: value}]);
 
             }, (err: Error) => {
                 alert("There was an error pushing the actuator value:\n" + err)
