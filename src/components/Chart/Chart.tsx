@@ -37,32 +37,27 @@ type DataPoint = {
     y: number;
 };
 
-function numbersOnly(point: DataPoint) {
-    //console.log (value);  // it will show all the values.
-
-    if (typeof point.y === 'number') {
-        return true;
-    }
-    return false;
+function validPoint(p: DataPoint) {
+    return  typeof p.y === "boolean" ||  typeof p.y === "number";
 }
 
-function isBool(p: DataPoint) {
-    return typeof p.y === "boolean"; 
-}
-
-function boolTo01(p: DataPoint) {
-    return {
-        x: p.x,
-        y: p.y ? 1 : 0
+function displayPoint(p: DataPoint): DataPoint {
+    switch(typeof p.y) {
+        case "number":
+            return p;
+        case "boolean":
+            return {
+                x: p.x,
+                y: p.y ? 1 : 0
+            }
+        default:
+            // unreached
+            throw "no a supported value";
     }
 }
 
 function checkValidValues(points: DataPoint[]) {
-    var newPoints; 
-    newPoints = points.filter(isBool).map(boolTo01);
-    //newPoints = points.filter(numbersOnly);
-
-    return newPoints;
+    return points.filter(validPoint).map(displayPoint);
 }
 
 
@@ -93,10 +88,6 @@ export default function _Chart(props: Props) {
         name: "",
         data: checkValidValues(props.data)
     }];
-
-    // if (!checkValidValues(props.data)) {
-    //     return null;
-    // }
 
     return (
         <div className={classes.root}>
