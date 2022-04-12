@@ -7,7 +7,7 @@ import {
     makeStyles,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter } from '../../tools';
+import { dateFormatter, formatValue } from '../../tools';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,6 +30,7 @@ type Props = {
     width?: number;
     className?: string;
     data?: DataPoint[];
+    quantity?: string,
 };
 
 type DataPoint = {
@@ -80,9 +81,18 @@ export default function _Chart(props: Props) {
             shared: false,
             x: {
                 formatter: dateFormatter as any
+            },
+            y: {
+                formatter: (val: number, opts?: any): string => {
+                    // const p = props.data[opts.dataPointIndex];
+                    return formatValue(val, props.quantity)
+                }
             }
         },
-        colors: ['#3F51B5'] //Johann fragen #3F51B5 
+        colors: ['#3F51B5'], //Johann fragen #3F51B5 
+        stroke: {
+            curve: props.quantity=='Boolean' ? 'stepline' : 'straight'
+          },
     };
     const series = [{
         name: "",

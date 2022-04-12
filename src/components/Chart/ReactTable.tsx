@@ -7,7 +7,7 @@ import {
   colors,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter, timeAgo } from '../../tools';
+import { dateFormatter, formatValue } from '../../tools';
 
 
 
@@ -49,6 +49,7 @@ type Props = {
   width?: number;
   className?: string;
   data?: DataPoint[];
+  quantity?: string,
 };
 
 type DataPoint = {
@@ -128,7 +129,7 @@ function ReactTable(props: Props) {
                         border: 'solid 1px gray',
                       }}
                     >
-                      {valueFormat(cell.value)}
+                      {valueFormat(cell.value,props.quantity)}
                     </td>
                   )
                 })}
@@ -141,9 +142,9 @@ function ReactTable(props: Props) {
   );
 }
 
-function valueFormat(val: unknown): string {
+function valueFormat(val: unknown, quantity: string): string {
   if(val instanceof Date) return dateFormatter(val);
-  return `${val}`;
+  return `${formatValue(val,quantity)}`;
 }
 
 export default ReactTable;

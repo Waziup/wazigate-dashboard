@@ -37,7 +37,7 @@ export function dateFormatter(date: Date) {
 
 export function time_ago(time: any) {
 
-  if (!time)// || time === null || time === '') //should be all the same
+  if (!time || time === null || time === '') //should be all the same
     return "";
 
   switch (typeof time) {
@@ -92,4 +92,33 @@ export function time_ago(time: any) {
         return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
     }
   return time;
+}
+
+export function formatValue(value: any, quantity?: string): string {
+  switch (quantity) {
+    case "AirTemperature":
+    case "BoardTemperature":
+    case "BodyTemperature":
+    case "BuildingTemperature":
+    case "DewPointTemperature":
+    case "FoodTemperature":
+    case "HouseholdApplianceTemperature":
+    case "RoadTemperature":
+    case "RoomTemperature":
+    case "SoilTemperature":
+    case "Temperature":
+    case "TemperatureEngine":
+    case "TemperatureWasteContainer":
+    case "WaterTemperature":
+      return `${Math.round(value * 100) / 100}`;
+    case "AirHumidity":
+    case "Humidity":
+    case "RelativeHumidity":
+    case "RelativeHumidity":
+      return `${Math.round(value * 1000) / 1000}`;
+    case "Boolean":
+      return value ? "ON" : "OFF"
+    default:
+      return `${value}`;
+  }
 }

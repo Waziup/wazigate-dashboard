@@ -605,8 +605,8 @@ export default function ActuatorPage(props: Props) {
 
                 <TabPanel value={tab} index={0}>
                     {(actuatorData) ? <>
-                        <Chart title="Actuator data" data={actuatorData} />
-                        <ReactTable title="Actuator data" data={actuatorData} />
+                        <Chart title="Actuator data" data={actuatorData} quantity={actuator.meta.quantity} />
+                        <ReactTable title="Actuator data" data={actuatorData} quantity={actuator.meta.quantity}/>
                     </>
                         :
                         <CircularProgress />

@@ -24,7 +24,7 @@ import {
     ListItem,
     colors
 } from '@material-ui/core';
-import { time_ago } from "../../../tools";
+import { time_ago, formatValue } from "../../../tools";
 import { values } from "underscore";
 
 
@@ -279,7 +279,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
 
                         let valueElm: JSX.Element;
                         if(sensor.value !== null) {
-                            const valueText = `${sensor.value}${unitLabel ? ` ${unitLabel}` : ""}`;
+                            const valueText = `${formatValue(sensor.value,quantity)}${unitLabel ? ` ${unitLabel}` : ""}`;
                             valueElm = <div className={classes.actualValue}>{valueText}</div>;
                         }
 
@@ -320,7 +320,7 @@ export const DeviceComp = ({ device, className, isGateway, onDelete }: Props) =>
 
                         let valueElm: JSX.Element;
                         if(actuator.value !== null) {
-                            const valueText = `${actuator.value}${unitLabel ? ` ${unitLabel}` : ""}`;
+                            const valueText = `${formatValue(actuator.value,quantity)}${unitLabel ? ` ${unitLabel}` : ""}`;
                             valueElm = <div className={classes.actualValue}>{valueText}</div>;
                         }
 

@@ -580,8 +580,8 @@ export default function SensorPage(props: Props) {
 
                 <TabPanel value={tab} index={0}>
                     {(sensorData) ? <>
-                        <Chart title="Sensor data" data={sensorData} />
-                        <ReactTable title="Sensor data" data={sensorData} />
+                        <Chart title="Sensor data" data={sensorData} quantity={sensor.meta.quantity}/>
+                        <ReactTable title="Sensor data" data={sensorData} quantity={sensor.meta.quantity}/>
                     </>
                         :
                         <CircularProgress />
