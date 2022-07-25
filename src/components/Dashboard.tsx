@@ -169,15 +169,15 @@ hooks.setMenuHook(
 // });
 
 // Uncomment to display apps
-// hooks.setMenuHook(
-//   "apps",
-//   {
-//     primary: "Apps",
-//     icon: <AppsIcon />,
-//     href: "#/apps",
-//   },
-//   80
-// );
+hooks.setMenuHook(
+  "apps",
+  {
+    primary: "Apps",
+    icon: <AppsIcon />,
+    href: "#/apps",
+  },
+  80
+);
 
 hooks.setMenuHook(
   "profile",
