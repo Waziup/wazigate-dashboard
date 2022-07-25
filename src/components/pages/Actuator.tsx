@@ -264,10 +264,10 @@ function tabProps(index: any) {
 }
 
 function checkValueValidity(newValue: any) {
-    if(isNaN(newValue)){
-        if(newValue == "true")
+    if (isNaN(newValue)) {
+        if (newValue == "true")
             return 1;
-        else if(newValue == "false")
+        else if (newValue == "false")
             return 0;
         else
             return null;
@@ -279,7 +279,7 @@ function checkValueValidity(newValue: any) {
 function maybeJSON(s: string): any {
     try {
         return JSON.parse(s);
-    } catch(err) {
+    } catch (err) {
         return s;
     }
 }
@@ -295,7 +295,7 @@ type EntityStatus = {
 type DataPoint = {
     x: Date;
     y: number;
-  };
+};
 
 type TimeSeriesDataType = ValueWithTime;
 
@@ -430,10 +430,10 @@ export default function ActuatorPage(props: Props) {
         }))
     }
 
-    const [actuatorData, setActuatorData] = useState<DataPoint[]>([]);
+    const [actuatorData, setActuatorData] = useState<DataPoint[] | null>(null);
     const loadActuatorData = () => {
         wazigate.getActuatorValues(deviceID, actuatorID)
-            .then((data : TimeSeriesDataType[]) => {
+            .then((data: TimeSeriesDataType[]) => {
                 const points = data.map(item => ({ x: item.time, y: item.value }));
                 setActuatorData(points);
             }, (err: Error) => {
@@ -442,13 +442,12 @@ export default function ActuatorPage(props: Props) {
     }
 
     /**-------------------- */
-    const [newValue, setNewValue] = useState(null);
+    const [newValue, setNewValue] = useState<any>(null);
     const [valuePushing, setValuePushing] = useState(false);
-    const submitValue = () => {
+    const submitValue = (val: any = newValue) => {
 
         setValuePushing(true);
-        const value = maybeJSON(newValue);
-        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", value).then(
+        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", val).then(
             () => {
                 // loadActuatorData();
                 // const newValue = checkValueValidity(newValue)
@@ -456,7 +455,8 @@ export default function ActuatorPage(props: Props) {
                 //     load();
                 // Syncing the actuator value with the cloud does not make sense. 
                 // Maybe we need to use some additional sensor values to keep the status of the target device
-                setActuatorData([...actuatorData, {x: new Date(), y: value}]);
+                setActuatorData([...actuatorData, { x: new Date(), y: val }]);
+                setNewValue(null);
 
             }, (err: Error) => {
                 alert("There was an error pushing the actuator value:\n" + err)
@@ -606,7 +606,7 @@ export default function ActuatorPage(props: Props) {
                 <TabPanel value={tab} index={0}>
                     {(actuatorData) ? <>
                         <Chart title="Actuator data" data={actuatorData} quantity={actuator.meta.quantity} />
-                        <ReactTable title="Actuator data" data={actuatorData} quantity={actuator.meta.quantity}/>
+                        <ReactTable title="Actuator data" data={actuatorData} quantity={actuator.meta.quantity} />
                     </>
                         :
                         <CircularProgress />
@@ -643,41 +643,58 @@ export default function ActuatorPage(props: Props) {
                     </div>
 
                     <FormGroup>
-                    <Typography variant="h6" noWrap className={classes.headBar}>
-                        <span>Add a value with current timestamp &nbsp;</span>
-                    </Typography>
+                        <Typography variant="h6" noWrap className={classes.headBar}>
+                            <span>Add a value with current timestamp &nbsp;</span>
+                        </Typography>
                         {/* <FormControl className={classes.unit}> */}
                         {/* <InputLabel id="value-label">Value</InputLabel> */}
-                        <TextField
-                            label={"Actuator Value"}
-                            placeholder="no value"
-                            value={newValue}
-                            onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                                if (event.target.value !== newValue) {
-                                    setNewValue(event.target.value as any);
-                                }
-                            }}
-                        />
-                        {/* </FormControl> */}
-                        {/* <div className={classes.submitChanges}> */}
-                        <div className={classes.wrapper}>
-                            <Button
-                                className={classes.submitChangesBtn}
-                                variant="contained"
-                                color="primary"
-                                onClick={submitValue}
-                                startIcon={<SendRoundedIcon />}
-                                disabled={valuePushing}
-                            >
-                                Push
-                            </Button>
-                            {valuePushing && (
-                                <CircularProgress
-                                    size={24}
-                                    className={classes.buttonProgress}
+                        {quantity == 'Boolean' ?
+                            <FormGroup>
+                                {actuatorData ?
+                                    <FormControlLabel
+                                        control={<Switch checked={newValue ?? !!actuatorData[actuatorData.length - 1]?.y}
+                                        color="primary"
+                                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                                const val = event.target.checked;
+                                                setNewValue(val);
+                                                submitValue(val);
+                                            }} />}
+                                        label="Toggle On/Off Switch"
+                                    />
+                                    : null}
+                            </FormGroup>
+                            : <>
+                                <TextField
+                                    label={"Actuator Value"}
+                                    placeholder="no value"
+                                    value={newValue}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        if (event.target.value !== newValue) {
+                                            setNewValue(maybeJSON(event.target.value));
+                                        }
+                                    }}
                                 />
-                            )}
-                        </div>
+                                {/* </FormControl> */}
+                                {/* <div className={classes.submitChanges}> */}
+                                <div className={classes.wrapper}>
+                                    <Button
+                                        className={classes.submitChangesBtn}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={submitValue}
+                                        startIcon={<SendRoundedIcon />}
+                                        disabled={valuePushing}
+                                    >
+                                        Push
+                                    </Button>
+                                    {valuePushing && (
+                                        <CircularProgress
+                                            size={24}
+                                            className={classes.buttonProgress}
+                                        />
+                                    )}
+                                </div>
+                            </>}
                         {/* </div> */}
 
                     </FormGroup>
