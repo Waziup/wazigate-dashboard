@@ -445,9 +445,9 @@ export default function ActuatorPage(props: Props) {
     const [newValue, setNewValue] = useState<any>(null);
     const [valuePushing, setValuePushing] = useState(false);
     const submitValue = (val: any = newValue) => {
-
         setValuePushing(true);
-        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", val).then(
+        // dirty way of solving this issue: quantity == 'Boolean' ? val : newValue
+        wazigate.set<any>("devices/" + deviceID + "/actuators/" + actuatorID + "/value", quantity == 'Boolean' ? val : newValue).then(
             () => {
                 // loadActuatorData();
                 // const newValue = checkValueValidity(newValue)
@@ -653,7 +653,7 @@ export default function ActuatorPage(props: Props) {
                                 {actuatorData ?
                                     <FormControlLabel
                                         control={<Switch checked={newValue ?? !!actuatorData[actuatorData.length - 1]?.y}
-                                        color="primary"
+                                            color="primary"
                                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                                 const val = event.target.checked;
                                                 setNewValue(val);

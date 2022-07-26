@@ -35,6 +35,18 @@ export function dateFormatter(date: Date) {
     + ":" + addZero(dateObj.getSeconds())
 }
 
+export function dateFormatterOnlyTime(date: Date) {
+  const addZero = (n: number) => (n <= 9 ? ("0" + n) : String(n));
+  const dateObj = new Date(date);
+  return dateObj.getFullYear()
+    + "-" + addZero(dateObj.getMonth() + 1)
+    + "-" + addZero(dateObj.getDate())
+    + " " + addZero(dateObj.getHours())
+    + ":" + addZero(dateObj.getMinutes())
+    + ":" + addZero(dateObj.getSeconds())
+    
+}
+
 export function time_ago(time: any) {
 
   if (!time || time === null || time === '') //should be all the same

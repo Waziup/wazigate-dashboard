@@ -7,7 +7,7 @@ import {
     makeStyles,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter, formatValue} from '../../tools';
+import { dateFormatter, formatValue, dateFormatterOnlyTime } from '../../tools';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,16 +34,16 @@ type Props = {
 };
 
 type DataPoint = {
-  x: Date;
-  y: number;
+    x: Date;
+    y: number;
 };
 
 function validPoint(p: DataPoint) {
-    return  typeof p.y === "boolean" ||  typeof p.y === "number";
+    return typeof p.y === "boolean" || typeof p.y === "number";
 }
 
 function displayPoint(p: DataPoint): DataPoint {
-    switch(typeof p.y) {
+    switch (typeof p.y) {
         case "number":
             return p;
         case "boolean":
@@ -84,6 +84,9 @@ export default function _Chart(props: Props) {
         },
         xaxis: {
             type: 'datetime',
+            labels: {
+                formatter: dateFormatterOnlyTime as any
+            }
         },
         tooltip: {
             shared: false,
@@ -99,8 +102,8 @@ export default function _Chart(props: Props) {
         },
         colors: ['#3F51B5'], //Johann fragen #3F51B5 
         stroke: {
-            curve: props.quantity=='Boolean' ? 'stepline' : 'straight'
-          },
+            curve: props.quantity == 'Boolean' ? 'stepline' : 'straight'
+        },
     };
     const series = [{
         name: "",
@@ -108,18 +111,14 @@ export default function _Chart(props: Props) {
     }];
 
     return (
-        <div>
-            <div>
-                <div className={`${classes.root}`}>
-                    <Chart
-                        className="chart" //{props.className}
-                        options={options}
-                        series={series}
-                        type="line"
-                        align='center'
-                    />
-                </div>
-            </div>
+        <div className={`${classes.root}`}>
+            <Chart
+                className="chart" //{props.className}
+                options={options}
+                series={series}
+                type="line"
+                align='center'
+            />
         </div>
     );
 
