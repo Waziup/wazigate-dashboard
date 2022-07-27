@@ -666,13 +666,13 @@ export default function InstalledApp({ appInfo, className }: Props) {
               </div>
             </Tooltip>
 
-            <Button
+            {/* <Button //deactived updates, because they do not work as intended 
               onClick={showModalUpdate}
               color="primary"
               startIcon={<UpdateIcon />}
             >
               Update
-            </Button>
+            </Button> */}
             <Tooltip title={isSysApp ? "Not allowed for the system Apps" : ""}>
 
               <div><Button

@@ -7,7 +7,7 @@ import {
     makeStyles,
 } from '@material-ui/core';
 import { ValueWithTime } from 'waziup';
-import { dateFormatter, formatValue, dateFormatterOnlyTime } from '../../tools';
+import { dateFormatter, formatValue, dateFormatterOnlyDate } from '../../tools';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,7 +71,7 @@ export default function _Chart(props: Props) {
             toolbar: {
                 export: {
                     csv: {
-                        dateFormatter(timestamp) {
+                        dateFormatter(timestamp): Date {  
                             return new Date(timestamp)
                         }
                     }
@@ -85,7 +85,7 @@ export default function _Chart(props: Props) {
         xaxis: {
             type: 'datetime',
             labels: {
-                formatter: dateFormatterOnlyTime as any
+                formatter: dateFormatterOnlyDate as any
             }
         },
         tooltip: {

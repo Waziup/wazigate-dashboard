@@ -247,7 +247,7 @@ export default function MarketplaceApp({ appInfo, className }: Props) {
               onChange={imageIdChange}
               fullWidth
               required
-              label="Full docker image name" />
+              label="Full docker image name and associated tag (image_name:tag)" />
           )
           }
           <textarea
