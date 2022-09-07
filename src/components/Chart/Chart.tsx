@@ -71,8 +71,8 @@ export default function _Chart(props: Props) {
             toolbar: {
                 export: {
                     csv: {
-                        dateFormatter(timestamp): Date {  
-                            return new Date(timestamp)
+                        dateFormatter(timestamp): string {  
+                            return new Date(timestamp).toISOString()
                         }
                     }
                 }
