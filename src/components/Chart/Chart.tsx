@@ -72,7 +72,7 @@ export default function _Chart(props: Props) {
                 export: {
                     csv: {
                         dateFormatter(timestamp): string {  
-                            return new Date(timestamp).toISOString()
+                            return new Date(timestamp).toISOString().split('.')[0]+"Z"
                         }
                     }
                 }
