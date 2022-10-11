@@ -106,7 +106,7 @@ export default function Login() {
         console.log("Token", res);
         setMsg("Login Success! [ Redirecting... ]");
         //Redirecting...
-        window.location.href = "/";
+        window.location.href = "#";
       },
       (error) => {
         setChecking(false);
