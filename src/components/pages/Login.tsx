@@ -107,6 +107,7 @@ export default function Login() {
         setMsg("Login Success! [ Redirecting... ]");
         //Redirecting...
         window.location.href = "#";
+        window.location.reload();
       },
       (error) => {
         setChecking(false);
