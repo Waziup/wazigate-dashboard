@@ -19,9 +19,9 @@
 	],
 	"license": "ISC",
 	"devDependencies": {
-		"@devexpress/dx-chart-core": "^2.7.6",
-		"@devexpress/dx-react-chart": "^2.7.6",
-		"@devexpress/dx-react-chart-material-ui": "^2.7.6",
+		"@devexpress/dx-chart-core": "^4.0.3",
+		"@devexpress/dx-react-chart": "^4.0.3",
+		"@devexpress/dx-react-chart-material-ui": "^4.0.3",
 		"@devexpress/dx-react-core": "^2.7.6",
 		"@material-ui/core": "^4.12.3",
 		"@material-ui/icons": "^4.11.2",
