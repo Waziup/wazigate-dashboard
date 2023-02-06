@@ -102,6 +102,9 @@ const common = {
 	]
 };
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 module.exports = (env) => {
 	if (env.dev) {
 		console.log("Build mode: development");
@@ -110,6 +113,10 @@ module.exports = (env) => {
 			devtool: "source-map",
 		});
 	}
+
+	plugins: [
+		new BundleAnalyzerPlugin()
+	]
 
 	console.log("Build mode: production");
 	return merge(common, {
