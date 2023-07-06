@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "This is the API specication for the [Wazigte Edge](https://github.com/Waziup/wazigate-edge).",
+    "description": "This is the API specication for the [Wazigate Edge](https://github.com/Waziup/wazigate-edge).",
     "version": "1.0.0",
     "title": "Wazigate Edge",
     "termsOfService": "http://swagger.io/terms/",
@@ -14,6 +14,10 @@
     }
   },
   "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication & Authorization"
+    },
     {
       "name": "Your Gateway",
       "description": "Local Device Management"
@@ -40,6 +44,101 @@
     }
   ],
   "paths": {
+    "/auth/token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Authentication",
+        "description": "Login and get a token.",
+        "requestBody": {
+          "description": "Credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/retoken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Referesh the authorized token",
+        "description": "Pass the current valid token and get a fresh token",
+        "requestBody": {
+          "description": "Current valid token",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Token"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/profile": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Authorized user profile",
+        "description": "Retrieves the user data via a given valid token",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/device/id": {
       "get": {
         "tags": [
@@ -432,7 +531,7 @@
                       "time": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "Time this value was received."
+                        "description": "Time this value was recieved."
                       },
                       "value": {
                         "description": "Can be any value - string, number, boolean, array or object."
@@ -1534,7 +1633,7 @@
                       "time": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "Time this value was received."
+                        "description": "Time this value was recieved."
                       },
                       "value": {
                         "description": "Can be any value - string, number, boolean, array or object."
@@ -2345,7 +2444,7 @@
           "Clouds"
         ],
         "summary": "Get Sync Status",
-        "description": "Get details about the synchronization status of all entities.\n\nYou can subscribe to this topic to receive new statuses in realtime!",
+        "description": "Get details about the synchronization status of all entities.\n\nYou can subscribe to this topic to recieve new statuses in realtime!",
         "parameters": [
           {
             "name": "id",
@@ -2444,7 +2543,7 @@
           "Clouds"
         ],
         "summary": "Events",
-        "description": "The events lists holds Events that happened during the synchronization like errors or successes, communication errors, pause & resume details and more.\n\nYou can subscribe to this topic to receive new events in realtime!",
+        "description": "The events lists holds Events that happend during the synchronization like errors or successes, communication errors, pause & resume details and more.\n\nYou can subscribe to this topic to recieve new events in realtime!",
         "parameters": [
           {
             "name": "id",
@@ -2509,182 +2608,18 @@
         }
       }
     },
-    "/clouds/{id}/rest": {
-      "post": {
-        "tags": [
-          "Clouds"
-        ],
-        "summary": "Change Rest address",
-        "description": "Sets the WaziCloud REST address. You can subscribe to this topic to receive new events in realtime!",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the cloud",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "waziup"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Set a new REST api endpoint.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "example": "//api.staging.waziup.io/api/v2"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "The REST API endpoint was changed successfully."
-          },
-          "404": {
-            "description": "Bad Request. There may be no cloud with that id."
-          }
-        }
-      }
-    },
-    "/clouds/{id}/mqtt": {
-      "post": {
-        "tags": [
-          "Clouds"
-        ],
-        "summary": "Sets MQTT address",
-        "description": "Sets the WaziCloud MQTT address. You can subscribe to this topic to receive new events in realtime!",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the cloud",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "waziup"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Set a new MQTT api endpoint.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "example": null
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "The MQTT API endpoint was changed successfully."
-          },
-          "404": {
-            "description": "Bad Request. There may be no cloud with that id."
-          }
-        }
-      }
-    },
-    "/clouds/{id}/username": {
-      "post": {
-        "tags": [
-          "Clouds"
-        ],
-        "summary": "Sets a cloud username",
-        "description": "Sets the username of cloud. You can subscribe to this topic to receive new events in realtime!",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the cloud",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "waziup"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Set a new username.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "example": "my_new_awesome_username"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "The username was changed successfully."
-          },
-          "404": {
-            "description": "Bad Request. There may be no cloud with that id."
-          }
-        }
-      }
-    },
-    "/clouds/{id}/token": {
-      "post": {
-        "tags": [
-          "Clouds"
-        ],
-        "summary": "Sets a cloud token",
-        "description": "Sets the token of cloud. You can subscribe to this topic to receive new events in realtime!",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the cloud",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "waziup"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Set a new token.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "example": ""
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "The token was changed successfully."
-          },
-          "404": {
-            "description": "Bad Request. There may be no cloud with that id."
-          }
-        }
-      }
-    },
-    "/apps": {
+    "/images": {
       "get": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "List Apps",
-        "description": "Apps are docker containers. They can be active (running) or inactive (stopped).",
+        "summary": "List Images",
+        "description": "Images are docker images.",
         "parameters": [
           {
             "name": "internal",
             "in": "query",
-            "description": "Include internal apps.",
+            "description": "Include internal images.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2694,7 +2629,7 @@
           {
             "name": "updates",
             "in": "query",
-            "description": "Check if a newer app version (a newer image from the Docker Hub) is available. This will query the docker registry.",
+            "description": "Check if a newer iamge is available. This will query the docker registry.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2713,10 +2648,10 @@
       },
       "post": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "Install new Apps",
-        "description": "Fetch the given image from the docker repository. Calling this api will use a `docker pull` internally and create a container from the image.",
+        "summary": "Download Image",
+        "description": "Fetch the given image from the docker repository. Calling this api will use a `docker pull` internally.",
         "requestBody": {
           "description": "Image data",
           "required": true,
@@ -2725,7 +2660,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "image": {
+                  "name": {
                     "type": "string",
                     "description": "Image name",
                     "example": "waziup/wazigate-lora:V1.2"
@@ -2748,45 +2683,169 @@
         }
       }
     },
-    "/apps/{name}": {
-      "parameters": [
-        {
-          "name": "name",
-          "in": "path",
-          "description": "Name of the app.",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "example": "wazigate-lora"
-          }
-        }
-      ],
+    "/images/{name}": {
       "get": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "Get App data",
-        "description": "Apps are docker containers.",
+        "summary": "Get Image Data",
+        "description": "Images are docker images.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of the image.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "waziup/wazigate-lora:V1.2"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Operation."
           },
           "404": {
-            "description": "There is no app (Docker Container) with that name."
+            "description": "There is no image with that name."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Containers & Images"
+        ],
+        "summary": "Delete Image",
+        "description": "Images are docker images.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of the image.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "waziup/wazigate-lora:V1.2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation."
+          },
+          "404": {
+            "description": "There is no image with that name."
+          },
+          "500": {
+            "description": "There was an internal error maybe because the docker daemon did not respond or it refused to delete image because there is still a container using it."
+          }
+        }
+      }
+    },
+    "/containers": {
+      "get": {
+        "tags": [
+          "Containers & Images"
+        ],
+        "summary": "List Containers",
+        "description": "Containers are docker containers.",
+        "parameters": [
+          {
+            "name": "internal",
+            "in": "query",
+            "description": "Include internal containers.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation."
+          },
+          "500": {
+            "description": "The was an internal error maybe because the docker daemon did not respond."
           }
         }
       },
       "post": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "Manage an App, Start & Stop",
-        "description": "Start or stop an App.",
+        "summary": "Create a Container",
+        "description": "Containers are docker containers.",
+        "requestBody": {
+          "description": "Image data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "description": "Image name",
+                    "example": "waziup/wazigate-lora:V1.2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Operation."
+          },
+          "500": {
+            "description": "The was an internal error maybe because the docker daemon did not respond."
+          }
+        }
+      }
+    },
+    "/containers/{name}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "description": "Name of the container.",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "waziup/wazigate-lora:V1.2"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Containers & Images"
+        ],
+        "summary": "Get Container Data",
+        "description": "Containers are docker containers.",
+        "responses": {
+          "200": {
+            "description": "Successful Operation."
+          },
+          "404": {
+            "description": "There is no container with that name."
+          },
+          "500": {
+            "description": "The was an internal error maybe because the docker daemon did not respond."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Containers & Images"
+        ],
+        "summary": "Manage Container",
+        "description": "Start or stop a container.",
         "parameters": [
           {
             "name": "start",
             "in": "query",
-            "description": "Start an app.",
+            "description": "Start a container.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2796,7 +2855,7 @@
           {
             "name": "stop",
             "in": "query",
-            "description": "Stop an app.",
+            "description": "Stop a container.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -2818,10 +2877,10 @@
       },
       "delete": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "Delete an App",
-        "description": "Apps are docker containers. The App must be stopped to perform this operation. This action wil delete the Docker Container and the Docker Image.",
+        "summary": "Delete Container",
+        "description": "Containers are docker containers. The container must be stopped to perform this operation.",
         "responses": {
           "200": {
             "description": "Successful Operation."
@@ -2830,17 +2889,17 @@
             "description": "There is no image with that name."
           },
           "500": {
-            "description": "There was an internal error maybe because the docker daemon did not respond or it refused to delete the container or the image."
+            "description": "There was an internal error maybe because the docker daemon did not respond or it refused to delete image because there is still a container using it."
           }
         }
       }
     },
-    "/apps/{name}/{path}": {
+    "/containers/{name}/{path}": {
       "parameters": [
         {
           "name": "name",
           "in": "path",
-          "description": "Name of the App.",
+          "description": "Name of the container.",
           "required": true,
           "schema": {
             "type": "string",
@@ -2860,16 +2919,16 @@
       ],
       "get": {
         "tags": [
-          "Apps"
+          "Containers & Images"
         ],
-        "summary": "Apps Proxy",
-        "description": "Get app files through the apps proxy.\nAll apps should host a http server that is listening on `WAZIGATE_ADDR` which is a environment variable given to the container. Wazigate-compatible containers are required to expose a `package.json` file on http root level.",
+        "summary": "Container Proxy",
+        "description": "Get container files through the container proxy.\n\nAll containers should host a http server that is listening on `WAZIGATE_ADDR` which is a environment variable given to the container. Wazigate-compatible containers are requred to expose a `package.json` file on http root level.",
         "responses": {
           "200": {
             "description": "Successful Operation."
           },
           "404": {
-            "description": "There is no app with that name or the app returned a 404 error."
+            "description": "There is no container with that name or the container returned a 404 error."
           },
           "500": {
             "description": "The was an internal error."
@@ -2906,6 +2965,48 @@
         "type": "string",
         "example": "201c85cdbda3"
       },
+      "Token": {
+        "format": "binary",
+        "type": "string"
+      },
+      "AuthBody": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "admin",
+          "password": "password"
+        },
+        "type": "object"
+      },
+      "UserProfile": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "0123456789xxxx",
+          "name": "Wazigate User",
+          "username": "admin"
+        },
+        "type": "object"
+      },
       "Sensor": {
         "type": "object",
         "properties": {
@@ -2933,7 +3034,7 @@
           },
           "time": {
             "type": "string",
-            "description": "Last time a value was received.",
+            "description": "Last time a value was recieved.",
             "format": "date-time",
             "example": "2019-10-14T11:41:10.814Z"
           },
@@ -2969,7 +3070,7 @@
           },
           "time": {
             "type": "string",
-            "description": "Last time a value was received.",
+            "description": "Last time a value was recieved.",
             "format": "date-time",
             "example": "2019-10-14T11:41:10.814Z"
           },
