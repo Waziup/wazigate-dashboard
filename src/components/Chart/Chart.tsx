@@ -100,7 +100,7 @@ export default function _Chart(props: Props) {
                 }
             }
         },
-        colors: ['#3F51B5'], //Johann fragen #3F51B5 
+        colors: ['#3F51B5'],
         stroke: {
             curve: props.quantity == 'Boolean' ? 'stepline' : 'straight'
         },
