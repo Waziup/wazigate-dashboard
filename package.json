@@ -14,7 +14,6 @@
 	"repository": "github:Waziup/wazigate-dashboard",
 	"author": "Johann Forster <johann.forster@waziup.org>",
 	"maintainers": [
-		"Mojtaba Eskandari <mojtaba.eskandari@waziup.org>",
 		"Johann Forster <johann.forster@waziup.org>"
 	],
 	"license": "ISC",
